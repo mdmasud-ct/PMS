@@ -1,0 +1,70 @@
+{
+  "Doctor":[
+    {
+      "DrID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Specialties":"Anesthesiology",
+      "Status": "Active",
+      "Blocked_Unblocked": "Block"
+    },
+    {
+      "DrID": "102",
+      "FullName": "Vivek Vivek",
+      "Date_of_Birth": "25/01/1991",
+      "EmailID": "vivek.v@citiustech.com",
+      "ContactNo": "4568975624",
+      "Address": "Sion East Mumbai 400022",
+      "Specialties":"Diagnostic radiology",
+      "Status": "Active",
+      "Blocked_Unblocked": "Block"
+    },
+    {
+      "DrID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Specialties":"Emergency medicine",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "DrID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Specialties":"Internal medicine",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "DrID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Specialties":"Medical genetics",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "DrID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Specialties":"Dermatology",
+      "Status": "Active",
+      "Blocked_Unblocked": "Block"
+    }   
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "Patient":[
+    {
+      "PatientID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Allergies":"shortness of breath",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "PatientID": "102",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Allergies":"cough",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "PatientID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Allergies":"diarrhoea",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "PatientID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Allergies":"lightheadedness",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "PatientID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Allergies":"feeling sick",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "PatientID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Allergies":"losing consciousness",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    }
+  ]
+}

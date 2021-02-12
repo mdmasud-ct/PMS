@@ -1,0 +1,35 @@
+<mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav 
+                 [opened]="!isScreenSmall" 
+                 [mode]="isScreenSmall ? 'over' : 'side'" class="mat-elevation-z10">
+        
+        <mat-toolbar style="background-color: slategrey;" class="mat-elevation-z6 tbar">
+            <span><mat-icon style="vertical-align: middle;">assignment_ind</mat-icon><span style="vertical-align: middle;"> {{name}} </span></span>
+        </mat-toolbar>
+        
+        <div>
+            <mat-selection-list #x [multiple]="false">
+                <mat-list-option [value]="'doctorsection'" (click)="DoSomething($event)">
+                  <span><mat-icon style="vertical-align: middle;">medical_services</mat-icon><span style="vertical-align: middle;"> Doctor Section</span></span>
+                </mat-list-option>
+                <mat-list-option [value]="'nursesection'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">content_paste</mat-icon><span style="vertical-align: middle;"> Nurse Section</span></span>
+                </mat-list-option>
+                <mat-list-option [value]="'patientsection'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">person</mat-icon><span style="vertical-align: middle;"> Patient Section</span></span>
+                </mat-list-option>
+                <mat-list-option [value]="'registration'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">person_add</mat-icon><span style="vertical-align: middle;"> New Section</span></span>
+                </mat-list-option>
+            </mat-selection-list>
+        </div>
+
+        
+    </mat-sidenav>
+    
+    <mat-sidenav-content class="example-sidenav-content">
+        <app-toolbar (toggle)="sidenav.toggle()"></app-toolbar>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+

@@ -1,0 +1,27 @@
+table {
+   width: 100%;    
+ }
+ 
+.divclass{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.btnCenter{
+   margin-top: 10px;
+   margin-bottom: -20px;
+}
+
+.fontSizeBold{
+   font-size: large;
+   font-weight: bold;
+}
+ .ModelPopUpClass{
+   background-color: grey;width: 980px;
+ }
+
+
+ .modalTagReg{
+   margin-left: -84px;
+   text-align: center;
+ }

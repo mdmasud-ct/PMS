@@ -1,0 +1,64 @@
+{
+  "Nurse":[
+    {    
+      "NurseID": "101",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Status": "Active",
+      "Blocked_Unblocked": "Block"
+    },
+    {
+      "NurseID": "102",
+      "FullName": "Vivek Vivek",
+      "Date_of_Birth": "25/01/1991",
+      "EmailID": "vivek.v@citiustech.com",
+      "ContactNo": "4568975624",
+      "Address": "Sion East Mumbai 400022",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "NurseID": "103",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    },
+    {
+      "NurseID": "104",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Status": "Active",
+      "Blocked_Unblocked": "Block"
+    },
+    {
+      "NurseID": "105",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Status": "Active",
+      "Blocked_Unblocked": "Block"
+    },
+    {
+      "NurseID": "106",
+      "FullName": "Hruturaj Kadadas",
+      "Date_of_Birth": "20/11/1993",
+      "EmailID": "Hruturaj.Kadadas@citiustech.com",
+      "ContactNo": "7208842475",
+      "Address": "Wadala East Mumbai 400037",
+      "Status": "Active",
+      "Blocked_Unblocked": "Unblock"
+    }      
+  ]
+}

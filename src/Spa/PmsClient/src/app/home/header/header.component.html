@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" class="mat-elevation-z6">
+    <span>
+      <!-- <img src="../assets/PMSlogo.png" style="width: 50px;height: 50px;"> -->
+      <!-- <mat-icon style="vertical-align: middle;height: 50px;">medical_services</mat-icon> -->
+    </span>
+    <span> Practice Management System</span>
+    <span class="example-spacer"></span>
+    <button class="btn" style="color: white;" routerLink='/userlogin'><mat-icon style="vertical-align: middle;">login</mat-icon> Login </button>
+    <!-- <button class="btn" style="color: white;" routerLink='/userlogin'>Login</button> -->
+    <nav *ngIf="isAuthenticated" class="my-2 my-md-0 mr-md-3">
+      <a class="p-2 text-light" routerLink="/topsecret">Authorized Section</a>  
+      <a class="p-2 text-light" (click)="signout()" href="javascript:void(0)">Signout {{name}}</a>               
+   </nav>
+  </mat-toolbar>

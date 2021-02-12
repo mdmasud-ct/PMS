@@ -1,0 +1,85 @@
+<h1 style="text-align: center;">Doctor & Nurse Registration</h1>
+<div class="signup-form">
+    <form class="form-group" [formGroup]="fg" (ngSubmit)="SavePractitionerData()">
+        <h2>Register</h2>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-2">
+                    <label for="Title">Title: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="title" formControlName="title" placeholder="" required="required">
+                    <span class="asterisk" *ngIf="fg.get('title').touched && fg.get('title').errors?.required">
+                        Title is required!
+                    </span>
+                </div>
+                <div class="col-xs-5">
+                    <label for="firstname">First Name: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="firstname" formControlName="firstname">
+                     <span class="asterisk" *ngIf="fg.get('firstname').touched && fg.get('firstname').errors?.required">
+                        FirstName is required!
+                    </span>
+                </div>
+                <div class="col-xs-5">
+                    <label for="lastname">Last Name: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="lastname" formControlName="lastname">
+                    <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                        LastName is required!
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email: <span class="asterisk"> *</span></label>
+            <input type="email" class="form-control" name="email" formControlName="email">
+            <span class="asterisk" *ngIf="fg.get('email').touched && fg.get('email').errors?.required">
+                Email is required!
+            </span>
+            <span class="asterisk" *ngIf="fg.get('email').touched && fg.get('email').errors?.email">
+                Email is not valid!
+            </span>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="email">DOB: <span class="asterisk"> *</span></label>                    
+                    <input type="date" [max]="getToday()" class="form-control" name="dob" formControlName="dob">
+                    <span class="asterisk" *ngIf="fg.get('dob').touched && fg.get('dob').errors?.required">
+                        DOB is required!
+                    </span>
+                </div>
+                <div class="col-xs-6">
+                    <label for="role">Role: </label><br />
+                    <label class="radio-inline"><input type="radio" formControlName="role" name="role" value="Doctor" checked>Doctor</label>
+                    <label class="radio-inline"><input type="radio" formControlName="role" name="role" value="Nurse">Nurse</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="contactno">Contact No: <span class="asterisk"> *</span></label>
+            <input type="text" class="form-control" name="contactno" formControlName="contactno">
+            <span class="asterisk" *ngIf="fg.get('contactno').touched && fg.get('contactno').errors?.required">
+                contact no is required!
+            </span>            
+        </div>
+        <div class="form-group">
+            <label for="address">Address: <span class="asterisk"> *</span></label>
+            <input type="text" class="form-control" name="address" formControlName="address">
+            <span class="asterisk" *ngIf="fg.get('address').touched && fg.get('address').errors?.required">
+                Address is required!
+            </span>            
+        </div>
+        <div class="form-group">
+            <label for="speciality">Speciality: <span class="asterisk"> *</span></label>
+            <input type="text" class="form-control" name="speciality" formControlName="speciality">
+            <span class="asterisk" *ngIf="fg.get('speciality').touched && fg.get('speciality').errors?.required">
+                Speciality is required!
+            </span>            
+        </div>
+        <div class="form-group">            
+            <button id="btnSubmit" class="btn" [disabled]="!fg.valid">Register Now</button>
+        </div>
+    </form>
+    <div>
+        <h1 style="color: red;">{{msg}}</h1>
+    </div>
+    <!--<div class="text-center">Already have an account? <a href="#">Sign in</a></div>-->
+</div> 

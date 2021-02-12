@@ -1,0 +1,111 @@
+
+<div class="divclass">
+    <div class="form-group">
+      <table class="mat-elevation-z8" [ngClass]="{'btnCenter': true}">
+          <th>
+            <mat-form-field class="example-form-field">
+              <mat-label>Search Block/UnBlock</mat-label>
+              <input matInput type="text" [(ngModel)]="value" (keyup)="applyFilter()">
+            </mat-form-field>
+          </th>
+          <th>
+            <button class="btn" style="float: right;" (click)="open(content)" [ngClass]="{'bgColor': true}" ><mat-icon>person_add</mat-icon></button>
+          </th>
+      </table>
+    </div>
+<div class="form-group">
+<table mat-table [dataSource]="dataSourceDoctorData" class="mat-elevation-z8">
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->          
+    <!-- DrID Column -->
+    <ng-container matColumnDef="DrID">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Doctor ID. </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>  
+    <!-- FullName Column -->
+    <ng-container matColumnDef="FullName">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Full Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.FullName}} </td>
+    </ng-container>  
+    <!-- Date_of_Birth Column -->
+    <ng-container matColumnDef="Date_of_Birth">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Date of Birth </th>
+      <td mat-cell *matCellDef="let element"> {{element.Date_of_Birth}} </td>
+    </ng-container>  
+    <!-- EmailID Column -->
+    <ng-container matColumnDef="EmailID">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> EmailID </th>
+      <td mat-cell *matCellDef="let element"> {{element.EmailID}} </td>
+    </ng-container> 
+    <!-- ContactNo Column -->
+    <ng-container matColumnDef="ContactNo">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> ContactNo </th>
+      <td mat-cell *matCellDef="let element"> {{element.ContactNo}} </td>
+    </ng-container>  
+    <!-- Address Column -->
+    <ng-container matColumnDef="Address">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Address </th>
+      <td mat-cell *matCellDef="let element"> {{element.Address}} </td>
+    </ng-container>  
+    <!-- Specialties Column -->
+    <ng-container matColumnDef="Specialties">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Specialties </th>
+      <td mat-cell *matCellDef="let element"> {{element.Specialties}} </td>
+    </ng-container>
+    <!-- Status Column -->
+    <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.Status}} </td>
+    </ng-container>
+    <!-- Blocked_Unblocked Column -->
+    <ng-container matColumnDef="Blocked_Unblocked">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Blocked/Unblocked </th>
+      <td mat-cell *matCellDef="let element"> {{element.Blocked_Unblocked}} </td>
+    </ng-container>
+     <!-- View/Edit/Delete Column -->
+     <ng-container matColumnDef="View_Edit_Delete">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}">  </th>
+      <td mat-cell *matCellDef="let element">
+          <button class="btn" (click)="open(content)" [ngClass]="{'bgColor': true}" style="float: left;" title="View"><mat-icon>pageview</mat-icon></button>
+          <button class="btn" (click)="open(content)" [ngClass]="{'bgColor': true}" style="float: left;" title="Edit"><mat-icon>edit</mat-icon></button>
+          <button class="btn" (click)="open(content)" [ngClass]="{'bgColor': true}" style="float: left;" title="Archive"><mat-icon>delete</mat-icon></button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row (click)="getRecord()" *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+</div>
+
+
+<div class="modalTagReg">
+  <!-- Register PopUp -->
+  <ng-template #content let-c="close" let-d="dismiss" >    
+    <!-- <div class="modal-body" [ngClass]="{'ModelPopUpClass': true}"> -->
+      <div class="modal-body" >
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times; &nbsp;</span>
+      </button>
+      <app-register></app-register>
+     </div> 
+  </ng-template>
+  <!-- Register PopUp -->
+
+  <!-- Delete By ID PopUp -->  
+  <!-- <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Are you sure, you want to delete this user records</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-register></app-register>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Yes</button>
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">No</button>
+    </div>
+  </ng-template> -->
+  <!-- Delete By ID PopUp -->
+</div>
