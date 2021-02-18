@@ -11,11 +11,18 @@ namespace Resource.Api.Controllers
     public class ValuesController : ControllerBase
     {
         // GET api/values
-        [Authorize(Policy = "Consumer")]
+        //[Authorize(Policy = "Consumer")] //Masud Commented
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             return new JsonResult(User.Claims.Select(c => new { c.Type, c.Value }));
         }
+        //[HttpGet]
+        //public ActionResult<string> GetRole() { 
+            
+        //    //var res = User.Claims.)
+
+        //}
     }
 }

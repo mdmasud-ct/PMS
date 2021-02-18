@@ -8,20 +8,26 @@
         </mat-toolbar>
         
         <div>
+            
             <mat-selection-list #x [multiple]="false">
-                <mat-list-option [value]="'doctorsection'" (click)="DoSomething($event)">
+                
+                <mat-list-option [value]="'inbox'" *ngIf="this.role=='doctor' || this.role=='patient'" (click)="DoSomething($event)" selected>
+                    <span><mat-icon style="vertical-align: middle;">schedule</mat-icon><span style="vertical-align: middle;"> Inbox</span></span>
+                  </mat-list-option>
+                <mat-list-option [value]="'doctorsection'" *ngIf="this.role=='admin'" (click)="DoSomething($event)" >
                   <span><mat-icon style="vertical-align: middle;">medical_services</mat-icon><span style="vertical-align: middle;"> Doctor Section</span></span>
                 </mat-list-option>
-                <mat-list-option [value]="'nursesection'" (click)="DoSomething($event)">
+                <mat-list-option [value]="'nursesection'" *ngIf="this.role=='admin'" (click)="DoSomething($event)">
                     <span><mat-icon style="vertical-align: middle;">content_paste</mat-icon><span style="vertical-align: middle;"> Nurse Section</span></span>
                 </mat-list-option>
-                <mat-list-option [value]="'patientsection'" (click)="DoSomething($event)">
+                <mat-list-option [value]="'patientsection'" *ngIf="this.role=='admin'" (click)="DoSomething($event)">
                     <span><mat-icon style="vertical-align: middle;">person</mat-icon><span style="vertical-align: middle;"> Patient Section</span></span>
                 </mat-list-option>
-                <mat-list-option [value]="'registration'" (click)="DoSomething($event)">
-                    <span><mat-icon style="vertical-align: middle;">person_add</mat-icon><span style="vertical-align: middle;"> New Section</span></span>
+                <mat-list-option [value]="'changepassword'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">password</mat-icon><span style="vertical-align: middle;"> Change Password</span></span>
                 </mat-list-option>
             </mat-selection-list>
+            
         </div>
 
         

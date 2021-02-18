@@ -4,9 +4,9 @@ import { SharedWrapperComponent } from './shared-wrapper/shared-wrapper.componen
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SharedMaterialModule } from '../shared-material/shared-material.module';
 import sharedwrapperroutes from './shared-wrapper.routes';
-
+import { LoaderComponent } from './loader/loader.component';
 @NgModule({
-  declarations: [SharedWrapperComponent, ToolbarComponent],
+  declarations: [SharedWrapperComponent, ToolbarComponent, LoaderComponent],
   imports: [
     CommonModule,
     SharedMaterialModule,

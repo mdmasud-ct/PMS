@@ -1,42 +1,54 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { Routes,ActivatedRoute } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import appRoutes from './app.routes';
+
+/* Modules */
 import { SharedMaterialModule } from './shared-material/shared-material.module';
 import { LoginModule } from './login/login.module';
-import appRoutes from './app.routes';
 import { SharedWrapperModule } from './shared-wrapper/shared-wrapper.module';
 import { AdminModule } from './admin/admin.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { HomeModule } from './home/home.module';
 import { CoreModule } from './core/core.module';
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
+import { AccountModule } from './account/account.module';
+/* Modules ends*/ 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { HeaderComponent } from './header/header.component';
+import { ReloginComponent } from './relogin/relogin.component';
+
 // Import library module
 //import {  } from "ngx-spinner";
 @NgModule({
   declarations: [
     AppComponent,
-    AuthCallbackComponent
+    AuthCallbackComponent,
+    HeaderComponent,
+    ReloginComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     SharedMaterialModule,
-    LoginModule,
     appRoutes,
+    LoginModule,
     SharedWrapperModule,
+    HomeModule,
+    CoreModule,
     AdminModule,
+    AccountModule,
     NgbModule,
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    HomeModule,
-    CoreModule,
-    FormsModule
+    FormsModule,
+    ToastrModule,
     //AuthConfigModule
   ],
   providers: [],

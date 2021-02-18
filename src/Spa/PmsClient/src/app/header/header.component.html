@@ -1,0 +1,15 @@
+<div *ngIf="!isAuthenticated">
+<mat-toolbar color="primary" class="mat-elevation-z6">
+    <span> PMS</span>
+    <span class="example-spacer"></span>
+
+    <nav *ngIf="!isAuthenticated">
+    <button class="btn" style="color: white;" routerLink='/patientregister'><mat-icon style="vertical-align: middle;">person_add</mat-icon>&nbsp; Register </button>
+    <button class="btn" style="color: white;" routerLink='/userlogin'><mat-icon style="vertical-align: middle;">login</mat-icon>&nbsp; Login </button>
+    </nav>
+    <!-- <nav *ngIf="isAuthenticated" class="my-2 my-md-0 mr-md-3">
+      <a class="p-2 text-light" routerLink="/topsecret">Authorized Section</a>  
+      <a class="p-2 text-light" (click)="signout()" href="javascript:void(0)">Signout {{name}}</a>               
+   </nav> -->
+  </mat-toolbar>
+  </div>

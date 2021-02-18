@@ -1,14 +1,14 @@
 import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/auth.service'; 
-
+ 
 @Component({
-  selector: 'app-header',
+  selector: 'app-headers',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
+ 
   name: string;
   isAuthenticated: boolean;
   subscription:Subscription;

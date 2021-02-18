@@ -172,11 +172,37 @@ namespace AuthServer.Controllers
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("userName", user.UserName));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("name", user.Name));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("email", user.Email));
-            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", Roles.Consumer));
+            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", Roles.Dorctor));
 
             return Ok(new RegisterResponseViewModel(user));
         }
 
+        [HttpPost]
+        [Route("api/modify")]
+        //public ActionResult ChangePassword(UserModel model) {
+        public async Task<IActionResult> ChangePassword([FromBody] UserModel model) {
+
+            var currentuser = await _userManager.FindByNameAsync(model.Email);
+            if (currentuser == null) {
+                return BadRequest(new Exception("Unable to fetch User Details. Please contact admin"));
+            }
+            //var user = _signInManager.Context.User;
+            //var appUser =  _userManager.GetUserAsync(user);
+            var appuse = new AppUser { Name=currentuser.Name, UserName = currentuser.Email };
+            var result = await _userManager.ChangePasswordAsync(currentuser, model.OldPassword, model.NewPassword);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+            return Ok(new RegisterResponseViewModel(appuse));
+        }
+
+        [HttpPost]
+        [Route("api/information")]
+        public async Task<ActionResult> GetRole([FromBody]UserModel model) {
+            var currentuser = await _userManager.FindByNameAsync(model.UserName);
+            var appuser = new AppUser { Name = currentuser.Name, UserName = currentuser.Email };
+            var claims = await _userManager.GetClaimsAsync(currentuser);
+            var role = claims.Where(x=>x.Type.Equals("role")).Select(s=>s.Value).FirstOrDefault();
+            return Json(new { role = role });
+        }
         [HttpGet]
         public async Task<IActionResult> Logout(string logoutId)
         {
@@ -185,6 +211,7 @@ namespace AuthServer.Controllers
             return Redirect(context.PostLogoutRedirectUri);
         }
 
+        //private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
         /*****************************************/
         /* helper APIs for the AccountController */
         /*****************************************/
