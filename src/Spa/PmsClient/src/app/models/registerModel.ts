@@ -11,7 +11,8 @@ export class Register{
       public Address:string ="",
       public Specialties: string = "",
       public Status:string ="",
-      public Blocked_Unblocked:string =""      
+      public Blocked_Unblocked:string ="",
+      public id:string =""      
    )
   {
       
@@ -52,6 +53,9 @@ set Statuss(address: string) { this.Status = address };
 
 get Blocked_unblocked() { return this.Blocked_Unblocked };
 set Blocked_unblocked(address: string) { this.Blocked_Unblocked = address };
+
+get ID() { return this.id };
+set ID(address: string) { this.id = address };
 }
 
 // export class Register{

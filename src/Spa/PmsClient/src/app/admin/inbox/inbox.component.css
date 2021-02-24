@@ -1,0 +1,25 @@
+.square {
+    height: 150px;
+    width: 15%;
+    background-color: #fff;
+    border-radius:10px;
+    border: 2px solid grey;
+    margin-left: 1%;
+  }
+  .allevent{
+      text-align: center;
+      padding-top: 25px;
+      padding-left: 25px;
+  }
+  .accepted{
+      background-color: #007bff;
+      margin: 0 0 6px;
+      border-radius: 10px;
+      color: #fff;
+  }
+  .rejected{
+      background-color: yellow;
+  }
+  .pending{
+      background-color: yellowgreen;
+  }

@@ -5,12 +5,14 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SharedMaterialModule } from '../shared-material/shared-material.module';
 import sharedwrapperroutes from './shared-wrapper.routes';
 import { LoaderComponent } from './loader/loader.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [SharedWrapperComponent, ToolbarComponent, LoaderComponent],
   imports: [
     CommonModule,
     SharedMaterialModule,
-    sharedwrapperroutes
+    sharedwrapperroutes,
+    NgbModule
   ]
 })
 export class SharedWrapperModule { }

@@ -44,7 +44,7 @@ SavePatientData(): void
   console.log(this.fg.value.firstname);
 
 this.patient=new Patients(this.fg.value.firstname,this.fg.value.lastname,this.fg.value.dob,this.fg.value.contact
-                    ,this.fg.value.email,this.fg.value.password);
+                    ,this.fg.value.email,this.fg.value.password,(this.fg.value.firstname+" "+this.fg.value.lastname),"Active","No");
 
 console.log(this.patient);
 

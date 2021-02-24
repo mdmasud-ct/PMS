@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter,OnDestroy } from '@angular/core
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/auth.service';
- 
+
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',

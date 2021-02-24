@@ -83,9 +83,30 @@ export class SharedWrapperComponent implements OnInit {
     {
       this.router.navigate(['inbox'],{ relativeTo: this.route });
     }
+    else if(this.matselection.selectedOptions.selected[0]?.value == "viewdata")
+    {
+      this.router.navigate(['viewpatientdata'],{ relativeTo: this.route });
+    }
+    else if(this.matselection.selectedOptions.selected[0]?.value == "bookappointment")
+    {
+      this.router.navigate(['schedule'],{ relativeTo: this.route });
+    }
+    else if(this.matselection.selectedOptions.selected[0]?.value == "patientvisitnurse")
+    {
+      this.router.navigate(['patientvisitnurse'],{ relativeTo: this.route });
+    }
+    else if(this.matselection.selectedOptions.selected[0]?.value == "patientvisitdoctor")
+    {
+      this.router.navigate(['patientvisitdoctor'],{ relativeTo: this.route });
+    }
+    else if(this.matselection.selectedOptions.selected[0]?.value == "viewappointments")
+    {
+      this.router.navigate(['viewappointments'],{ relativeTo: this.route });
+    }
     else{
       this.router.navigate(['doctorsection'],{ relativeTo: this.route });
     }
+
   }
 
 }

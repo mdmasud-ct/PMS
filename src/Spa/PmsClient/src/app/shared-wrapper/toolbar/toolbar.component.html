@@ -10,6 +10,18 @@
     <!-- <button class="btn color-white" (click)="ChangePasswdClick($event)"><mat-icon style="vertical-align: middle;">vpn_key</mat-icon> Change Password </button> -->
     
         <!-- <a class="p-2 text-light" routerLink="/topsecret">Authorized Section</a>   -->
-        <a class="p-2 text-light" (click)="signout()" href="javascript:void(0)">Signout</a>               
-     </nav>
+        <!-- <a class="p-2 text-light" (click)="signout()" href="javascript:void(0)">Signout</a>                -->
+        
+    <div class="btn-group mr-3">
+        <button type="button" class="btn btn-dark" (click)="signout()" href="javascript:void(0)">Signout</button>
+        <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+        <button class="btn btn-dark dropdown-toggle-split" ngbDropdownToggle></button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+            <button ngbDropdownItem class="btn btn-secondary" ><a style="text-decoration: none;" routerlink="/sharedwrapperhome/changepassword" href="/sharedwrapperhome/changepassword">Change Password</a></button>
+            <!-- <button ngbDropdownItem>Two</button>
+            <button ngbDropdownItem>Four!</button> -->
+        </div>
+        </div> 
+    </div>
+    </nav>
 </mat-toolbar>

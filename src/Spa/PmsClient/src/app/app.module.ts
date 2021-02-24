@@ -19,9 +19,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
+import { SchedulingModule } from './scheduling/scheduling.module';
+import { PatientModule } from './patient/patient.module';
 import { HeaderComponent } from './header/header.component';
 import { ReloginComponent } from './relogin/relogin.component';
+import { PatientVisitModule } from './patient-visit/patient-visit.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 // Import library module
 //import {  } from "ngx-spinner";
@@ -48,7 +52,11 @@ import { ReloginComponent } from './relogin/relogin.component';
     MatInputModule,
     ReactiveFormsModule,
     FormsModule,
-    ToastrModule,
+    SchedulingModule,
+    PatientModule,
+    PatientVisitModule,
+    MatPaginatorModule,
+    NgxSpinnerModule
     //AuthConfigModule
   ],
   providers: [],

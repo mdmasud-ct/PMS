@@ -4,11 +4,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { observable, Observable } from 'rxjs';
 import { Nurse } from '../models/nurseModel';
 import { Doctor } from '../models/doctorModel';
-import { Patient } from '../models/patientModel';
+//import { Patient } from '../models/patientModel';
+import { Patients} from '../models/Patient';
 import { Url } from 'url';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError } from 'rxjs/operators';
 import { ConfigService } from '../core/config.service';
+import { Appointment } from '../models/Appointment';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,15 +19,26 @@ export class RegisterService {
 
   // constructor()  { }
   constructor(private httpSVC:HttpClient,private config: ConfigService)  { }
-  public SaveUserRegiterDatas(reg:Register):Observable<any>
+  public SaveUserRegiterDatas(reg:Register,operation:string):Observable<any>
   {
     console.log("service.SavePractitionerData() hits");
       console.log(JSON.stringify(reg));
       const headers = { 'content-type': 'application/json'}
-      if(reg.role=='Doctor')  
-        return this.httpSVC.post<Register>( this.config.tempResourseAPI+ "/Doctors", JSON.stringify(reg),{'headers':headers});
-      else if(reg.role=='Nurse')
-        return this.httpSVC.post<Register>(this.config.tempResourseAPI+"/Nurses", JSON.stringify(reg),{'headers':headers});
+      if(operation==="POST")
+      {
+        if(reg.role=='Doctor')  
+          return this.httpSVC.post<Register>( this.config.tempResourseAPI+ "/Doctors", JSON.stringify(reg),{'headers':headers});
+        else if(reg.role=='Nurse')
+          return this.httpSVC.post<Register>(this.config.tempResourseAPI+"/Nurses", JSON.stringify(reg),{'headers':headers});
+      }
+      else
+      {
+        if(reg.role=='Doctor')  
+          return this.httpSVC.patch<Register>( this.config.tempResourseAPI+ "/Doctors/"+reg.id, JSON.stringify(reg),{'headers':headers});
+        else if(reg.role=='Nurse')
+          return this.httpSVC.patch<Register>(this.config.tempResourseAPI+"/Nurses/"+reg.id, JSON.stringify(reg),{'headers':headers});        
+      }
+      
     
   }
   //http://localhost:3000/Doctor?DrID=102
@@ -39,87 +52,76 @@ export class RegisterService {
   }
   public GetPatientJsonDatas():Observable<any>
   {
-      return this.httpSVC.get<Patient>(this.config.tempResourseAPI+ "/Patients");
+      return this.httpSVC.get<Patients>(this.config.tempResourseAPI+ "/Patient");
   }
 
   // Get data by Id
   public GetDoctorJsonDatasByID(DrID: number):Observable<any>
-  {
-      return this.httpSVC.get<Doctor>("http://localhost:3000/doctor?DrID="+DrID);
+  {   
+      // return this.httpSVC.get<Doctor>("http://localhost:3000/Doctors?id="+DrID);
+      return this.httpSVC.get<Doctor>(this.config.tempResourseAPI+ "/Doctors?id="+DrID);
   }
   public GetNurseJsonDatasByID(NurseID: number):Observable<any>
   {   
-      return this.httpSVC.get<Nurse>("http://localhost:3000/Nurse?NurseID="+NurseID);
+      // return this.httpSVC.get<Nurse>("http://localhost:3000/Nurses?id="+NurseID);
+      return this.httpSVC.get<Nurse>(this.config.tempResourseAPI+ "/Nurses?id="+NurseID);
   }
   public GetPatientJsonDatasByID(PatientID: number):Observable<any>
   {
-      return this.httpSVC.get<Patient>("http://localhost:3000/Patient?PatientID="+PatientID);
+      // return this.httpSVC.get<Patient>("http://localhost:3000/Patients?id="+PatientID);
+      return this.httpSVC.get<Patients>(this.config.tempResourseAPI+ "/Patient?id="+PatientID);
   }
-    private handleError(error: any) {
+  private handleError(error: any)
+  {
     console.error(error);                                       //Created a function to handle and log errors, in case
     return throwError(error);
   }
-      
+
+// Delete data by Id
   public DeleteDoctorJsonDatasByID(DrID: number):Observable<any>
   {
-    // return this.httpSVC.delete<Doctor>("http://localhost:3000/doctor?DrID="+DrID);
-    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');        
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
     const httpOptions = {
       headers: this.headers
     };
-    const _url = "http://localhost:3000/doctor?DrID="+DrID;          
-      return this.httpSVC.delete<Doctor>(_url, this.headers).pipe(catchError(this.handleError));          
+    return this.httpSVC.delete<Doctor>(this.config.tempResourseAPI+ "/Doctors/"+DrID, this.headers).pipe(catchError(this.handleError));
   }
   public DeleteNurseJsonDatasByID(NurseID: number):Observable<any>
-  {   
-      // return this.httpSVC.get<Nurse>("http://localhost:3000/Nurse?NurseID="+NurseID);
-      const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');        
-      const httpOptions = {
-        headers: this.headers
-      };
-      const _url = "http://localhost:3000/Nurse?NurseID="+NurseID;          
-        return this.httpSVC.delete<Doctor>(_url, this.headers).pipe(catchError(this.handleError));    
+  {
+    return this.httpSVC.delete<Nurse>(this.config.tempResourseAPI+ "/Nurses/"+NurseID);
   }
   public DeletePatientJsonDatasByID(PatientID: number):Observable<any>
   {
-      // return this.httpSVC.get<Patient>("http://localhost:3000/Patient?PatientID="+PatientID);
-      const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');        
-      const httpOptions = {
-        headers: this.headers
-      };
-      const _url = "http://localhost:3000/Patient?PatientID="+PatientID
-        return this.httpSVC.delete<Doctor>(_url, this.headers).pipe(catchError(this.handleError));    
+    return this.httpSVC.delete<Patients>(this.config.tempResourseAPI+ "/Patient/"+PatientID);
   }
 
-  // Update 
-  // public UpdateDoctorJsonDatasByID(DrID: number):Observable<any>
-  // {
-  //   // return this.httpSVC.delete<Doctor>("http://localhost:3000/doctor?DrID="+DrID);
-  //   const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');        
-  //   const httpOptions = {
-  //     headers: this.headers
-  //   };
-  //   const _url = "http://localhost:3000/doctor?DrID="+DrID;          
-  //     return this.httpSVC.delete<Doctor>(_url, this.headers).pipe(catchError(this.handleError));          
-  // }
-  // public UpdateNurseJsonDatasByID(NurseID: number):Observable<any>
-  // {   
-  //     // return this.httpSVC.get<Nurse>("http://localhost:3000/Nurse?NurseID="+NurseID);
-  //     const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');        
-  //     const httpOptions = {
-  //       headers: this.headers
-  //     };
-  //     const _url = "http://localhost:3000/Nurse?NurseID="+NurseID;          
-  //       return this.httpSVC.delete<Doctor>(_url, this.headers).pipe(catchError(this.handleError));    
-  // }
-  // public UpdatePatientJsonDatasByID(PatientID: number):Observable<any>
-  // {
-  //     // return this.httpSVC.get<Patient>("http://localhost:3000/Patient?PatientID="+PatientID);
-  //     const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');        
-  //     const httpOptions = {
-  //       headers: this.headers
-  //     };
-  //     const _url = "http://localhost:3000/Patient?PatientID="+PatientID
-  //       return this.httpSVC.delete<Doctor>(_url, this.headers).pipe(catchError(this.handleError));    
-  // }
+  // Get Appointment JsonData
+  public GetAppointmentJsonData():Observable<any>
+  {
+      return this.httpSVC.get<Appointment>(this.config.tempResourseAPI+ "/Appointment");
+  }
+  public SoftDeleteNurseData(p:any):Observable<any>
+  {
+    console.log("service.SoftDeleteNurseData() hits");
+    console.log(JSON.stringify(p));
+    const headers = { 'content-type': 'application/json'}  
+      return this.httpSVC.patch<any>("http://localhost:3000/Nurses/"+p.id, JSON.stringify(p),{'headers':headers});      
+  }
+  public SoftDeleteDoctorData(p:any):Observable<any>
+  {
+    console.log("service.SoftDeleteNurseData() hits");
+    console.log(JSON.stringify(p));
+    const headers = { 'content-type': 'application/json'}  
+      return this.httpSVC.patch<any>("http://localhost:3000/Doctors/"+p.id, JSON.stringify(p),{'headers':headers});      
+  }
+    //Update IsActive in PatientJson for Delete opertion
+    public SoftDeletePatienData(p:any):Observable<any>
+    {
+      console.log("service.SoftDeletePatienData() hits");
+      console.log(JSON.stringify(p));
+      const headers = { 'content-type': 'application/json'}  
+        return this.httpSVC.patch<any>("http://localhost:3000/Patient/"+p.id, JSON.stringify(p),{'headers':headers});      
+    }
 }
+
+

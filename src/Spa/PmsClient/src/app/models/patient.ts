@@ -5,7 +5,10 @@ export class Patients{
         public dob:string="",
         public contact:string="",
         public email:string="",
-        public password:string=""
+        public password:string="",        
+        public fullName:string ="",
+        public status:string = "" ,
+        public blocked_unblocked:string = ""
      )
     {
         
@@ -29,4 +32,14 @@ export class Patients{
 
   get Password() { return this.password };
   set Password(supplierName: string) { this.password = supplierName };
+
+  get FullName() { return this.fullName };
+  set FullName(supplierName: string) { this.fullName = supplierName };
+
+  get Status() { return this.status };
+  set Status(supplierName: string) { this.status = supplierName };
+
+  get Blocked_unblocked() { return this.blocked_unblocked };
+  set Blocked_unblocked(supplierName: string) { this.blocked_unblocked = supplierName };
+  
 }

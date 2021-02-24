@@ -13,6 +13,7 @@ import { SharedMaterialModule } from '../shared-material/shared-material.module'
 import { SharedWrapperModule } from '../shared-wrapper/shared-wrapper.module';
 import { ToasterPosition } from '../core/ToasterPosition';
 import { FormGroup,ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [RegisterComponent, PatientRegisterComponent],
   imports: [
@@ -23,7 +24,8 @@ import { FormGroup,ReactiveFormsModule } from '@angular/forms';
     ToastrModule.forRoot(), // ToastrModule added  
     HomeModule,
     SharedMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ],
   //exports:[HomeModule ],
   providers:[ ToasterService ]

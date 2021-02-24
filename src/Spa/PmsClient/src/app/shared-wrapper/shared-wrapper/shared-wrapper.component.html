@@ -19,13 +19,29 @@
                 </mat-list-option>
                 <mat-list-option [value]="'nursesection'" *ngIf="this.role=='admin'" (click)="DoSomething($event)">
                     <span><mat-icon style="vertical-align: middle;">content_paste</mat-icon><span style="vertical-align: middle;"> Nurse Section</span></span>
-                </mat-list-option>
+                </mat-list-option>                
                 <mat-list-option [value]="'patientsection'" *ngIf="this.role=='admin'" (click)="DoSomething($event)">
                     <span><mat-icon style="vertical-align: middle;">person</mat-icon><span style="vertical-align: middle;"> Patient Section</span></span>
                 </mat-list-option>
-                <mat-list-option [value]="'changepassword'" (click)="DoSomething($event)">
-                    <span><mat-icon style="vertical-align: middle;">password</mat-icon><span style="vertical-align: middle;"> Change Password</span></span>
+
+                <mat-list-option *ngIf="this.role=='doctor' || this.role=='nurse'" [value]="'viewappointments'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">visibility</mat-icon><span style="vertical-align: middle;"> Appointment List</span></span>
+                  </mat-list-option>
+                  <mat-list-option *ngIf="this.role=='doctor'" [value]="'patientvisitdoctor'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">visibility</mat-icon><span style="vertical-align: middle;"> Patient Visit</span></span>
+                  </mat-list-option>
+                  <mat-list-option *ngIf="this.role=='nurse'" [value]="'patientvisitnurse'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">visibility</mat-icon><span style="vertical-align: middle;"> Patient Visit</span></span>
+                  </mat-list-option>
+                  <mat-list-option *ngIf="this.role=='patient'" [value]="'viewdata'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">visibility</mat-icon><span style="vertical-align: middle;"> My Data</span></span>
                 </mat-list-option>
+                  <mat-list-option *ngIf="this.role=='patient'" [value]="'bookappointment'" (click)="DoSomething($event)">
+                      <span><mat-icon style="vertical-align: middle;">content_paste</mat-icon><span style="vertical-align: middle;"> Book Appointment</span></span>
+                  </mat-list-option>
+                  <!-- <mat-list-option [value]="'changepassword'" (click)="DoSomething($event)">
+                    <span><mat-icon style="vertical-align: middle;">password</mat-icon><span style="vertical-align: middle;"> Change Password</span></span>
+                </mat-list-option> -->
             </mat-selection-list>
             
         </div>

@@ -1,0 +1,78 @@
+<div class="divclass">
+    <!-- <fieldset>
+        <legend>Filter </legend> -->
+   <div class="form-group">
+    <div class="row">
+        <div class="col-xl-3">
+            <mat-form-field appearance="fill">
+                <mat-label>City</mat-label>
+                <mat-select #cmbcity>
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let City of City" [value]="City">{{City}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        <div class="col-xl-3">
+            <mat-form-field appearance="fill">
+                <mat-label>Speciality</mat-label>
+                <mat-select #cmbspeciality>
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let speciality of speciality" [value]="speciality">{{speciality}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
+        <div class="col-xl-3">
+            <label for="role">Gender: </label><br />
+            <mat-radio-group aria-label="Select an option" (change)="onChange($event)">
+              <mat-radio-button value="Male">Male</mat-radio-button>
+              <mat-radio-button value="Female">Female</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="col-xl-3">
+          <button class="btn btn-success" style="float: center;" (click)="GetFilterData()">Search</button>
+       </div>
+    </div>
+   </div>
+ 
+<div class="divcard">
+  <div style="padding-bottom: 15px;" *ngFor="let dr of doctorsdata">
+  <div class="card drcard" >
+    <div class="card-body">
+      <!-- <h1>Doctor Data {{dr.id}} "{{dr.firstname}} {{dr.lastname}}"</h1> -->
+<table style="width: 100%;">
+  <tr>
+    <td class="cardcol1"><h3>Name: Dr. {{dr.firstname}} {{dr.lastname}}</h3></td>
+    <td class="cardcol2"><h3>City: {{dr.city}}</h3></td>
+    <td class="cardcol3"></td>
+  </tr>
+  <tr>
+    <td class="cardcol1"><h3>Contact: {{dr.contact}}</h3></td>
+    <td class="cardcol2"><h3>Speciality: {{dr.speciality}}</h3></td>
+    <td class="cardcol3"></td>
+  </tr>
+  <tr>
+    <td class="cardcol1"><h3>Email: {{dr.email}}</h3></td>
+    <td class="cardcol2"><h3>Gender: {{dr.gender}}</h3></td>
+    <td class="cardcol3"><button class="btn btn-success" style="float: right;" (click)="open(content,dr.id)">Book Appointment</button></td>
+  </tr>
+</table>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <!-- <div class="appointment-model" [ngClass]="{'ModelPopUpClass': true}"> -->
+    <!-- <h4 class="modal-title" id="modal-basic-title">Create new doctor account</h4> -->
+    <div>
+    <button type="button" class="close btn-close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times; &nbsp;</span>
+    </button>
+  </div>
+  <!-- </div> -->
+  <!-- <div class="modal-body" [ngClass]="{'ModelPopUpClass': true}" style="width: 800px;"> -->
+    <app-book-appointment [drId]="drIdForAppointment"></app-book-appointment>
+   <!-- </div>  -->
+</ng-template>

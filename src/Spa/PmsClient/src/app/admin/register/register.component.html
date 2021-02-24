@@ -1,4 +1,4 @@
-<h1 style="text-align: center;">Doctor & Nurse Registration</h1>
+<h1 formControlName="h1title" style="text-align: center;">Practitioner Registration</h1>
 <div class="signup-form">
     <form class="form-group" [formGroup]="fg" (ngSubmit)="SavePractitionerData()">
         <h2>Register</h2>
@@ -75,7 +75,7 @@
             </span>            
         </div>
         <div class="form-group">            
-            <button id="btnSubmit" class="btn" [disabled]="!fg.valid">Register Now</button>
+            <button id="btnSubmit" class="btn" [disabled]="!fg.valid">Save</button>
         </div>
     </form>
     <div>

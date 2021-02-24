@@ -1,16 +1,17 @@
 export class Nurse{
     constructor(
         public id: number =0,
-        public Title: string,
-        public Firstname: string,
-        public Lastname: string,
+        public title: string,
+        public firstname: string,
+        public lastname: string,
         public FullName:string ="",
         public Date_of_Birth:string="",
         public EmailID:string="",
         public ContactNo:number=0,
         public Address:string="",
         public Status:string = "" ,
-        public Blocked_Unblocked:string = ""
+        public Blocked_Unblocked:string = "",
+        public Specialties:string = ""
      )
     {
         

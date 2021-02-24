@@ -1,0 +1,209 @@
+<div class="signup-form">
+    <form class="form-group" [formGroup]="fg" (ngSubmit)="SavePatientVisitNurse()">        
+        <h2>Patient Visit</h2>
+        PatientID : P001 | Patient Name: ABC | AppointmentID : A001
+        <h3>Vital Signs</h3>
+        <hr>        
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="height">Height (in cms): <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="height" formControlName="height">                        
+                </div>
+                <div class="col-xs-6">
+                    <label for="weight">Weight (in kgs): <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="weight" formControlName="weight">                        
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="bloodpressuresystolic">Blood Pressure Systolic (in mmHg): <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="bloodpressuresystolic" formControlName="bloodpressuresystolic">                        
+                </div>
+                <div class="col-xs-6">
+                    <label for="bloodpressurediastolic">Blood Pressure Diastolic (in mmHg): <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="bloodpressurediastolic" formControlName="bloodpressurediastolic">                        
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="temperature">Body Temperature (in celsius): <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="bodytemperature" formControlName="bodytemperature">                        
+                </div>
+                <div class="col-xs-6">
+                    <label for="respirationrate">Respiration Rate (in BPM): <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="respirationrate" formControlName="respirationrate">                        
+                </div>
+            </div>                        
+        </div>
+        <h3>New Allergy</h3>
+        <hr>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label for="Title">Allergy Type: <span class="asterisk"> *</span></label>
+                    <select class="form-control" [(ngModel)]="allergytype" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
+                        <!-- <option selected>Select Allergy Type</option> -->
+                        <option value="Pollen">Pollen</option>
+						<option value="Fungal">Fungal</option>
+						<option value="Drug">Drug</option>
+						<option value="Food">Food</option>
+                      </select>
+                      <!-- <input type="text" [(ngModel)]="name" [ngModelOptions]="{standalone: true}" placeholder="name" /> -->
+                </div>                
+                <div class="col-xs-8">
+                    <label for="fatalallergy">Fatal Allergy? <span class="asterisk"> *</span></label><br>
+                    <input type="checkbox" id="chkFatal" name="chkFatal" [(ngModel)]="chkFatal" [ngModelOptions]="{standalone: true}" value="True">                    
+                    <!-- <label class="radio-inline"><input type="radio" [(ngModel)]="year" [ngModelOptions]="{standalone: true}" name="optradio" checked>True</label>
+                    <label class="radio-inline"><input type="radio" [(ngModel)]="year" [ngModelOptions]="{standalone: true}" name="optradio">False</label>                     -->
+                    <!-- <input type="text" [(ngModel)]="year" [ngModelOptions]="{standalone: true}" placeholder="year" /> -->
+                </div>
+            </div>
+        </div>
+        <div class="form-group">            
+            <button id="btnSubmitAllergy" type="button" (click)="AddAllergy()" class="btn">Add Allergy</button>
+        </div>
+        <div class="form-group">            
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Allergy</th><th>Fatal Allergy?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of AllergyRows">                  
+                        <td>{{row.allergytype}}</td>
+                        <td>{{row.chkFatal}}</td>
+                      </tr>
+                </tbody>                                				
+            </table>
+        </div>
+        <h3>Diagnosis</h3>
+        <hr>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label for="Title">Diagnosis: <span class="asterisk"> *</span></label>
+                    <select class="form-control" aria-label="Default select example" name="Diagnosis" id="ddlDiagnosis" disabled>
+                        <option selected>Select Diagnosis</option>
+                        <option value="DD01">DD01</option>
+                        <option value="DD02">DD02</option>
+                        <option value="DD03">DD03</option>
+                        <option value="DD04">DD04</option>
+                      </select>
+                </div>                
+                <div class="col-xs-8">
+                    <label for="DiagnosisDescription">Diagnosis Description: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="lastname" disabled>
+                    <!-- <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                        LastName is required!
+                    </span> -->
+                </div>
+            </div>
+        </div>
+        <div class="form-group">            
+            <button id="btnSubmit" class="btn" disabled>Add Diagnosis</button>
+        </div>
+        <div class="form-group">            
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Diagnosis</th><th>Diagnosis Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>                                				
+            </table>          
+        </div>
+        <h3>Procedure</h3>
+        <hr>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label for="Title">Procedure: <span class="asterisk"> *</span></label>
+                    <select class="form-control" aria-label="Default select example" name="Procedure" id="ddlProcedure" disabled>
+                        <option selected>Select Procedure</option>
+                        <option value="P01">P01</option>
+						<option value="P02">P02</option>
+						<option value="P03">P03</option>
+						<option value="P04">P04</option>
+                      </select>
+                </div>                
+                <div class="col-xs-8">
+                    <label for="lastname">Procedure Description: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="lastname" disabled>
+                    <!-- <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                        LastName is required!
+                    </span> -->
+                </div>
+            </div>
+        </div>
+        <div class="form-group">            
+            <button id="btnSubmit" class="btn" disabled>Add Procedure</button>
+        </div>
+        <div class="form-group">            
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Procedure</th><th>Procedure Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>                                				
+            </table>               
+        </div>
+        <h3>Medication</h3>
+        <hr>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-3">
+                    <label for="Title">Medication: <span class="asterisk"> *</span></label>
+                    <select class="form-control" aria-label="Default select example" name="Medication" id="ddlMedication" disabled>
+                        <option selected>Select Medication</option>
+                        <option value="M01">M01</option>
+						<option value="M02">M02</option>
+						<option value="M03">M03</option>
+						<option value="M04">M04</option>
+                      </select>
+                </div> 
+                <div class="col-xs-3">
+                    <label for="Title">Dosage: <span class="asterisk"> *</span></label>
+                    <select class="form-control" aria-label="Default select example" name="Medication" id="ddlMedication" disabled>
+                        <option selected>Select Dosage</option>
+                        <option value="M01">10mg</option>
+						<option value="M02">20mg</option>
+						<option value="M03">30mg</option>
+						<option value="M04">40mg</option>
+                      </select>
+                </div>                
+                <div class="col-xs-6">
+                    <label for="lastname">Medication Description: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="lastname" disabled>
+                    <!-- <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                        LastName is required!
+                    </span> -->
+                </div>
+            </div>
+        </div>
+        <div class="form-group">            
+            <button id="btnSubmit" class="btn" disabled>Add Medication</button>
+        </div>
+        <div class="form-group">            
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Medication</th><th>Dosage</th><th>Medication Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>                                				
+            </table>        
+        </div>
+        <div class="form-group">            
+            <button id="btnFormSubmit" type="submit" value="Submit" class="btn center-block">Submit</button>
+        </div>
+    </form>
+</div>

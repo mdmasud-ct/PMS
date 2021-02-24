@@ -1,1 +1,100 @@
-<p>inbox works!</p>
+<div class="">
+<div *ngIf="this.role=='doctor'" class="row allevent">
+
+    <div class="square col">
+    <p>{{todaydate | date}}</p>
+    <p class="accepted">Rona Wilson, Fever, 8:30 AM</p>
+    <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+    <!-- <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+    </div>
+<div class="square col">
+    <p>{{ day2 | date}}</p>
+    <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+    <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+    <!-- <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+</div>
+<div class="square col">
+    <p>{{ day3 | date}}</p>
+    <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+    <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+    <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+</div>
+<div class="square col">
+    <p>{{ day4 | date}}</p>
+    <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+    <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+    <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+</div>
+</div>
+<div *ngIf="this.role=='doctor'" class="row allevent">
+    <div class="square col">
+        <p>{{ day5 | date}}</p>
+    <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+    <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p> -->
+    <p class="accepted">Angella Moss, Post Surgery, 10:30 AM</p>
+    </div>
+    <div class="square col">
+        <p>{{ day6 | date}}</p>
+    <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p> -->
+    <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+    <!-- <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+    </div>
+    <div class="square col">
+        <p>{{ day7 | date}}</p>
+    <p class="accepted">Rona Wilson, Fever, 8:30 AM</p>
+    <!-- <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p> -->
+    <!-- <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+    </div>
+    <div class="col"></div>
+    </div>
+
+
+    <div *ngIf="this.role=='patient'" class="row allevent">
+
+        <div class="square col">
+        <p>{{todaydate | date}}</p>
+        <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+        <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+        <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+        </div>
+    <div class="square col">
+        <p>{{ day2 | date}}</p>
+        <p class="accepted">Philip Price , Surgery: Appendectomy, 8:30 AM</p>
+        
+    </div>
+    <div class="square col">
+        <p>{{ day3 | date}}</p>
+        <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+        <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+        <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+    </div>
+    <div class="square col">
+        <p>{{ day4 | date}}</p>
+ 
+    </div>
+    </div>
+    <div class="row allevent" *ngIf="this.role=='patient'"> 
+        <div class="square col">
+            <p>{{ day5 | date}}</p>
+        <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+        <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+        <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+        <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p>
+
+        </div>
+        <div class="square col">
+            <p>{{ day6 | date}}</p>
+        <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+        <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+        <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+        </div>
+        <div class="square col">
+            <p>{{ day7 | date}}</p>
+        <!-- <p class="accepted">Angella Moss, Fever, 8:30 AM</p>
+        <p class="accepted">Elliot Alderson, Headache, 9:30 AM</p>
+        <p class="accepted">Philip Price, Post Surgery, 10:30 AM</p> -->
+        </div>
+        <div class="col"></div>
+        </div>
+        
+</div>

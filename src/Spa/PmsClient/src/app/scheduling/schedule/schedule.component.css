@@ -1,0 +1,52 @@
+.divclass{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+.cardcol1
+{
+    width: 50%;
+}
+.cardcol2
+{
+    width: 30%;
+}
+.cardcol3
+{
+    width: 20%;
+}
+
+.divcard
+{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+.drcard
+{
+    border-width: 3px;
+    border-radius: 10px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
+
+  .appointment-model
+  {
+    text-align: center;
+    padding-top: 10px;
+  }
+
+  .ModelPopUpClass{
+    background-color: yellow;width: 980px;
+  }
+
+  .btn-close
+  {
+    padding-top: 10px;
+    padding-right: 10px;
+    float: right;
+  }

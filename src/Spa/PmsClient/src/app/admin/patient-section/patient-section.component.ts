@@ -3,23 +3,11 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as data from '../../../assets/jsonData/AllUserdata.json';
 import { RegisterService } from '../../service/register.service';
 import {MatTableDataSource} from '@angular/material/table';
-import { Patient } from '../../models/patientModel';
-import { FileDetector } from 'selenium-webdriver';
+//import { Patient } from '../../models/patientModel';
+import { Patients } from '../../models/Patient';
 import { Observable } from 'rxjs';
-
-// export interface PeriodicElement {
-//   PatientID: number;
-//   FullName: string;
-//   Date_of_Birth: string;
-//   EmailID: string;
-//   ContactNo: number;
-//   Address: string;
-//   Allergies: string;
-//   Status: string;
-//   Blocked_Unblocked: string;
-//   View_Edit_Delete: any;
-// }
-// const DataJsonPatient: any = (data as any).default;
+import {ToasterService} from '../../core/ToasterService';
+import { ToasterPosition } from 'src/app/core/ToasterPosition';
 
 @Component({
   selector: 'app-patient-section',
@@ -28,89 +16,142 @@ import { Observable } from 'rxjs';
 })
 export class PatientSectionComponent implements OnInit
 {
-      public ob :Observable<Patient[]>;
-      public regiterData;
-      msg:any;
-      dataSourcePatient: any;
-      public PatientData: Patient[]= [];
-      //Ng mat-table columns
-      displayedColumns = [
-        'PatientID',
-        'FullName',
-        'Date_of_Birth',
-        'EmailID',
-        'ContactNo',
-        'Address',
-        'Allergies',
-        'Status',
-        'Blocked_Unblocked',
-        'View_Edit_Delete'
-      ];
-    // dataSourcepatient = new MatTableDataSource(DataJsonPatient);
+  value = '';
+  private UserData: any;
+  private DeleteUserData: any;
+  public ob :Observable<Patients[]>;
+  public regiterData;
+  msg:any;
+  public dataSourcePatient: any;  
+  public PatientData: Patients[]= [];
+  public dataSourcePatientData: Patients[]= [];
+  success: boolean;
+  //Ng mat-table columns
+  displayedColumns = [
+    'PatientID',
+    'FullName',
+    'DOB',
+    'EmailID',
+    'ContactNo',
+    'Status',
+    'Blocked_Unblocked',
+    'View_Edit_Delete'
+  ];
 
-    // Ng Pop Up Model
-    constructor(config: NgbModalConfig, private modalService: NgbModal, private registerService: RegisterService) {
-      //modals used by this component
-      config.backdrop = 'static';
-      config.keyboard = false;
-      // console.log("Heeellllelele");      
-    }
-    
-    public Getjson():void
-    {
-      this.ob = this.registerService.GetPatientJsonDatas()
-      this.ob.subscribe(
-        data => { 
-          console.log("Output");
-          console.log(data);
-          this.PatientData = data;
-          // console.log("Output Is: "+data["firstname"]);          
-        },
-        (error: any) => console.log("Error in saving regiter data")
-        );
-        this.dataSourcePatient = new MatTableDataSource(this.PatientData);
-        console.log("Data Source: "+this.PatientData);
-    }
-    open(content)
-    { 
-      // Ng Pop Up Model 
-      this.modalService.open(content);
-    } 
-
-    ngOnInit(): void
-    {
-      this.Getjson();
-    }
-
-    applyFilter(event: Event)
-    {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSourcePatient.filter = filterValue.trim().toLowerCase();
-      // console.log("DataSource filter: "+this.dataSourceNurse);    
-    }
-    getRecord(displayedColumns):void
-    {
-      alert(displayedColumns);
-    }
-    getUsers(){
-      this.registerService.GetPatientJsonDatas().subscribe(data => {
-        this.PatientData=data;
-      });
-    }
-    // onClickView(id: number):void
-// {
-
-// }
-
-// onClickEdit(id: number):void
-// {
-
-// }
-onClickDelete(id: number):void
-  {
-    this.registerService.DeletePatientJsonDatasByID(id).subscribe(data => {
-      this.getUsers();
-    });
+  // Ng Pop Up Model
+  constructor(config: NgbModalConfig, private modalService: NgbModal
+    , private registerService: RegisterService,private toaster:ToasterService) {
+    //modals used by this component
+    config.backdrop = 'static';
+    config.keyboard = false;
+    // console.log("Heeellllelele");      
   }
+  
+  public Getjson():void
+  {
+    this.ob = this.registerService.GetPatientJsonDatas()
+    this.ob.subscribe(
+      data => { 
+        console.log("Output");
+        console.log(data);
+        this.PatientData = data;
+        this.dataSourcePatientData = data;
+      },
+      (error: any) => console.log("Error in saving regiter data")
+      );
+      this.dataSourcePatient = new MatTableDataSource(this.PatientData);
+      console.log("Data Source: "+this.PatientData);
+  }
+ // View by Id function
+ public GetdataById(id: number)
+ {
+   this.ob = this.registerService.GetPatientJsonDatasByID(id)
+   this.ob.subscribe(
+   data => {this.UserData= data; console.log(data)});
+   // console.log("USerdata : "+this.UserData.id);
+ }
+ // Delete by Id function
+ public DeletedataById(id: number)
+ {
+   this.ob = this.registerService.DeletePatientJsonDatasByID(id)
+   this.ob.subscribe(
+   data => {this.DeleteUserData= data;});
+   console.log("DeleteUserData : "+this.DeleteUserData.id);
+ }
+ applyFilter()
+ {
+   debugger;
+   console.log(this.value);
+
+   if(this.value!='')
+   {
+   this.dataSourcePatientData=this.PatientData.filter(p => p.fullName.includes(this.value));
+   }
+   else
+   {
+   this.dataSourcePatientData=this.PatientData;
+   }
+   console.log(this.PatientData);    
+ }
+ // Ng Pop Up Model
+ open(content)
+ { // Ng Pop Up Model 
+   this.modalService.open(content,{ size:'xl',centered:true,scrollable:true});     
+ }
+
+ Viewopen(Viewcontent, id?:number)
+ { // Ng Pop Up Model       
+   this.modalService.open(Viewcontent,{ size:'md',centered:true,scrollable:false});  
+   this.GetdataById(id);
+  }
+ Deleteopen(Deletecontent, id?:number)
+ { // Ng Pop Up Model       
+   this.modalService.open(Deletecontent,{ size:'md',centered:true,scrollable:true});
+   this.GetdataById(id);
+   // this.DeletedataById(id);
+ }
+ Editopen(Editcontent, id?:number)
+ {
+   this.modalService.open(Editcontent,{ size:'md',centered:true,scrollable:true});  
+   // this.GetdataById(id);
+ }
+ // getToday(): string
+ // {
+ //    return new Date().toISOString().split('T')[0];
+ // }
+
+ SoftDeletePatientData(patientId:Number): void
+ {
+   debugger;
+   this.modalService.dismissAll();
+   console.log("ts.SoftDeletePatientData() hits");
+ 
+  let obj:any={};
+  obj.id=patientId,
+  obj.status="InActive";
+  
+   this.ob =this.registerService.SoftDeletePatienData(obj)
+ 
+   this.ob.subscribe(
+     dataa => { 
+       console.log(dataa);   
+       if(data !=null)
+       {
+       this.success = true;
+       this.toaster.success("Success","Patient Deleted.",ToasterPosition.topFull,this.functioncallbackFunction)   
+       }
+      },
+     (error: any) => console.log("Error in deleteing patient data")
+   );
+   }
+
+   functioncallbackFunction(){
+    this.success=true;
+  }
+
+ ngOnInit(): void
+ {
+   this.Getjson();
+ }
 
 }

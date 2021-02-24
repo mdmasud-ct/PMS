@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup} from '@angular/forms';
 import { FormControl} from '@angular/forms';
 import { Validators} from '@angular/forms';
 import { Register } from '../../models/registerModel';
 import { RegisterService } from '../../service/register.service';
+import { DoctorServiceService } from 'src/app/Service/doctor-service.service';
+import { Doctors } from 'src/app/Models/Doctor';
+import { Nurse } from 'src/app/Models/nurseModel';
+import { Doctor } from 'src/app/models/doctorModel';
+import { ToasterPosition } from 'src/app/core/ToasterPosition';
+import {ToasterService} from '../../core/ToasterService';
 
 @Component({
   selector: 'app-register',
@@ -14,9 +20,17 @@ import { RegisterService } from '../../service/register.service';
 export class RegisterComponent implements OnInit {
   
   public ob :Observable<string>;
+  public obnr:Observable<Nurse[]>;
+  public obdr:Observable<Doctor[]>;
+  public nursedata: Nurse[]=[];
+  public doctordata: Doctor[]=[];
   public RegisterUser;
+  success: boolean;
   msg:string="";
   fullname:string ="";
+
+  @Input()  nrId:number;
+  @Input()  drId:number;
 
   fg: FormGroup = new FormGroup({
     title: new FormControl('',Validators.required),
@@ -29,10 +43,11 @@ export class RegisterComponent implements OnInit {
     address : new FormControl('',Validators.required),
     speciality : new FormControl('',Validators.required) 
   });
-  constructor(private registersvc: RegisterService) { }
+  constructor(private registersvc: RegisterService,private toaster:ToasterService) { }
 
   public SavePractitionerData(): void
   {
+      let operation:string="";
       // console.log("ts.SavePractitionerData() hits");
       this.fullname = this.fg.value.firstname+' '+this.fg.value.lastname;
       this.RegisterUser=new Register(this.fg.value.title,
@@ -44,17 +59,37 @@ export class RegisterComponent implements OnInit {
                               this.fullname,
                               this.fg.value.contactno,
                               this.fg.value.address,
-                              this.fg.value.speciality,'Active','Block');
+                              this.fg.value.speciality,'Active','No');
+      debugger;
+      if(this.nursedata.length > 0 || this.doctordata.length > 0)
+      {
+          operation="PATCH";
+          if(this.nursedata.length>0)
+            this.RegisterUser.id=this.nursedata[0].id;
+          else
+            this.RegisterUser.id=this.doctordata[0].id;
+      }
+      else
+      {
+        operation="POST";
+      }     
+
       if(this.fg.invalid==false)
       { 
-        console.log('Before hitting service');
-        this.ob = this.registersvc.SaveUserRegiterDatas(this.RegisterUser)
-
+        console.log('Before hitting service');        
+        this.ob = this.registersvc.SaveUserRegiterDatas(this.RegisterUser,operation)
+        if(operation == "POST")
+          operation="registered";
+        else
+          operation="updated"
         this.ob.subscribe(
           data => { 
             console.log(data);      
             console.log("Output Is: "+data["firstname"]); 
-            this.msg = data["firstname"]+ ", has Registered Successfully" },
+            this.success = true;
+            this.toaster.success("Success",data["role"]+" "+data["firstname"]+" "+data["lastname"]+" has "+operation+" successfully.",ToasterPosition.topFull,this.functioncallbackFunction) 
+            //this.msg = data["firstname"]+ ", has Registered Successfully" 
+          },
           (error: any) => console.log("Error in saving practitioner data")
           );
     }
@@ -63,8 +98,59 @@ export class RegisterComponent implements OnInit {
 getToday(): string {
   return new Date().toISOString().split('T')[0];
 }
+loadNrData(nrId:number)
+ {
+   console.log('LoadData'+this.nrId);
+  this.obnr=this.registersvc.GetNurseJsonDatasByID(this.nrId);
+  this.obnr.subscribe(
+    (dr:Nurse[])=>{this.nursedata=dr;console.log(this.nursedata)
+      console.log(this.nursedata[0])
+    this.fg.patchValue({
+      "title": this.nursedata[0].title,
+      "firstname": this.nursedata[0].firstname,
+      "lastname": this.nursedata[0].lastname,
+      "email":this.nursedata[0].EmailID,
+      "contactno":this.nursedata[0].ContactNo,
+      "address":this.nursedata[0].Address,
+      "speciality":this.nursedata[0].Specialties,
+      "dob":this.nursedata[0].Date_of_Birth
+    })
+  },
+  (error:any)=>console.log('fails to load nurse data')
+  );
+ }
+ loadDrData(drId:number)
+ {
+   console.log('LoadData'+this.drId);
+  this.obdr=this.registersvc.GetDoctorJsonDatasByID(this.drId);
+  this.obdr.subscribe(
+    (dr:Doctor[])=>{this.doctordata=dr;console.log(this.doctordata)
+      console.log(this.doctordata[0])
+    this.fg.patchValue({
+      "title": this.doctordata[0].title,
+      "firstname": this.doctordata[0].firstname,
+      "lastname": this.doctordata[0].lastname,
+      "email":this.doctordata[0].EmailID,
+      "contactno":this.doctordata[0].ContactNo,
+      "address":this.doctordata[0].Address,
+      "speciality":this.doctordata[0].Specialties,
+      "dob":this.doctordata[0].Date_of_Birth
+    })
+  },
+  (error:any)=>console.log('fails to load nurse data')
+  );
+ }
 
   ngOnInit(): void {
+    console.log(this.nrId);
+    debugger;
+    if(this.nrId==undefined)
+      this.loadDrData(this.drId);
+    else
+      this.loadNrData(this.nrId);
+  }
+  functioncallbackFunction(){
+    this.success=true;
   }
 
 }
