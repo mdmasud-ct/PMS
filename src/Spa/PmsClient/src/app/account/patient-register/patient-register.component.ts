@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Output } from '@angular/core';
 import { PatientService } from '../../Service/patient.service';
 import { Patients } from '../../Models/Patient';
 import { Observable } from 'rxjs';
@@ -8,6 +8,11 @@ import { Router } from "@angular/router";
 import { ToasterService } from '../../core/ToasterService';
 import { ToasterPosition } from '../../core/ToasterPosition';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Title } from '../../core/dropdownmaster.service';
+import { Genders } from '../../core/dropdownmaster.service';
+import { finalize } from 'rxjs/operators';
+import { Positioning } from '@ng-bootstrap/ng-bootstrap/util/positioning';
+import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-patient-register',
   templateUrl: './patient-register.component.html',
@@ -16,11 +21,15 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class PatientRegisterComponent implements OnInit {
 
   public ob: Observable<string>;
-  // public patient: Patients = {"id": 2,"firstname": "ram","lastname": "sharma","email": "RM@gmail.com",
-  //                                 "contact": "1234567898","dob": "1994-05-5","password": "RM1234"};
+  
   public patient;
   msg:string="";
   success: boolean;
+  genders:any;
+  titles:any;
+  res: any;
+  
+
   fg: FormGroup = new FormGroup({
     firstname: new FormControl('',Validators.required),
     lastname: new FormControl('',Validators.required),
@@ -29,6 +38,8 @@ export class PatientRegisterComponent implements OnInit {
     email: new FormControl(null,[Validators.required,Validators.email]),
     password: new FormControl('',Validators.required),
     confirmpassword: new FormControl('',[Validators.required, MatchPasswd('password')]),
+    title: new FormControl('',[Validators.required]),
+    gender: new FormControl('',[Validators.required])
   });
   constructor(private patientsvc: PatientService,private router: Router,private toast:ToasterService,private spinner:NgxSpinnerService) { }
 
@@ -44,27 +55,31 @@ SavePatientData(): void
   console.log(this.fg.value.firstname);
 
 this.patient=new Patients(this.fg.value.firstname,this.fg.value.lastname,this.fg.value.dob,this.fg.value.contact
-                    ,this.fg.value.email,this.fg.value.password,(this.fg.value.firstname+" "+this.fg.value.lastname),"Active","No");
+                    ,this.fg.value.email,this.fg.value.password,(this.fg.value.firstname+" "+this.fg.value.lastname),"Active","No",this.fg.value.title,this.fg.value.gender);
 
 console.log(this.patient);
 
 if(this.fg.invalid==false)
 { 
-  this.ob = this.patientsvc.SavePatientData(this.patient)
-
-  this.ob.subscribe(
+  this.ob = this.patientsvc.SavePatientData(this.patient);
+  this.ob.pipe(finalize(() => {
+    this.spinner.hide();
+  })).subscribe(
     dataa => { 
-      console.log(dataa);      
-      console.log("Output Is: "+dataa["firstname"]); 
-      this.success=true;
-      this.showMessage();
-      //this.router.navigate(['/userlogin']);
+      this.res = dataa;
+      console.log(this.res);
+      if(this.res.code=="1"){ 
+        this.success=true;
+        this.showMessage();
+        this.toast.success("Success","User registered successfully",ToasterPosition.topFull);
+      }else{
+        this.toast.error("Error",this.res.response,ToasterPosition.topFull);
+      }
     },
-    (error: any) => console.log("Error in saving patient data")
+    (error: any) => this.toast.error("Error",error,ToasterPosition.topFull)
   );
-    }
   }
-
+ }
   getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
@@ -77,7 +92,9 @@ if(this.fg.invalid==false)
   }
   
   ngOnInit(): void {
-    //this.success=true;
+    this.titles= Object.entries(Title) ;
+    this.genders = Object.entries(Genders);
   }
+  
 
 }

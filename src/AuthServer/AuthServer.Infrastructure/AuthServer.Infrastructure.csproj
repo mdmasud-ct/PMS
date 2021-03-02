@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Data\AppDbContext\" />
     <Folder Include="Migrations\" />
   </ItemGroup>  
 

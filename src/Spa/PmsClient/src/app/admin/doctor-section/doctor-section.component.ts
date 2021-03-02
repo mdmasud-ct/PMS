@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, Injectable} from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as data from '../../../assets/jsonData/AllUserdata.json';
 import { RegisterService } from '../../service/register.service';
@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { NgModel } from '@angular/forms';
 import { ToasterPosition } from 'src/app/core/ToasterPosition';
 import {ToasterService} from '../../core/ToasterService';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-doctor-section',
@@ -15,7 +17,6 @@ import {ToasterService} from '../../core/ToasterService';
   styleUrls: ['./doctor-section.component.css'],
   providers: [NgbModalConfig, NgbModal]
 })
-
 export class DoctorSectionComponent implements OnInit {
   value = '';
   // closeResult = '';
@@ -29,6 +30,15 @@ export class DoctorSectionComponent implements OnInit {
   public dataSourceDoctorData: Doctor[]= [];
   public DrIdToUpdate:number; 
   success: boolean;
+  message:string;
+
+  receiveMessage($event) {
+    this.message = $event;
+    this.Getjson();
+  }
+  parentFun(){
+    alert("Called");
+  }
   displayedColumns = [
                       'DrID',
                       'FullName',
@@ -42,7 +52,7 @@ export class DoctorSectionComponent implements OnInit {
                       'View_Edit_Delete'
                      ]; 
   // Ng Pop Up Model
-  constructor(config: NgbModalConfig, private modalService: NgbModal, private registerService: RegisterService,private toaster:ToasterService)
+  constructor(config: NgbModalConfig, private modalService: NgbModal, private registerService: RegisterService,private toaster:ToasterService,private router: Router,private spinner:NgxSpinnerService)
   {
     //modals used by this component
     config.backdrop = 'static';
@@ -98,7 +108,9 @@ export class DoctorSectionComponent implements OnInit {
   // Ng Pop Up Model
   open(content)
   { // Ng Pop Up Model 
-    this.modalService.open(content,{ size:'xl',centered:true,scrollable:true});     
+    this.spinner.show();
+    this.modalService.open(content,{ size:'xl',centered:true,scrollable:true});
+    this.spinner.hide();
   }
 
   Viewopen(Viewcontent, id?:number)

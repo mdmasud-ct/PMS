@@ -6,7 +6,7 @@ export class Doctor{
         public lastname: string,
         public FullName:string ="",
         public Date_of_Birth:string="",
-        public EmailID:string="",
+        public Email:string="",
         public ContactNo:number=0,
         public Address:string="",
         public Specialties:string = "" ,

@@ -8,6 +8,6 @@ namespace AuthServer.Infrastructure.Constants
         public const string Admin       = "admin";
         public const string Patient     = "patient";
         public const string Nurse       = "nurse";
-        public const string Dorctor     = "doctor";
+        public const string Doctor      = "doctor";
     }
 }

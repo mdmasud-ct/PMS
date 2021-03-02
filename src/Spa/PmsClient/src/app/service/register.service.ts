@@ -11,25 +11,31 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError } from 'rxjs/operators';
 import { ConfigService } from '../core/config.service';
 import { Appointment } from '../models/Appointment';
+import { BaseService } from '../core/base.service';
+import { finalize } from 'rxjs/operators'
+
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterService {
+export class RegisterService extends BaseService {
   headers: any;
-
+  genders:any;
+  titles:any;
   // constructor()  { }
-  constructor(private httpSVC:HttpClient,private config: ConfigService)  { }
+  constructor(private httpSVC:HttpClient,private config: ConfigService)  { 
+    super();
+  }
   public SaveUserRegiterDatas(reg:Register,operation:string):Observable<any>
   {
     console.log("service.SavePractitionerData() hits");
-      console.log(JSON.stringify(reg));
       const headers = { 'content-type': 'application/json'}
       if(operation==="POST")
       {
-        if(reg.role=='Doctor')  
-          return this.httpSVC.post<Register>( this.config.tempResourseAPI+ "/Doctors", JSON.stringify(reg),{'headers':headers});
-        else if(reg.role=='Nurse')
-          return this.httpSVC.post<Register>(this.config.tempResourseAPI+"/Nurses", JSON.stringify(reg),{'headers':headers});
+        //if(reg.role=='Doctor')  
+        //return this.httpSVC.post<Register>( this.config.tempResourseAPI+ "/Doctors", JSON.stringify(reg),{'headers':headers});
+        return this.httpSVC.post<Register>( this.config.authApiURI+ "/doctor",reg).pipe(catchError(this.handleError));
+        //else if(reg.role=='Nurse')
+        //  return this.httpSVC.post<Register>(this.config.tempResourseAPI+"/Nurses", JSON.stringify(reg),{'headers':headers});
       }
       else
       {
@@ -71,11 +77,11 @@ export class RegisterService {
       // return this.httpSVC.get<Patient>("http://localhost:3000/Patients?id="+PatientID);
       return this.httpSVC.get<Patients>(this.config.tempResourseAPI+ "/Patient?id="+PatientID);
   }
-  private handleError(error: any)
-  {
-    console.error(error);                                       //Created a function to handle and log errors, in case
-    return throwError(error);
-  }
+  // private handleError(error: any)
+  // {
+  //   console.error(error);                                       //Created a function to handle and log errors, in case
+  //   return throwError(error);
+  // }
 
 // Delete data by Id
   public DeleteDoctorJsonDatasByID(DrID: number):Observable<any>

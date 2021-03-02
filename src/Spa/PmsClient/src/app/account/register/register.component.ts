@@ -6,9 +6,9 @@ import { UserRegistration }    from '../../models/user.registration';
  
 import { ToasterService } from './../../core/ToasterService';
 import { ToasterPosition } from './../../core/ToasterPosition';
-import { HeaderComponent } from '../../home/header/header.component';
+import { Roles } from '../../core/dropdownmaster.service'; 
 @Component({
-  selector: 'app-register',
+  selector: 'app-registers',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -16,11 +16,19 @@ export class RegisterComponent implements OnInit {
 
   success: boolean;
   error: string;
-  userRegistration: UserRegistration = { name: '', email: '', password: ''};
+  userRegistration: UserRegistration = { name: '', email: '', password: '',role:''};
   submitted: boolean = false;
+  roles:any;
   constructor(private authService: AuthService,private toastr: ToasterService,private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.roles = Roles;
+  }
+  keys() : Array<string> {
+    var keys = Object.keys(this.roles);
+    //console.log(keys);
+    return keys;
+    //return keys.slice(keys.length / 2);
   }
   onSubmit1(){
     this.success=true;
@@ -43,8 +51,11 @@ export class RegisterComponent implements OnInit {
          }
       },
       error => {
-        this.toastr.error('Error',error,ToasterPosition.topFull);
-        this.error = error;       
+        //if(error.status==='undefined')
+        this.toastr.error('Error',"Unexpected error occured. Please contact administrator.",ToasterPosition.topFull);
+        //else
+          //this.toastr.error('Error',error,ToasterPosition.topFull,this.functioncallbackFunction
+          this.error = error;       
       });
   }
   functioncallbackFunction(){

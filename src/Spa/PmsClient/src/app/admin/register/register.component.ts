@@ -1,4 +1,4 @@
-import { Component,Input, OnInit } from '@angular/core';
+import { Component,Input, OnInit,Output,EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup} from '@angular/forms';
 import { FormControl} from '@angular/forms';
@@ -11,7 +11,13 @@ import { Nurse } from 'src/app/Models/nurseModel';
 import { Doctor } from 'src/app/models/doctorModel';
 import { ToasterPosition } from 'src/app/core/ToasterPosition';
 import {ToasterService} from '../../core/ToasterService';
-
+import { Title } from '../../core/dropdownmaster.service';
+import { Genders } from '../../core/dropdownmaster.service';
+import { Router } from '@angular/router';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { isNullOrUndefined } from 'util';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -28,10 +34,16 @@ export class RegisterComponent implements OnInit {
   success: boolean;
   msg:string="";
   fullname:string ="";
-
+  titles:any;
+  genders:any;
   @Input()  nrId:number;
   @Input()  drId:number;
-
+  @Input()  pRole:string;
+  @Input() userrole:string; 
+  res: any;
+  message:any;
+  @Output() messageEvent = new EventEmitter<string>();
+  @Output("parentFun") parentFun: EventEmitter<any> = new EventEmitter();
   fg: FormGroup = new FormGroup({
     title: new FormControl('',Validators.required),
     firstname: new FormControl('',Validators.required),
@@ -41,16 +53,17 @@ export class RegisterComponent implements OnInit {
     role : new FormControl('',Validators.required),
     contactno : new FormControl('',Validators.required),
     address : new FormControl('',Validators.required),
-    speciality : new FormControl('',Validators.required) 
+    speciality : new FormControl(''), 
+    gender: new FormControl('',[Validators.required])
   });
-  constructor(private registersvc: RegisterService,private toaster:ToasterService) { }
-
+  constructor(private registersvc: RegisterService,private toaster:ToasterService,private router:Router, private spinner: NgxSpinnerService) { }
   public SavePractitionerData(): void
   {
-      let operation:string="";
-      // console.log("ts.SavePractitionerData() hits");
-      this.fullname = this.fg.value.firstname+' '+this.fg.value.lastname;
-      this.RegisterUser=new Register(this.fg.value.title,
+      let operation:string = "";
+      //this.fg.value.role = this.userrole;
+      console.log()
+      this.fullname = this.fg.value.firstname +' '+ this.fg.value.lastname;
+      this.RegisterUser = new Register(this.fg.value.title,
                               this.fg.value.firstname,
                               this.fg.value.lastname,
                               this.fg.value.email,
@@ -59,7 +72,9 @@ export class RegisterComponent implements OnInit {
                               this.fullname,
                               this.fg.value.contactno,
                               this.fg.value.address,
-                              this.fg.value.speciality,'Active','No');
+                              this.fg.value.speciality,'Active','No',
+                              this.fg.value.gender);
+
       debugger;
       if(this.nursedata.length > 0 || this.doctordata.length > 0)
       {
@@ -69,28 +84,36 @@ export class RegisterComponent implements OnInit {
           else
             this.RegisterUser.id=this.doctordata[0].id;
       }
-      else
-      {
+      else{
         operation="POST";
       }     
 
       if(this.fg.invalid==false)
       { 
-        console.log('Before hitting service');        
+        this.spinner.show();
         this.ob = this.registersvc.SaveUserRegiterDatas(this.RegisterUser,operation)
         if(operation == "POST")
           operation="registered";
         else
           operation="updated"
-        this.ob.subscribe(
+        this.ob.pipe(finalize(() => {
+          this.spinner.hide();
+        })).subscribe(
           data => { 
-            console.log(data);      
-            console.log("Output Is: "+data["firstname"]); 
             this.success = true;
-            this.toaster.success("Success",data["role"]+" "+data["firstname"]+" "+data["lastname"]+" has "+operation+" successfully.",ToasterPosition.topFull,this.functioncallbackFunction) 
-            //this.msg = data["firstname"]+ ", has Registered Successfully" 
+            this.res = data;
+            if(this.res.code=="1"){ 
+            this.success=true;
+            this.message = this.res.code;
+            this.sendMessage();
+            this.toaster.success("Success","Registered successfully",ToasterPosition.topFull);
+            }
+            else{
+              this.toaster.error("Error",this.res.response,ToasterPosition.topFull);
+            }
+            //this.toaster.success("Success",data["role"]+" "+data["firstname"]+" "+data["lastname"]+" has "+operation+" successfully.",ToasterPosition.topFull,this.functioncallbackFunction) 
           },
-          (error: any) => console.log("Error in saving practitioner data")
+          (error: any) => this.toaster.error("Error","Error in saving data: "+error, ToasterPosition.topFull)
           );
     }
 }
@@ -130,7 +153,7 @@ loadNrData(nrId:number)
       "title": this.doctordata[0].title,
       "firstname": this.doctordata[0].firstname,
       "lastname": this.doctordata[0].lastname,
-      "email":this.doctordata[0].EmailID,
+      "email":this.doctordata[0].Email,
       "contactno":this.doctordata[0].ContactNo,
       "address":this.doctordata[0].Address,
       "speciality":this.doctordata[0].Specialties,
@@ -142,15 +165,30 @@ loadNrData(nrId:number)
  }
 
   ngOnInit(): void {
-    console.log(this.nrId);
-    debugger;
-    if(this.nrId==undefined)
+    console.log(this.nrId+""+this.drId);
+    if(this.drId==undefined && this.nrId==undefined){}
+    else if(this.nrId==undefined && this.drId!=undefined)
       this.loadDrData(this.drId);
-    else
+    else if(this.nrId!=undefined && this.drId==undefined)
       this.loadNrData(this.nrId);
-  }
+
+      if(this.router.url=="/sharedwrapperhome/doctorsection"){
+        this.fg.patchValue({
+          "role":"Doctor"
+        });
+      }else{
+        this.fg.patchValue({
+          "role":"Nurse"
+        });
+      }
+      this.titles= Object.entries(Title) ;
+      this.genders = Object.entries(Genders);
+    }
   functioncallbackFunction(){
     this.success=true;
   }
-
+  sendMessage() {
+    //this.messageEvent.emit(this.message);
+    this.parentFun.emit();
+  }
 }

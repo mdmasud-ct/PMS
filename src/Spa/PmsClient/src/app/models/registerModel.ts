@@ -3,7 +3,7 @@ export class Register{
       public title:string ="",
       public firstname:string="",
       public lastname:string="",
-      public EmailID:string="",
+      public email:string="",
       public Date_of_Birth:string="",
       public role:string = "",
       public FullName:string ="",
@@ -12,7 +12,8 @@ export class Register{
       public Specialties: string = "",
       public Status:string ="",
       public Blocked_Unblocked:string ="",
-      public id:string =""      
+      public id:string ="",
+      public gender:string="",     
    )
   {
       
@@ -30,8 +31,8 @@ set LastName(address: string) { this.lastname = address };
 get Fullname() { return this.FullName };
 set Fullname(address: string) { this.FullName = address };
 
-get Email() { return this.EmailID };
-set Email(address: string) { this.EmailID = address };
+get Email() { return this.email };
+set Email(address: string) { this.email = address };
 
 get DOB() { return this.Date_of_Birth };
 set DOB(address: string) { this.Date_of_Birth = address };

@@ -5,22 +5,52 @@
     <div class="form-group">
         <div class="row">
             <div class="col-sm-6"><label for="firstname">First Name:<span class="asterisk"> *</span> </label>
-                <input type="text" class="form-control" name="firstname" formControlName="firstname">
+                <!-- <input type="text" class="form-control" placeholder="First Name" name="firstname" formControlName="firstname">
                  <span class="asterisk" *ngIf="fg.get('firstname').touched && fg.get('firstname').errors?.required">
+                    First name is required!
+                </span> -->
+
+                <!-- <label for="firstname" class="sr-only">First Name</label> -->
+                <input type="text" id="firstname" name="firstname" formControlName="firstname" class="form-control" placeholder="Your First Name" required autofocus>
+                <span class="asterisk" *ngIf="fg.get('firstname').touched && fg.get('firstname').errors?.required">
                     First name is required!
                 </span>
             </div>
-            <div class="col-sm-6"><label for="lastname">Last Name:<span class="asterisk"> *</span> </label>
-                <input type="text" class="form-control" name="lastname" formControlName="lastname">
+            
+            <div class="col-sm-6"><label for="lastname sr-only">Last Name:<span class="asterisk"> *</span> </label>
+                <input type="text" class="form-control" name="lastname" formControlName="lastname" placeholder="Your Last Name" required>
                 <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
                     Last name is required!
                 </span>
             </div>
         </div>
     </div>
+    <!-- <div class="form-group">
+        <label for="firstname" class="sr-only">Name</label>
+        <input type="text" id="firstname" name="firstname" [(ngModel)]="fg.firstname" formControlName="firstname" class="form-control" placeholder="Your name" required>
+    </div> -->
+    <div class="form-group">
+        <br/>
+        <div class="row">
+        <div class="col-sm-6">
+        <label for="title" class="sr-only">Title<span class="asterisk"> *</span></label>
+        <select id="title" name="title" class="form-control" placeholder="Select role" required formControlName="title">
+          <option disabled selected value="">Select Title</option>
+          <option *ngFor="let title of titles" value={{title[0]}}>{{title[1]}}</option>
+        </select>
+        </div>
+        <div class="col-sm-6">
+            <label for="gender" class="sr-only">Gender<span class="asterisk"> *</span></label>
+            <select id="gender" name="gender" class="form-control" placeholder="Select gender" required formControlName="gender">
+              <option disabled selected value="">Select Gender</option>
+              <option *ngFor="let gender of genders" value={{gender[0]}}>{{gender[1]}}</option>
+            </select>
+        </div>
+        </div>
+    </div>
     <div class="form-group">
         <label for="email">Email:<span class="asterisk"> *</span> </label>
-        <input type="email" class="form-control" name="email" formControlName="email" autocomplete="off">
+        <input type="email" class="form-control" name="email" formControlName="email" autocomplete="off" required placeholder="Your Email">
         <span class="asterisk" *ngIf="fg.get('email').touched && fg.get('email').errors?.required">
             Email is required!
         </span>
@@ -32,7 +62,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <label for="contact">Contact No:<span class="asterisk"> *</span> </label>
-                <input type="text" class="form-control" name="contact" formControlName="contact">
+                <input type="text" class="form-control" name="contact" formControlName="contact" required placeholder="Your Contact No.">
                 <span class="asterisk" *ngIf="fg.get('contact').touched && fg.get('contact').errors?.required">
                     Contact is required!
                 </span>
@@ -42,7 +72,7 @@
             </div>
             <div class="col-sm-6">
                 <label for="dob">DOB:<span class="asterisk"> *</span> </label>
-                <input type="date" [max]="getToday()" class="form-control" name="dob" formControlName="dob">
+                <input type="date" [max]="getToday()" class="form-control" name="dob" formControlName="dob" required>
                 <span class="asterisk" *ngIf="fg.get('dob').touched && fg.get('dob').errors?.required">
                     DOB is required!
                 </span>
@@ -50,21 +80,25 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="password">Password:<span class="asterisk"> *</span> </label>
-        <input type="password" class="form-control" name="password" formControlName="password">
-        <span class="asterisk" *ngIf="fg.get('password').touched && fg.get('password').errors?.required">
+        <div class="row">
+            <div class="col-6">
+            <label for="password">Password:<span class="asterisk"> *</span> </label>
+            <input type="password" class="form-control" name="password" formControlName="password" required placeholder="Password">
+            <span class="asterisk" *ngIf="fg.get('password').touched && fg.get('password').errors?.required">
             Password is required!
         </span>
-    </div>
-    <div class="form-group">
-        <label for="confirmpassword">Confirm Password:<span class="asterisk"> *</span> </label>
-        <input type="password" class="form-control" name="confirmpassword" formControlName="confirmpassword">
-        <span class="asterisk" *ngIf="fg.get('confirmpassword').touched && fg.get('confirmpassword').errors?.required">
+            </div>
+            <div class="col-6">
+            <label for="confirmpassword">Confirm Password:<span class="asterisk"> *</span> </label>
+            <input type="password" class="form-control" name="confirmpassword" formControlName="confirmpassword" required placeholder="Confirm Password">
+            <span class="asterisk" *ngIf="fg.get('confirmpassword').touched && fg.get('confirmpassword').errors?.required">
             ConfirmPassword is required!
         </span>
         <span class="asterisk" *ngIf="fg.get('confirmpassword').touched && fg.get('confirmpassword').errors?.mismatch">
             ConfirmPassword does not match!
         </span>
+            </div>
+        </div>
     </div> 
     <div class="form-group">
         <button id="btnSubmit" class="btn" [disabled]="!fg.valid">Register Now</button>

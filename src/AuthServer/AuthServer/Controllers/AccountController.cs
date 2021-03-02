@@ -13,6 +13,8 @@ using AuthServer.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using AuthServer.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AuthServer.Controllers
 {
@@ -24,8 +26,8 @@ namespace AuthServer.Controllers
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
-
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IIdentityServerInteractionService interaction, IAuthenticationSchemeProvider schemeProvider, IClientStore clientStore, IEventService events)
+        private readonly IRegistrationRepo _repo;
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IIdentityServerInteractionService interaction, IAuthenticationSchemeProvider schemeProvider, IClientStore clientStore, IEventService events,IRegistrationRepo repo)
         {
             _userManager = userManager;
             _interaction = interaction;
@@ -33,6 +35,7 @@ namespace AuthServer.Controllers
             _clientStore = clientStore;
             _events = events;
             _signInManager = signInManager;
+            _repo = repo;
         }
 
         /// <summary>
@@ -172,9 +175,50 @@ namespace AuthServer.Controllers
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("userName", user.UserName));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("name", user.Name));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("email", user.Email));
-            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", Roles.Dorctor));
+            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", Roles.Doctor));
 
             return Ok(new RegisterResponseViewModel(user));
+        }
+
+
+        public async Task<ResultModel> RegisterAsync([FromBody] RegisterRequestViewModel model)
+        {
+            //var aVal = 0; var blowUp = 1 / aVal;
+            ResultModel res = new ResultModel();
+            if (!ModelState.IsValid)
+            {
+                //return BadRequest(ModelState);
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(a=>a.Exception).ToList();
+                res.Code = 4;
+                res.Response = String.Join(',', errors);
+                return res;
+            }
+
+            var user = new AppUser { UserName = model.Email, Name = model.Name, Email = model.Email };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                //return BadRequest(result.Errors);
+                res.Code = 4;
+                res.Response = string.Join(',', result.Errors.Select(a => a.Description).ToList());
+                return res;
+            }
+            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("userName", user.UserName));
+            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("name", user.Name));
+            await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("email", user.Email));
+            if (string.IsNullOrEmpty(model.Role))
+            {
+                await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", Roles.Patient));
+            }
+            else {
+                await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", model.Role.ToLower()));
+            }
+            res.Code = 1;
+
+            res.Response = user.Id;
+            return res;//Ok(new RegisterResponseViewModel(user));
         }
 
         [HttpPost]
@@ -195,6 +239,91 @@ namespace AuthServer.Controllers
         }
 
         [HttpPost]
+        [Route("api/patient")]
+        public async Task<IActionResult> PatientRegister([FromBody] UsersModel model) {
+            try
+            {
+                ResultModel res = new ResultModel();
+                if (model == null)
+                {
+                    return BadRequest(new Exception("Unable to fetch record"));
+                }
+                else 
+                {
+                    var req = new RegisterRequestViewModel
+                    {
+                        Email = model.Email,
+                        Name = model.FirstName+" "+model.LastName,
+                        Password = model.Password,
+                        //Role = null
+                    };
+                    res = await RegisterAsync(req);
+                    if (res.Code == 4)
+                    {
+                        //return BadRequest(result.Response);
+                        return Json(res);
+                    }
+                    else
+                    {
+                        model.Id = res.Response;
+                        this._repo.AddPatient(model);
+                        return Json(res);
+                        //return Ok();
+                    }
+                }
+            }
+            catch (Exception e) {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPost]
+        //[Authorize]
+        [Route("api/doctor")]
+        public async Task<IActionResult> DoctorRegister([FromBody] UsersModel model)
+        {
+            try
+            {
+                ResultModel res = new ResultModel();
+                if (model == null)
+                {
+                    return BadRequest(new Exception("Unable to fetch record"));
+                }
+                else
+                {
+                    var req = new RegisterRequestViewModel
+                    {
+                        Email = model.Email,
+                        Name = model.FirstName + " " + model.LastName,
+                        Password = "Welcome@123",//model.Password,
+                        Role = model.Role
+                    };
+                    res = await RegisterAsync(req);
+                    if (res.Code == 4)
+                    {
+                        //return BadRequest(result.Response);
+                        return Json(res);
+                    }
+                    else
+                    {
+                        model.Id = res.Response;
+                        if (!string.IsNullOrEmpty(model.Role) && model.Role.ToLower().Equals("doctor"))
+                            this._repo.AddDoctor(model);
+                        else
+                            this._repo.AddNurse(model);
+                        return Json(res);
+                        //return Ok();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost]
+        //[Authorize]
         [Route("api/information")]
         public async Task<ActionResult> GetRole([FromBody]UserModel model) {
             var currentuser = await _userManager.FindByNameAsync(model.UserName);

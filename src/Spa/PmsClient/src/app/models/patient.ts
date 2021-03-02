@@ -8,7 +8,9 @@ export class Patients{
         public password:string="",        
         public fullName:string ="",
         public status:string = "" ,
-        public blocked_unblocked:string = ""
+        public blocked_unblocked:string = "",
+        public title="",
+        public gender="",
      )
     {
         
@@ -42,4 +44,10 @@ export class Patients{
   get Blocked_unblocked() { return this.blocked_unblocked };
   set Blocked_unblocked(supplierName: string) { this.blocked_unblocked = supplierName };
   
+  get Title() { return this.title };
+  set Title(supplierName: string) { this.title = supplierName };
+
+  get Gender() { return this.gender };
+  set Gender(supplierName: string) { this.gender = supplierName };
+
 }

@@ -1,5 +1,6 @@
 ﻿using AuthServer.Extensions;
 using AuthServer.Infrastructure.Data.Identity;
+using AuthServer.Infrastructure.Models;
 using AuthServer.Infrastructure.Services;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
@@ -33,7 +34,8 @@ namespace AuthServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
-
+            services.AddDbContext<PMSYSTEMContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
@@ -65,6 +67,7 @@ namespace AuthServer
                     });*/
 
             services.AddTransient<IProfileService, IdentityClaimsProfileService>();
+            services.AddTransient<IRegistrationRepo, RegistrationRepo>();
 
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                .AllowAnyMethod()

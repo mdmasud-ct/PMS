@@ -25,9 +25,9 @@
 
         /* @import '~bootstrap/dist/css/bootstrap.min.css'; */
         
-        .form-control:focus {
+        /* .form-control:focus {
           border-color: #5cb85c;
-      }
+      } */
       
       .form-control, .btn {
           border-radius: 3px;
@@ -89,7 +89,6 @@
       
           .signup-form .btn {
               font-size: 16px;
-              /* font-weight: bold; */
               min-width: 140px;
               outline: none !important;
           }
@@ -128,6 +127,8 @@
 
       .asterisk{
           color: red;
+          font-style: italic;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
       }
 
 @import '~bootstrap/scss/functions';

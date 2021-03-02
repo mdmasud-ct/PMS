@@ -150,4 +150,7 @@ export class NurseSectionComponent implements OnInit {
     functioncallbackFunction(){
       this.success=true;
     }
+    receiveMessage($event) {
+      this.Getjson();
+    }
 }

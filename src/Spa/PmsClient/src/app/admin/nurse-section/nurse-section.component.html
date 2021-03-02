@@ -87,7 +87,7 @@
       <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">&times; &nbsp;</span>
       </button>
-      <app-register></app-register>
+      <app-register (parentFun)="receiveMessage()" [userrole]="Nurse"></app-register>
      </div> 
   </ng-template>
   <!-- Register PopUp -->

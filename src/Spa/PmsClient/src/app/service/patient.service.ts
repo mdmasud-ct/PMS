@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable, observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, observable, pipe} from 'rxjs';
+import {map, catchError} from 'rxjs/operators';
 import {PatientDemographicData} from '../Models/PatientDemographicData';
 import {PatientAllergy} from '../Models/PatientAllergy';
 import { PatientVisit } from '../Models/patientvisit';
@@ -9,13 +9,16 @@ import {PatientDiagnosis} from '../Models/patientdiagnosis';
 import {PatientProcedure} from '../Models/patientprocedure';
 import {PatientMedication} from '../Models/patientmedication';
 import {Patients} from '../models/Patient';
-
+import { ConfigService } from '../core/config.service';
+import { BaseService } from '../core/base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class PatientService {
+export class PatientService extends BaseService{
 
-  constructor(private httpsvc:HttpClient) { }
+  constructor(private httpsvc:HttpClient, private config:ConfigService) {
+    super();
+   }
 
  
   public GetPatientAllergyDataByID(PatientID: number):Observable<any>
@@ -100,8 +103,8 @@ export class PatientService {
       const headers = { 'content-type': 'application/json'}  
       if(p.email != "")
       {
-        return this.httpsvc.post<Patients>("http://localhost:3000/Patient", JSON.stringify(p),{'headers':headers});
-        // .pipe(map(value => value[0].name +", has Register Successfully"));
+        //return this.httpsvc.post<Patients>("http://localhost:3000/Patient", JSON.stringify(p),{'headers':headers});
+        return this.httpsvc.post<Patients>(this.config.authApiURI+"/patient",p).pipe(catchError(this.handleError));
       }
     }
 }

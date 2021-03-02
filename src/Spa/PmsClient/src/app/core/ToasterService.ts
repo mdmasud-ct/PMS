@@ -40,7 +40,12 @@ export class ToasterService{
     } 
     this.toastr.info(message, title,{ positionClass } );
   }
+  public mycallback(){
+    console.log("call");
+  }
   public Callback(){
     console.log("call");
   }
+  
+
 }
