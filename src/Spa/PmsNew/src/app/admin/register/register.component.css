@@ -1,0 +1,14 @@
+span.asterisk.ng-star-inserted {
+    color: red;
+    padding-top: 0px;
+    /* margin-top: 0; */
+    font-style: italic;
+    font-size: small;
+    margin: auto;
+}
+.mat-form-field-flex{
+    background-color: white !important;
+}
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: rgba(0,0,0,0)  !important;
+}
