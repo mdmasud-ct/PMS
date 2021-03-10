@@ -1,0 +1,67 @@
+table {
+    width: 100%;    
+  }
+  
+ 
+ .btnCenter{
+    margin-top: 10px;
+    margin-bottom: -20px;
+ }
+ .bgColor{  
+   color: #0047AB;
+ }
+ .fontSizeBold{
+   font-size: large;
+   /* font-weight: bold; */
+ }
+ .ModelPopUpClass{
+   background-color: grey;width: 980px;
+ }
+ .Tableclass th {
+  /* background-color: black; */
+  border: 1px solid #ddd;
+  font-size: medium;
+  color:black;
+  padding-left: 10px;
+  background-color: slategrey;
+ }
+ .Tableclass td{
+  border: 1px solid #ddd;
+  /* text-align: center; */
+  /* margin-left: 10px; */
+  color: black;
+  padding-left: 10px;
+ }
+ .modalTagReg{
+  margin-left: -84px;
+  text-align: center;
+ }
+ .person_pin {
+  width: 80px;
+  margin-left: 0px;
+ }
+ .avatar{
+  float: left;
+  padding: 4px;
+ }
+ 
+ .ViewPoptable td, th{
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+ }
+ .avatar1{
+  width: 20%;
+}
+.avatar2{
+  width: 80%;
+  padding-top: 15px;    
+}
+.wd27{
+width: 33%;
+}
+.wd73{
+  width: 69%;
+}
+ 
+ 

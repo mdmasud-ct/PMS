@@ -1,71 +1,140 @@
 table {
-    width: 100%;
-    /* overflow:hidden; */
-  }
+  width: 100%;
+  overflow:hidden;
+}
+
+.divclass{
+   padding-left: 20px;
+   padding-right: 20px;
+}
+
+.btnCenter{
+  margin-top: 10px;
+  margin-bottom: -20px;
+}
+.bgColorAdd{  
+  /* color: #0047AB; */
+  width: 50px;
+  height: 50px;
+}
+.bgColorAdd:hover{  
+  /* color: black; */
+  /* font-size: x-large; */
+  /* font-weight: 400; */
+  width: 55px;
+  height: 55px;
+  overflow: hidden;
+}
+.fontSizeBold{
+  font-size: large;
+  /* font-weight: bold; */
+}
+.ModelPopUpClass{
+  background-color: grey;width: 980px;
+}
+.Tableclass th {
+ /* background-color: black; */
+ border: 1px solid #ddd;
+ font-size: medium;
+ color: #000;
+ padding-left: 10px;
+ background-color: slategray;
+}
+.Tableclass td{
+ border: 1px solid #ddd;
+ /* text-align: center; */
+ /* margin-left: 10px; */
+ color: black;
+ padding-left: 10px;
+}
+.modalTagReg{
+ margin-left: -84px;
+ text-align: center;
+}
+.person_pin {
+ width: 80px;
+ margin-left: 0px;
+}
+.avatar{
+ float: left;
+ padding: 2px;
+}
+
+.ViewPoptable td, th{
+ border: 1px solid #dddddd;
+ text-align: left;
+ padding: 8px;
+}
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 80px;
+}
+.example-header {
+  min-height: 64px;
+  padding: 8px 24px 0;
+}
+
+.mat-form-field {
+  font-size: 12px;
+  width: 100%;
+} 
+
+.mat-table {
+  overflow: auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+.mat-header-cell{
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.mat-column-Id {
+  width: 8% !important;
+  flex: 0 0 8% !important;
+  word-wrap: break-word !important;
+  white-space: unset !important;
   
-  .divclass{
-     padding-left: 20px;
-     padding-right: 20px;
-  }
   
-  .btnCenter{
-    margin-top: 10px;
-    margin-bottom: -20px;
-  }
-  .bgColorAdd{  
-    color: #0047AB;
-    width: 50px;
-    height: 50px;
-  }
-  .bgColorAdd:hover{  
-    /* color: black; */
-    /* font-size: x-large; */
-    /* font-weight: 400; */
-    width: 55px;
-    height: 55px;
-    overflow: hidden;
-  }
-  .fontSizeBold{
-    font-size: large;
-    /* font-weight: bold; */
-  }
-  .ModelPopUpClass{
-    background-color: grey;width: 980px;
-  }
-  .Tableclass th {
-   /* background-color: black; */
-   border: 1px solid #ddd;
-   font-size: medium;
-   color: #000;
-   padding-left: 10px;
-   background-color: slategray;
-  }
-  .Tableclass td{
-   border: 1px solid #ddd;
-   /* text-align: center; */
-   /* margin-left: 10px; */
-   color: black;
-   padding-left: 10px;
-  }
-  .modalTagReg{
-   margin-left: -84px;
-   text-align: center;
-  }
-  .person_pin {
-   width: 128px;
-   margin-left: -30px;
-  }
-  .avatar{
-   float: left;
-   padding: 2px;
-  }
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  word-break: break-word;
   
-  .ViewPoptable td, th{
-   border: 1px solid #dddddd;
-   text-align: left;
-   padding: 8px;
-  }
-  
-  /* .ViewPoptable tr:nth-child(even) {
-   background-color: #dddddd;
-  } */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.mat-table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid ;
+}
+.mat-column-dob{
+  width: 10% !important;
+  flex: 0 0 10% !important;
+}
+.mat-column-Age{
+  width: 5% !important;
+  flex: 0 0 5% !important;
+}
+.mat-column-Gender{
+  width: 6% !important;
+  flex: 0 0 6% !important;
+}
+.cdk-column-Status{
+  width: 6% !important;
+  flex: 0 0 6% !important;
+}
+.mat-column-FullName{
+  width: 20% !important;
+  flex: 0 0 20% !important;
+}
+.mat-column-EmailID{
+  width: 20% !important;
+  flex: 0 0 20% !important;
+}
+.divclass{
+  overflow: auto;
+}

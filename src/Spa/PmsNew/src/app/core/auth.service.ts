@@ -72,6 +72,9 @@ export class AuthService  extends BaseService{
   async signout() {
     await this.manager.signoutRedirect();
   }
+  signoutSilent(){
+    this.user=null;
+  }
 }
 export function getClientSettings(): UserManagerSettings {
   return {

@@ -28,8 +28,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-//import { NurseComponent } from './admin/nurse/nurse.component';
-//import { PatientComponent } from './admin/patient/patient.component'
+import { AccountModule } from './account/account.module';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component'; 
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -44,6 +45,7 @@ import { CommonModule } from '@angular/common';
     SharedMaterialModule,
     BrowserModule,
     CommonModule,
+    AccountModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     }),
@@ -55,7 +57,8 @@ import { CommonModule } from '@angular/common';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    
+    AuthCallbackComponent,
+    ChangepasswordComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

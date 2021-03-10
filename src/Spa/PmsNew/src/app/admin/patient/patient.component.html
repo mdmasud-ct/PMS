@@ -1,0 +1,279 @@
+<div class="main-content">
+    <div class="container-fluid">
+<div class="divclass">
+    <div class="form-group">
+      <div class="col-md-6" style="padding-left:0px">
+        <table class="mat-elevation-z8" [ngClass]="{'btnCenter': true}">
+        <th>
+          <mat-form-field class="example-form-field">
+            <!-- <mat-label>Search Block/UnBlock</mat-label> -->
+            <input matInput type="text" [(ngModel)]="value" (keyup)="applyFilter()" placeholder="Search here...">
+          </mat-form-field>
+        </th>
+        <!-- <th>
+          <button class="btn" style="float: right;" (click)="open(content)" [ngClass]="{'bgColorAdd': true}" ><mat-icon>person_add</mat-icon></button>
+        </th>  -->
+      </table>
+      </div>
+    </div>
+  <div class="form-group">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" [ngClass]="{'Tableclass': true}">
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->          
+      <!-- DrID Column -->
+      <ng-container matColumnDef="PatientID">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Patient ID. </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>  
+      <!-- FullName Column -->
+      <ng-container matColumnDef="FullName">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Full Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+      </ng-container>  
+      <!-- Date_of_Birth Column -->
+      <ng-container matColumnDef="DOB">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> DOB </th>
+        <td mat-cell *matCellDef="let element"> {{element.dob}} </td>
+      </ng-container>  
+      <!-- EmailID Column -->
+      <ng-container matColumnDef="EmailID">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> EmailID </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container> 
+      <!-- ContactNo Column -->
+      <ng-container matColumnDef="ContactNo">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> ContactNo </th>
+        <td mat-cell *matCellDef="let element"> {{element.contact}} </td>
+      </ng-container>  
+      <!-- Status Column -->
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+      </ng-container>
+      <!-- Blocked_Unblocked Column -->
+      <ng-container matColumnDef="Blocked_Unblocked">
+        <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Is Locked </th>
+        <td mat-cell *matCellDef="let element"> {{element.blocked_unblocked}} </td>
+      </ng-container>
+          <!-- View/Edit/Delete Column -->
+     <ng-container matColumnDef="View_Edit_Delete">
+      <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Actions </th>
+      <td mat-cell *matCellDef="let element">
+        <button class="btn"  (click)="Viewopen(Viewcontent,element.id )" [ngClass]="{'bgColor': true}" style="float: left;" title="View"><mat-icon>visibility</mat-icon></button>
+        <!-- <button class="btn" (click)="Editopen(Editcontent,element.id )" [ngClass]="{'bgColor': true}" style="float: left;" title="Edit"><mat-icon>edit</mat-icon></button> -->
+        <button class="btn" (click)="Deleteopen(Deletecontent,element.id )" [ngClass]="{'bgColor': true}" style="float: left;" title="Archive"><mat-icon>delete</mat-icon></button>
+      </td>
+    </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <mat-paginator [length]='length' [pageSize]='pageSize' [pageSizeOptions]='pageSizeOptions' (page)='pageEvent = $event'  style="color: #0047AB; font-size: small;"> </mat-paginator>
+  </div>
+  
+  
+  <div class="modalTagReg">
+   <!-- View By ID PopUp -->
+   <ng-template #Viewcontent let-modal>
+    <div class="modal-header" *ngIf="UserData">
+      <!-- <h4 class="modal-title" id="modal-basic-title">Profile update</h4> -->
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" *ngFor="let item of UserData">
+      <h1 style="text-align: left;">User id:  {{item.id}} </h1>
+      <!-- <form *ngFor="let item of dataSourceDoctorData" [(ngModel)]="dataSourceDoctorData"> -->
+        <form >    
+          <div class="main main-raised" >
+            <div class="profile-content">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12 ml-auto mr-auto">
+                    <div class="profile">
+                      <div class="avatar avatar1">
+                        <img src="../../../assets/img/UserProfileIcon.webp" alt="Circle Image" class="img-raised rounded-circle" [ngClass]="{'person_pin': true}">
+                      </div>
+                      <div class="avatar avatar2">
+                        <table style="font-family: arial, sans-serif;border-collapse: collapse; width: 100%;" [ngClass]="{'ViewPoptable': true}">
+                          <tr>
+                            <th class="wd27">Name</th>
+                            <th class="wd73"><h3 class="title">{{item.fullName}}</h3></th>                          
+                          </tr>
+                          <!-- <tr>
+                            <th>Specialties</th>
+                            <td><h3>{{item.Specialties}}</h3></td>
+                          </tr> -->
+                          </table>
+                      </div>                   
+                    </div>
+                    <div class="name">                      
+                      <!-- <hr/> -->
+                      <table class="table table-hover" style="font-family: arial, sans-serif;border-collapse: collapse; width: 100%;" [ngClass]="{'ViewPoptable': true}">
+                        <tr>
+                          <td>Date of Birth</td>
+                          <td>{{item.dob}}</td>                          
+                        </tr>
+                        <tr>
+                          <td>Email Id</td>
+                          <td>{{item.email}}</td>
+                        </tr>
+                        <tr>
+                          <td>Phone No.</td>
+                          <td>{{item.contact}}g</td>
+                        </tr>
+                        <!-- <tr>
+                          <td>Address</td>
+                          <td>{{item.Address}}</td>
+                        </tr> -->
+                        <tr>
+                          <td>Status</td>
+                          <td>{{item.status}}</td>
+                        </tr>                        
+                      </table>                    
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-outline" (click)="modal.close('Save click')">Save</button> -->
+    </div>
+  </ng-template>
+    <!-- View By ID PopUp -->
+  
+    <!-- Edit By ID PopUp -->  
+    <ng-template #Editcontent let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title">Update records</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Update Modal -->
+        <h1 style="text-align: center;">Doctor & Nurse Registration</h1>
+        <div class="signup-form">
+            <form class="form-group" [formGroup]="fg" (ngSubmit)="SavePractitionerData()">
+                <h2>Register</h2>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-xs-2">
+                      <label for="Title">Title: <span class="asterisk"> *</span></label>
+                      <input type="text" class="form-control" name="title" formControlName="title" placeholder="" required="required">
+                      <span class="asterisk" *ngIf="fg.get('title').touched && fg.get('title').errors?.required">
+                        Title is required!
+                      </span>
+                    </div>
+                    <div class="col-xs-5">
+                      <label for="firstname">First Name: <span class="asterisk"> *</span></label>
+                      <input type="text" class="form-control" name="firstname" formControlName="firstname">
+                      <span class="asterisk" *ngIf="fg.get('firstname').touched && fg.get('firstname').errors?.required">
+                        FirstName is required!
+                      </span>
+                    </div>
+                    <div class="col-xs-5">
+                      <label for="lastname">Last Name: <span class="asterisk"> *</span></label>
+                      <input type="text" class="form-control" name="lastname" formControlName="lastname">
+                      <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                        LastName is required!
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email: <span class="asterisk"> *</span></label>
+                  <input type="email" class="form-control" name="email" formControlName="email">
+                  <span class="asterisk" *ngIf="fg.get('email').touched && fg.get('email').errors?.required">
+                    Email is required!
+                  </span>
+                  <span class="asterisk" *ngIf="fg.get('email').touched && fg.get('email').errors?.email">
+                    Email is not valid!
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-xs-6">
+                      <label for="email">DOB: <span class="asterisk"> *</span></label>                    
+                      <input type="date" [max]="getToday()" class="form-control" name="dob" formControlName="dob">
+                      <span class="asterisk" *ngIf="fg.get('dob').touched && fg.get('dob').errors?.required">
+                        DOB is required!
+                      </span>
+                    </div>
+                    <div class="col-xs-6">
+                      <label for="role">Role: </label><br />
+                      <label class="radio-inline"><input type="radio" formControlName="role" name="role" value="Doctor" checked>Doctor</label>
+                      <label class="radio-inline"><input type="radio" formControlName="role" name="role" value="Nurse">Nurse</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="contactno">Contact No: <span class="asterisk"> *</span></label>
+                  <input type="text" class="form-control" name="contactno" formControlName="contactno">
+                  <span class="asterisk" *ngIf="fg.get('contactno').touched && fg.get('contactno').errors?.required">
+                    contact no is required!
+                  </span>
+                </div>
+                <div class="form-group">
+                  <label for="address">Address: <span class="asterisk"> *</span></label>
+                  <input type="text" class="form-control" name="address" formControlName="address">
+                  <span class="asterisk" *ngIf="fg.get('address').touched && fg.get('address').errors?.required">
+                    Address is required!
+                  </span>            
+                </div>
+                <div class="form-group">
+                  <label for="speciality">Speciality: <span class="asterisk"> *</span></label>
+                  <input type="text" class="form-control" name="speciality" formControlName="speciality">
+                  <span class="asterisk" *ngIf="fg.get('speciality').touched && fg.get('speciality').errors?.required">
+                    Speciality is required!
+                  </span>            
+                </div>
+                <div class="form-group">
+                  <button id="btnSubmit" class="btn" [disabled]="!fg.valid">Register Now</button>
+                  <button id="btnSubmit" class="btn" >Clear</button>
+                </div>
+            </form>
+            <div>
+              <h1 style="color: red;">{{msg}}</h1>
+            </div>
+        </div>
+        <!-- Update Modal -->
+            </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Yes</button>
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">No</button>
+      </div>
+    </ng-template>
+    <!-- Edit By ID PopUp -->
+  
+     <!-- Delete By ID PopUp -->  
+    <ng-template #Deletecontent let-modal>
+      <div class="modal-header" *ngIf="UserData">
+        <!-- <h4 class="modal-title" id="modal-basic-title">Profile update</h4> -->
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngFor="let item of UserData">
+        <!-- <h1 style="text-align: left;">User id: {{item.id}} is deleted</h1>        -->
+        <!-- <hr> -->
+        <h2>Are you sure you want to delete the user:</h2> <h3>{{item.fullName}}</h3>
+        <!-- <p>If delete click on delete or Cancel</p> -->
+      <!-- </div> -->
+      <!-- <button class="btn" [ngClass]="{'bgColor': true}" style="float: left;" title="Delete">Delete</button> -->
+      <div class="modal-footer">
+        <!-- <button class="btn" [ngClass]="{'bgColor': true}" style="float: left;" title="Delete">Delete</button> -->
+        <button type="button" class="btn btn-outline-primary" (click)="SoftDeletePatientData(item.id)" title="Delete">Delete</button>
+        <button type="button" class="btn btn-outline-primary" (click)="modal.close('Save click')" title="Cancel">Cancel</button>
+      </div>
+      </div>
+    </ng-template>
+    <!-- Delete By ID PopUp -->
+  </div>
+  </div>
+  </div>
+  

@@ -13,6 +13,7 @@ import { ConfigService } from '../core/config.service';
 import { Appointment } from '../models/Appointment';
 import { BaseService } from '../core/base.service';
 import { finalize } from 'rxjs/operators'
+import { doctorGrid } from 'app/models/doctorGrid';
 
 @Injectable({
   providedIn: 'root'
@@ -50,22 +51,24 @@ export class RegisterService extends BaseService {
   //http://localhost:3000/Doctor?DrID=102
   public GetDoctorJsonDatas():Observable<any>
   {
-      return this.httpSVC.get<Doctor>(this.config.adminApiUri + "/Doctors");
+      return this.httpSVC.get<doctorGrid>(this.config.adminApiUri + "/Doctors");
   }
   public GetNurseJsonDatas():Observable<any>
   {   
-      return this.httpSVC.get<Nurse>(this.config.tempResourseAPI + "/Nurses");
+      //return this.httpSVC.get<Nurse>(this.config.tempResourseAPI + "/Nurses");
+      return this.httpSVC.get<Nurse>(this.config.adminApiUri + "/Nurses");
   }
   public GetPatientJsonDatas():Observable<any>
   {
-      return this.httpSVC.get<Patients>(this.config.tempResourseAPI+ "/Patient");
+      //return this.httpSVC.get<Patients>(this.config.tempResourseAPI+ "/Patient");
+      return this.httpSVC.get<Patients>(this.config.adminApiUri+ "/Patients");
   }
 
   // Get data by Id
   public GetDoctorJsonDatasByID(DrID: number):Observable<any>
   {   
       // return this.httpSVC.get<Doctor>("http://localhost:3000/Doctors?id="+DrID);
-      return this.httpSVC.get<Doctor>(this.config.tempResourseAPI+ "/Doctors?id="+DrID);
+      return this.httpSVC.get<doctorGrid>(this.config.adminApiUri+ "/Doctor/"+DrID);
   }
   public GetNurseJsonDatasByID(NurseID: number):Observable<any>
   {   

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +28,9 @@ import { MatIcon} from '@angular/material/icon';
 import { DoctorComponent } from '../../admin/doctor/doctor.component';
 import { RegisterComponent } from '../../admin/register/register.component';
 import { PatientComponent } from '../../admin/patient/patient.component';
-
+import { NurseComponent } from  '../../admin/nurse/nurse.component';
+import { fromPromise } from 'rxjs/internal-compatibility';
+import { BrowserModule } from '@angular/platform-browser';
 @NgModule({
   imports: [
     CommonModule,
@@ -42,10 +44,11 @@ import { PatientComponent } from '../../admin/patient/patient.component';
     MatSelectModule,
     MatTooltipModule,
     FullCalendarModule,
-    DataTablesModule
+    DataTablesModule,
+    MatTableModule,
+    SharedMaterialModule,
     //MatIcon
     //DataTablesModule
-    //MatTableModule,
     //SharedMaterialModule,
     //ToasterService,
   ],
@@ -61,11 +64,11 @@ import { PatientComponent } from '../../admin/patient/patient.component';
     CalendarComponent,
     DoctorComponent,
     RegisterComponent,
-    //PatientComponent
-    //DataTablesModule
-    //MatTableModule,
-    //SharedMaterialModule
-  ]
+    PatientComponent,
+    NurseComponent
+
+  ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 
 export class AdminLayoutModule extends SharedMaterialModule{}

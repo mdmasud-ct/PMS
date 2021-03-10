@@ -5,7 +5,7 @@ export class Nurse{
         public firstname: string,
         public lastname: string,
         public FullName:string ="",
-        public Date_of_Birth:string="",
+        public Dob:string="",
         public EmailID:string="",
         public ContactNo:number=0,
         public Address:string="",

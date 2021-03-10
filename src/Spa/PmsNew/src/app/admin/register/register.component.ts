@@ -41,8 +41,11 @@ export class RegisterComponent implements OnInit {
   @Input()  drId:number;
   @Input()  pRole:string;
   @Input() userrole:string; 
+  @Input() abc:string;
+  @Input() userData:any;
   res: any;
   message:any;
+  UserData:any;
   @Output() messageEvent = new EventEmitter<string>();
   @Output("parentFun") parentFun: EventEmitter<any> = new EventEmitter();
   fg: FormGroup = new FormGroup({
@@ -55,7 +58,8 @@ export class RegisterComponent implements OnInit {
     contactno : new FormControl('',Validators.required),
     address : new FormControl('',Validators.required),
     speciality : new FormControl(''), 
-    gender: new FormControl('',[Validators.required])
+    gender: new FormControl('',[Validators.required]),
+    id:new FormControl('')
   });
   constructor(private registersvc: RegisterService,private toaster:ToasterService,private router:Router, private spinner: NgxSpinnerService) { }
   public SavePractitionerData(): void
@@ -73,7 +77,7 @@ export class RegisterComponent implements OnInit {
                               this.fullname,
                               this.fg.value.contactno,
                               this.fg.value.address,
-                              this.fg.value.speciality,'Active','No','',
+                              this.fg.value.speciality,'Active','No',this.fg.value.id,
                               this.fg.value.gender);
 
       debugger;
@@ -137,7 +141,7 @@ loadNrData(nrId:number)
       "contactno":this.nursedata[0].ContactNo,
       "address":this.nursedata[0].Address,
       "speciality":this.nursedata[0].Specialties,
-      "dob":this.nursedata[0].Date_of_Birth
+      "dob":this.nursedata[0].Dob
     })
   },
   (error:any)=>console.log('fails to load nurse data')
@@ -145,39 +149,64 @@ loadNrData(nrId:number)
  }
  loadDrData(drId:number)
  {
-   console.log('LoadData'+this.drId);
-  this.obdr=this.registersvc.GetDoctorJsonDatasByID(this.drId);
-  this.obdr.subscribe(
-    (dr:Doctor[])=>{this.doctordata=dr;console.log(this.doctordata)
-      console.log(this.doctordata[0])
-    this.fg.patchValue({
-      "title": this.doctordata[0].title,
-      "firstname": this.doctordata[0].firstname,
-      "lastname": this.doctordata[0].lastname,
-      "email":this.doctordata[0].Email,
-      "contactno":this.doctordata[0].ContactNo,
-      "address":this.doctordata[0].Address,
-      "speciality":this.doctordata[0].Specialties,
-      "dob":this.doctordata[0].Dob
-    })
+   this.ob = this.registersvc.GetDoctorJsonDatasByID(drId)
+   this.ob.pipe(finalize(()=>{
+       this.spinner.hide();
+   })).subscribe(
+   data => {
+     this.UserData= data;
+     console.log(this.UserData)
+     this.fg.patchValue({
+      "title":      this.UserData.title,
+      "firstname":  this.UserData.firstName,
+      "lastname":   this.UserData.lastName,
+      "email":      this.UserData.emailId,
+      "contactno":  this.UserData.ContactNo,
+      "address":    this.UserData.address,
+      "speciality": this.UserData.speciality,
+      "dob":        this.UserData.Dob,
+      "gender":     this.UserData.gender,
+       "id":        this.UserData.id 
+   });
+  //  this.obdr=this.registersvc.GetDoctorJsonDatasByID(this.drId);
+  //   this.obdr.subscribe(
+  //   (dr:Doctor[])=>{this.doctordata=dr;console.log(this.doctordata)
+  //     console.log(this.doctordata[0])
+  //   this.fg.patchValue({
+  //     "title": this.doctordata[0].title,
+  //     "firstname": this.doctordata[0].firstname,
+  //     "lastname": this.doctordata[0].lastname,
+  //     "email":this.doctordata[0].Email,
+  //     "contactno":this.doctordata[0].ContactNo,
+  //     "address":this.doctordata[0].Address,
+  //     "speciality":this.doctordata[0].Specialties,
+  //     "dob":this.doctordata[0].Dob
+  //   })
   },
   (error:any)=>console.log('fails to load nurse data')
   );
  }
 
   ngOnInit(): void {
-    console.log(this.nrId+""+this.drId);
+    console.log(this.userData);
+    //console.log(this.nrId+""+this.drId);
     if(this.drId==undefined && this.nrId==undefined){}
     else if(this.nrId==undefined && this.drId!=undefined)
       this.loadDrData(this.drId);
     else if(this.nrId!=undefined && this.drId==undefined)
-      this.loadNrData(this.nrId);
+      {this.loadNrData(this.nrId);}
 
-      if(this.userrole=="Doctor"){
+      console.log("Role: "+this.userrole);
+      let url = this.router.url;
+      console.log(url);
+
+      if(url=="/doctor"){
+        this.userrole = "Doctor";
         this.fg.patchValue({
           "role":"Doctor"
         });
       }else{
+        this.userrole = 'Nurse';
         this.fg.patchValue({
           "role":"Nurse"
         });

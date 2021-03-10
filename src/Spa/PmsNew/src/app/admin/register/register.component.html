@@ -2,13 +2,23 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header card-header-danger">
-                <h4 class="card-title">{{this.fg.value.role}} Registraion</h4>
+                <h4 class="card-title">{{this.userrole}} Registraion</h4>
                 <p class="card-category">Fill in the details</p>
             </div>
             <div class="card-body">
 
     <form class="form-group" [formGroup]="fg" (ngSubmit)="SavePractitionerData()">
         
+        <div class="row" style="display: none;">
+            <div class="form-group col-md-6">
+                <mat-form-field class="example-full-width form-group">
+                    <!-- <input matInput placeholder="First Name" required type="text" formControlName="firstname"> -->
+                    <input matInput type='text'  formControlName='id' >
+
+                </mat-form-field>
+                <span class="asterisk" *ngIf="fg.get('firstname').touched && fg.get('firstname').errors?.required">FirstName is required!</span>
+            </div>
+        </div> 
         <div class="row">
             <div class="form-group col-md-6">
                 <mat-form-field class="example-full-width form-group">
@@ -65,8 +75,11 @@
             </span>
             </div>
             <div class="form-group col-md-6" *ngIf="this.fg.value.role=='Doctor'">
-            <label for="speciality">Speciality: <span class="asterisk"> *</span></label>
-            <input type="text" class="form-control" name="speciality" formControlName="speciality">
+            <!-- <label for="speciality">Speciality: <span class="asterisk"> *</span></label>
+            <input type="text" class="form-control" name="speciality" formControlName="speciality"> -->
+            <mat-form-field class="example-full-width form-group">
+                <input matInput placeholder="Speciality"  type="text" formControlName="speciality">
+            </mat-form-field>
             <span class="asterisk" *ngIf="fg.get('speciality').touched && fg.get('speciality').errors?.required">
                 Speciality is required!
             </span>
@@ -77,7 +90,7 @@
                 <!-- <label for="email">DOB: <span class="asterisk"> *</span></label>                    
                 <input type="date" [max]="getToday()" class="form-control" name="dob" formControlName="dob"> -->
                 <mat-form-field class="example-full-width form-group">
-                    <input matInput placeholder="date of birth" required type="date" formControlName="dob">
+                    <input matInput placeholder="date of birth" required type="date" formControlName="dob" >
                 </mat-form-field>
                 <span class="asterisk" *ngIf="fg.get('dob').touched && fg.get('dob').errors?.required">
                     DOB is required!

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
-
+import { AuthService } from '../core/auth.service';
+import {} from 'rxjs';
+import { Router,Navigation } from '@angular/router';
+import { fromPromise } from 'rxjs/internal-compatibility';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -8,7 +11,7 @@ import * as Chartist from 'chartist';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auth: AuthService,private router:Router) { }
   startAnimationForLineChart(chart){
       let seq: any, delays: any, durations: any;
       seq = 0;
@@ -67,7 +70,12 @@ export class DashboardComponent implements OnInit {
   };
   ngOnInit() {
       /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
-
+      //console.log(this.auth.isAuthenticated());
+      if(!this.auth.isAuthenticated()){
+        //alert("HI")
+        this.router.navigate(["/login"]);
+        //this.router.navigate(['/dashboard']);  
+      }
       const dataDailySalesChart: any = {
           labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
           series: [

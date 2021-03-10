@@ -12,6 +12,9 @@ import { CalendarComponent } from '../../calendar/calendar.component';
 import { DoctorComponent } from '../../admin/doctor/doctor.component';
 import { NurseComponent } from '../../admin/nurse/nurse.component';
 import { PatientComponent } from '../../admin/patient/patient.component';
+import { LoginComponent } from '../../account/login/login.component';
+import { PatientRegisterComponent } from '../../account/patient-register/patient-register.component';
+import { ChangepasswordComponent } from 'app/changepassword/changepassword.component';
 export const AdminLayoutRoutes: Routes = [
     // {
     //   path: '',
@@ -66,4 +69,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'doctor',         component: DoctorComponent },
     { path: 'nurse',          component: NurseComponent },
     { path: 'patient',        component: PatientComponent },
+    { path: 'changepassword', component: ChangepasswordComponent },
+    //{ path: 'patientregister',component: PatientRegisterComponent }
 ];
