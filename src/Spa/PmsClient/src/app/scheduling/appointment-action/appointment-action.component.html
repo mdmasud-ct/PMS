@@ -1,0 +1,24 @@
+<div class="signup-form">
+    <form class="form-group" [formGroup]="fg" (ngSubmit)="SaveAppointmentAction()">
+        <h2>Appointment Action</h2>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="appointmentaction">Action: </label><br />
+                    <label class="radio-inline"><input type="radio" formControlName="appointmentaction" name="appointmentaction" value="Approved" checked>Approve</label>
+                    <label class="radio-inline"><input type="radio" formControlName="appointmentaction" name="appointmentaction" value="Rejected">Reject</label>
+                </div>
+                <div class="col-xs-6">
+                    <label for="appointmentreason">Reason: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="appointmentreason" formControlName="appointmentreason">
+                    <!-- <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                        LastName is required!
+                    </span> -->
+                </div>               
+            </div>
+        </div>
+        <div class="form-group">            
+            <button id="btnSubmit" class="btn">Save</button>
+        </div>
+    </form>
+</div>

@@ -28,3 +28,21 @@
     color: white;
 }
 
+.notification-toggle::after
+{
+    display:none; 
+}
+
+.notification-text
+{
+    /* color: blue; */
+    font-size: 14px;
+    text-emphasis: wrap;
+    border: none;  
+}
+
+.notification-text:hover
+{
+    background-color:royalblue;
+    color: white;
+}

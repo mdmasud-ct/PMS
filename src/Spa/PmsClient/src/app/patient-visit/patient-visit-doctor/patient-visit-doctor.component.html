@@ -1,6 +1,20 @@
 <div class="signup-form">
     <form class="form-group" [formGroup]="fg" (ngSubmit)="SavePatientVisitDoctor()">        
         <h2>Patient Visit</h2>
+        <h3>Patient Details</h3>
+        <hr>    
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label for="ApptID">AppointmentID: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="ApptID" formControlName="ApptID" disabled>                        
+                </div>
+                <div class="col-xs-6">
+                    <label for="PtID">PatientID: <span class="asterisk"> *</span></label>
+                    <input type="text" class="form-control" name="PtID" formControlName="PtID" disabled>                        
+                </div>
+            </div>
+        </div>
         PatientID : P001 | Patient Name: ABC | AppointmentID : A001
         <h3>Vital Signs</h3>
         <hr>        

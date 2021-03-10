@@ -4,7 +4,7 @@ export class Register{
       public firstname:string="",
       public lastname:string="",
       public email:string="",
-      public Date_of_Birth:string="",
+      public Dob:string="",
       public role:string = "",
       public FullName:string ="",
       public ContactNo:string = "",
@@ -34,8 +34,8 @@ set Fullname(address: string) { this.FullName = address };
 get Email() { return this.email };
 set Email(address: string) { this.email = address };
 
-get DOB() { return this.Date_of_Birth };
-set DOB(address: string) { this.Date_of_Birth = address };
+get DOB() { return this.Dob };
+set DOB(address: string) { this.Dob = address };
 
 get Role() { return this.role };
 set Role(address: string) { this.role = address };
@@ -57,7 +57,12 @@ set Blocked_unblocked(address: string) { this.Blocked_Unblocked = address };
 
 get ID() { return this.id };
 set ID(address: string) { this.id = address };
+
+get Gender() { return this.gender };
+set Gender(val: string) { this.gender = val };
 }
+
+
 
 // export class Register{
 //     constructor(

@@ -34,7 +34,9 @@ export class DoctorSectionComponent implements OnInit {
 
   receiveMessage($event) {
     this.message = $event;
+    this.modalService.dismissAll();
     this.Getjson();
+    
   }
   parentFun(){
     alert("Called");

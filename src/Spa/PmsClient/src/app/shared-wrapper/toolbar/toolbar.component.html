@@ -23,5 +23,17 @@
         </div>
         </div> 
     </div>
+    <div class="btn-group mr-3" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+        <button class="btn color-white notification-toggle" ngbDropdownToggle><mat-icon matBadge={{badgeValue}} matBadgeColor="accent">notifications</mat-icon></button>
+    <!-- <button class="btn btn-dark dropdown-toggle-split" ngbDropdownToggle></button> -->
+    <div class="dropdown-menu" ngbDropdownMenu>
+        <div class="card notification-text" *ngFor="let ntf of notificationData" (click)="setIsSeenNotification(ntf.id)">
+            <div class="card-body">
+            <h6 class="card-title">{{getNotificationTimeDiff(ntf.createdDate)}}</h6>
+            <p class="card-text">{{ntf.notificationText}}</p>
+        </div>
+    </div>
+    </div>
+    </div> 
     </nav>
 </mat-toolbar>

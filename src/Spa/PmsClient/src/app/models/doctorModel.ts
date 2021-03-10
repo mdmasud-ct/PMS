@@ -11,7 +11,7 @@ export class Doctor{
         public Address:string="",
         public Specialties:string = "" ,
         public Status:string = "" ,        
-        public Blocked_Unblocked:string = ""
+        public Blocked_Unblocked:string = "" 
      )
     {
     }

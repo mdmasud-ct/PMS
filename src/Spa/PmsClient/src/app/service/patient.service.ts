@@ -61,12 +61,20 @@ export class PatientService extends BaseService{
     }
     return null;
   }
-  public SavePatientVisitData(p:PatientVisit):Observable<any>
+  public SavePatientVisitData(p:PatientVisit,operation:string):Observable<any>
     {
       console.log("service.SavePatientVisitData() hits");
       console.log(JSON.stringify(p));
       const headers = { 'content-type': 'application/json'}  
+      if(operation==="POST")
+      {
         return this.httpsvc.post<PatientVisit>("http://localhost:3000/PatientVisit", JSON.stringify(p),{'headers':headers});      
+      }
+      else
+      {
+        debugger;
+        return this.httpsvc.patch<PatientVisit>("http://localhost:3000/PatientVisit/"+p.id, JSON.stringify(p),{'headers':headers});      
+      }        
     }
     public SavePatientVisitAllergyData(p:PatientAllergy):Observable<any>
     {
@@ -107,4 +115,24 @@ export class PatientService extends BaseService{
         return this.httpsvc.post<Patients>(this.config.authApiURI+"/patient",p).pipe(catchError(this.handleError));
       }
     }
+    public GetPatientVisitDataByID(aID: number):Observable<any>
+    {           
+        return this.httpsvc.get<PatientVisit>("http://localhost:3000/PatientVisit?appointmentid="+aID);
+    }
+    public GetPatientAllergyDataByPatientID(pID: number):Observable<any>
+    {           
+        return this.httpsvc.get<PatientAllergy>("http://localhost:3000/Allergy?patientid="+pID);
+    }
+    public GetPatientDiagnosisDataByAppointmentID(aID: number):Observable<any>
+    {           
+        return this.httpsvc.get<PatientDiagnosis>("http://localhost:3000/Diagnosis?appointmentid="+aID);
+    }
+    public GetPatientProcedureDataByAppointmentID(aID: number):Observable<any>
+    {           
+        return this.httpsvc.get<PatientProcedure>("http://localhost:3000/Procedure?appointmentid="+aID);
+    }
+    public GetPatientMedicationDataByAppointmentID(aID: number):Observable<any>
+    {           
+        return this.httpsvc.get<PatientMedication>("http://localhost:3000/Medication?appointmentid="+aID);
+    }    
 }

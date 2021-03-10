@@ -2,7 +2,8 @@ export class PatientProcedure{
     constructor(              
         public procedure:string="",
         public proceduredescription:string="",
-        public patientid:string=""
+        public patientid:string="",
+        public appointmentid:string=""
      )
     {}
 
@@ -14,4 +15,7 @@ export class PatientProcedure{
 
   get Patientid() { return this.patientid };
   set Patientid(data: string) { this.patientid = data };
+  
+  get Appointmentid() { return this.appointmentid };
+  set Appointmentid(data: string) { this.appointmentid = data };
 }

@@ -27,12 +27,12 @@
                 <mat-list-option *ngIf="this.role=='doctor' || this.role=='nurse'" [value]="'viewappointments'" (click)="DoSomething($event)">
                     <span><mat-icon style="vertical-align: middle;">visibility</mat-icon><span style="vertical-align: middle;"> Appointment List</span></span>
                   </mat-list-option>
-                  <mat-list-option *ngIf="this.role=='doctor'" [value]="'patientvisitdoctor'" (click)="DoSomething($event)">
+                  <!-- <mat-list-option *ngIf="this.role=='doctor'" [value]="'patientvisitdoctor'" (click)="DoSomething($event)">
                     <span><mat-icon style="vertical-align: middle;">visibility</mat-icon><span style="vertical-align: middle;"> Patient Visit</span></span>
                   </mat-list-option>
                   <mat-list-option *ngIf="this.role=='nurse'" [value]="'patientvisitnurse'" (click)="DoSomething($event)">
                     <span><mat-icon style="vertical-align: middle;">visibility</mat-icon><span style="vertical-align: middle;"> Patient Visit</span></span>
-                  </mat-list-option>
+                  </mat-list-option> -->
                   <mat-list-option *ngIf="this.role=='patient'" [value]="'viewdata'" (click)="DoSomething($event)">
                     <span><mat-icon style="vertical-align: middle;">visibility</mat-icon><span style="vertical-align: middle;"> My Data</span></span>
                 </mat-list-option>

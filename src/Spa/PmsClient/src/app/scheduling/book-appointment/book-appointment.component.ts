@@ -54,7 +54,7 @@ console.log(this.userForm);
     console.log(this.userForm);
     this.appointmentData=new Appointment(0,this.userForm.value.doctorname,this.userForm.value.patientname
       ,this.userForm.value.appointmentdate,this.userForm.value.fromtime,this.userForm.value.totime
-      ,this.drId.toString(),"1");
+      ,this.drId.toString(),"1",false,"");
 
       if(this.userForm.invalid==false)
       {

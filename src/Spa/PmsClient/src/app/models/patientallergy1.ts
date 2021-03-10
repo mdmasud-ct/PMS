@@ -2,7 +2,8 @@ export class PatientAllergy{
     constructor(              
         public allergy:string="",
         public isfatal:string="",
-        public patientid:string=""
+        public patientid:string="",
+        public appointmentid:string=""
      )
     {
         
@@ -16,4 +17,7 @@ export class PatientAllergy{
 
   get Patientid() { return this.patientid };
   set Patientid(data: string) { this.patientid = data };
+
+  get Appointmentid() { return this.appointmentid };
+  set Appointmentid(data: string) { this.appointmentid = data };
 }

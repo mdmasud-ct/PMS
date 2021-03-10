@@ -7,7 +7,8 @@ export class PatientVisit{
         public bloodpressuresystolic:string="",
         public bloodpressurediastolic:string="",
         public bodytemperature:string = "",
-        public respirationrate:string = ""        
+        public respirationrate:string = "",
+        public id:string =""        
      )
     {}
 
@@ -34,4 +35,7 @@ export class PatientVisit{
 
   get Respirationrate() { return this.respirationrate };
   set Respirationrate(address: string) { this.respirationrate = address };
+
+  get ID() { return this.id };
+  set ID(address: string) { this.id = address };
 }

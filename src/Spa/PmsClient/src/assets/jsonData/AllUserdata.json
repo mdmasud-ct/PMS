@@ -91,6 +91,21 @@
       "Status": "Active",
       "Blocked_Unblocked": "Block",
       "id": 11
+    },
+    {
+      "title": "dr",
+      "firstname": "Ankita",
+      "lastname": "J",
+      "EmailID": "vp@gmail.com",
+      "Date_of_Birth": "2021-02-03",
+      "role": "Doctor",
+      "FullName": "Ankita J",
+      "ContactNo": "3456378546",
+      "Address": "sdsadsdsdsd dasdsdsds",
+      "Specialties": "Radiologist",
+      "Status": "Active",
+      "Blocked_Unblocked": "Block",
+      "id": 12
     }
   ],
   "Patients": [
@@ -149,6 +164,224 @@
       "Status": "Active",
       "Blocked_Unblocked": "Block",
       "id": 11
+    }
+  ],
+  "Appointment": [
+    {
+      "id": 1,
+      "drname": "",
+      "patientname": "JU",
+      "date": "",
+      "fromtime": "",
+      "totime": "",
+      "drid": "",
+      "patientid": ""
+    },
+    {
+      "id": 2,
+      "drname": "Dr. AB RF",
+      "patientname": "Patient1",
+      "date": "2021-02-18",
+      "fromtime": "16:17",
+      "totime": "17:17",
+      "drid": "1",
+      "patientid": "1"
+    },
+    {
+      "id": 3,
+      "drname": "Dr. AB RF",
+      "patientname": "Patient1",
+      "date": "2021-02-17",
+      "fromtime": "16:20",
+      "totime": "17:20",
+      "drid": "1",
+      "patientid": "1"
+    },
+    {
+      "id": 4,
+      "drname": "Dr. JH AG",
+      "patientname": "Patient1",
+      "date": "2021-03-03",
+      "fromtime": "18:21",
+      "totime": "19:21",
+      "drid": "3",
+      "patientid": "1"
+    },
+    {
+      "id": 5,
+      "drname": "Dr. UJ WR",
+      "patientname": "Patient1",
+      "date": "2021-02-20",
+      "fromtime": "10:25",
+      "totime": "11:25",
+      "drid": "2",
+      "patientid": "1"
+    },
+    {
+      "id": 6,
+      "drname": "Dr. AB RF",
+      "patientname": "Patient1",
+      "date": "2021-02-26",
+      "fromtime": "13:07",
+      "totime": "14:04",
+      "drid": "1",
+      "patientid": "1"
+    },
+    {
+      "id": 7,
+      "drname": "Dr. UJ WR",
+      "patientname": "Patient1",
+      "date": "2021-02-24",
+      "fromtime": "16:21",
+      "totime": "17:21",
+      "drid": "2",
+      "patientid": "1"
+    },
+    {
+      "id": 8,
+      "drname": "Dr. MN SD",
+      "patientname": "Patient1",
+      "date": "2021-02-19",
+      "fromtime": "15:00",
+      "totime": "16:00",
+      "drid": "4",
+      "patientid": "1"
+    }
+  ],
+  "DemographicData": [
+    {
+      "id": 1,
+      "race": "Race2",
+      "ethnicity": "Ethenicity2",
+      "languagesKnown": "English",
+      "address": "132, My Street, Kingston, New York 12401",
+      "nomineeFirstName": "Sagar",
+      "nomineeLastName": "Gayakwad",
+      "nomineeEmail": "vp@gmail.com",
+      "nomineeRelationship": "Brother",
+      "nomineeContact": "567876544343",
+      "nomineeAddress": "132, My Street, Kingston, New York 12401",
+      "isNeedportalAccess": true,
+      "patientid": 1
+    }
+  ],
+  "Allergy": [
+    {
+      "id": 1,
+      "allergy": "Dust",
+      "isfatal": true,
+      "patientid": 1
+    },
+    {
+      "id": 2,
+      "allergy": "Flower",
+      "isfatal": true,
+      "patientid": 1
+    },
+    {
+      "id": 3,
+      "allergy": "Oil",
+      "isfatal": false,
+      "patientid": 1
+    },
+    {
+      "id": 4,
+      "allergy": "ABC",
+      "isfatal": false,
+      "patientid": 1
+    },
+    {
+      "id": 5,
+      "allergy": "adsdsad",
+      "isfatal": true,
+      "patientid": 1
+    },
+    {
+      "id": 6,
+      "allergy": "erer",
+      "isfatal": true,
+      "patientid": 1
+    },
+    {
+      "id": 7,
+      "allergy": "dfsdfd",
+      "isfatal": true,
+      "patientid": 1
+    },
+    {
+      "id": 8,
+      "allergy": "dfdfdffds",
+      "isfatal": false,
+      "patientid": 1
+    },
+    {
+      "id": 9,
+      "allergy": "aaASA",
+      "isfatal": false,
+      "patientid": 1
+    },
+    {
+      "id": 10,
+      "allergy": "dust",
+      "isfatal": false,
+      "patientid": 1
+    }
+  ],
+  "Doctor": [
+    {
+      "id": 1,
+      "firstname": "AB",
+      "lastname": "RF",
+      "gender": "Male",
+      "dob": "1989-10-11",
+      "speciality": "dentist",
+      "city": "Thane",
+      "contact": "56787654",
+      "email": "rm@gmail.com"
+    },
+    {
+      "id": 2,
+      "firstname": "UJ",
+      "lastname": "WR",
+      "gender": "Female",
+      "dob": "1989-10-11",
+      "speciality": "Radiologist",
+      "city": "Mumbai",
+      "contact": "56787654",
+      "email": "rm@gmail.com"
+    },
+    {
+      "id": 3,
+      "firstname": "JH",
+      "lastname": "AG",
+      "gender": "Male",
+      "dob": "1989-10-11",
+      "speciality": "Gynacologist",
+      "city": "Thane",
+      "contact": "56787654",
+      "email": "rm@gmail.com"
+    },
+    {
+      "id": 4,
+      "firstname": "MN",
+      "lastname": "SD",
+      "gender": "Female",
+      "dob": "1989-10-11",
+      "speciality": "dentist",
+      "city": "Kalyan",
+      "contact": "56787654",
+      "email": "rm@gmail.com"
+    },
+    {
+      "id": 5,
+      "firstname": "SD",
+      "lastname": "JU",
+      "gender": "Male",
+      "dob": "1989-10-11",
+      "speciality": "Dytician",
+      "city": "Mumbai",
+      "contact": "56787654",
+      "email": "rm@gmail.com"
     }
   ]
 }

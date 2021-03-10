@@ -13,6 +13,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule
-  ]
+  ],
+  exports:[PatientVisitNurseComponent,PatientVisitDoctorComponent]
 })
 export class PatientVisitModule { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup,FormControl,Validators} from '@angular/forms';
 import {PatientAllergy} from '../../models/PatientAllergy';
@@ -7,6 +7,7 @@ import {PatientService } from '../../Service/patient.service';
 import { Patients } from 'src/app/models/Patient';
 import {ToasterService} from '../../core/ToasterService';
 import { ToasterPosition } from 'src/app/core/ToasterPosition';
+import { SelectAutocompleteComponent } from 'mat-select-autocomplete';
 
 @Component({
   selector: 'app-view-data',
@@ -37,7 +38,7 @@ export class ViewDataComponent implements OnInit {
     patientemail: new FormControl(null),
     race: new FormControl('',Validators.required),
     ethnicity: new FormControl('',Validators.required),
-    languagesKnown: new FormControl('',Validators.required),
+    // languagesKnown: new FormControl('',Validators.required),
     address: new FormControl(null,Validators.required),
     nomineeFirstName: new FormControl('',Validators.required),
     nomineeLastName : new FormControl('',Validators.required),   
@@ -54,7 +55,37 @@ export class ViewDataComponent implements OnInit {
     'allergy',
     'isfatal'
    ];
+ 
+    //#region Language Known Input
+@ViewChild(SelectAutocompleteComponent) multiSelect: SelectAutocompleteComponent;
+@ViewChild('autoComplete')  public langSelect:any;
+  options = [
+    {
+      display: 'English',
+      value: 'English'
+    }, {
+      display: 'French',
+      value: 'French'
+    }, {
+      display: 'Hindi',
+      value: 'Hindi'
+    }, {
+      display: 'German',
+      value: 'German'
+    }, {
+      display: 'Spanish',
+      value: 'Spanish'
+    }, {
+      display: 'Marathi',
+      value: 'Marathi'
+    }
+  ];
+  selectedOptions = [];
 
+  selected = this.selectedOptions;
+  showError = false;
+  errorMessage = '';
+  //#endregion
 
   constructor(private patientsvc:PatientService,private toaster:ToasterService) { }
 
@@ -100,7 +131,7 @@ export class ViewDataComponent implements OnInit {
     let operation:string="";
     console.log('save demographic done');
      this.patientDemographicData=new PatientDemographicData((this.demographicData.length > 0) ? this.demographicData[0].id : 0,this.userForm.value.race,this.userForm.value.ethnicity,
-      this.userForm.value.languagesKnown,this.userForm.value.address,this.userForm.value.nomineeFirstName
+     this.langSelect.displayString,this.userForm.value.address,this.userForm.value.nomineeFirstName
       ,this.userForm.value.nomineeLastName,this.userForm.value.nomineeEmail,this.userForm.value.nomineeRelationship,
       this.userForm.value.nomineeContact,(this.userForm.value.sameasabove == true)? this.userForm.value.address : this.userForm.value.nomineeAddress,this.userForm.value.portalaccess,1)
      
@@ -152,10 +183,13 @@ export class ViewDataComponent implements OnInit {
    (dr:PatientDemographicData[])=>{this.demographicData=dr;console.log(this.demographicData);
     if(this.demographicData.length > 0)
     {
+      //Convert Language string into array
+      this.selectedOptions=this.demographicData[0].languagesKnown.split(',');
+      
    this.userForm.patchValue({
     "race": this.demographicData[0].race,
     "ethnicity": this.demographicData[0].ethnicity,
-    "languagesKnown": this.demographicData[0].languagesKnown,
+    // "languagesKnown": this.demographicData[0].languagesKnown,
     "address": this.demographicData[0].address,
     "nomineeFirstName": this.demographicData[0].nomineeFirstName,
     "nomineeLastName" : this.demographicData[0].nomineeLastName,   
@@ -192,6 +226,20 @@ export class ViewDataComponent implements OnInit {
       functioncallbackFunction(){
         this.success=true;
       }
+
+      //#region Language Known Input
+      onToggleDropdown() {
+        this.multiSelect.toggleDropdown();
+      }
+    
+      getSelectedOptions(selected) {
+        this.selected = selected;
+      }
+    
+      onResetSelection() {
+        this.selectedOptions = [];
+      }
+      //#endregion
 
     ngOnInit(): void {
       this.loadPatientData();

@@ -7,7 +7,9 @@ export class Appointment{
         public fromtime:string="",
         public totime:string="",
         public drid:string="",
-        public patientid:string=""
+        public patientid:string="",
+        public isApproved:boolean,
+        public reason:string=""
              )
     {
         
@@ -36,4 +38,10 @@ export class Appointment{
 
   get Patientid() { return this.patientid };
   set Patientid(data: string) { this.patientid = data };
+
+  get IsApproved() { return this.isApproved };
+  set IsApproved(data: boolean) { this.isApproved = data };
+
+  get Reason() { return this.reason };
+  set Reason(data: string) { this.reason = data };
 }

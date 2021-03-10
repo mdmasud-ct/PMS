@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
                               this.fullname,
                               this.fg.value.contactno,
                               this.fg.value.address,
-                              this.fg.value.speciality,'Active','No',
+                              this.fg.value.speciality,'Active','No','',
                               this.fg.value.gender);
 
       debugger;
@@ -91,6 +91,7 @@ export class RegisterComponent implements OnInit {
       if(this.fg.invalid==false)
       { 
         this.spinner.show();
+        console.log(this.RegisterUser);
         this.ob = this.registersvc.SaveUserRegiterDatas(this.RegisterUser,operation)
         if(operation == "POST")
           operation="registered";

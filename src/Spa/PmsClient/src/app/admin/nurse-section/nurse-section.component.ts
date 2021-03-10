@@ -151,6 +151,7 @@ export class NurseSectionComponent implements OnInit {
       this.success=true;
     }
     receiveMessage($event) {
+      this.modalService.dismissAll();
       this.Getjson();
     }
 }
