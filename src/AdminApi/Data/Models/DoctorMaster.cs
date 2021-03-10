@@ -28,6 +28,11 @@ namespace AdminApi.Data.Models
         public DateTime? Dob { get; set; }
         public int? Age { get; set; }
         public string Gender { get; set; }
+        public string City { get; set; }
+        public string Title { get; set; }
+        public string Speciality { get; set; }
+        public string Address { get; set; }
+        public string PhoneNo { get; set; }
 
         public virtual AspNetUser UserLoginDetails { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }

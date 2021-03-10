@@ -298,6 +298,10 @@ namespace AdminApi.Data.AppDbContext
             {
                 entity.ToTable("DoctorMaster");
 
+                entity.Property(e => e.Address).HasMaxLength(255);
+
+                entity.Property(e => e.City).HasMaxLength(255);
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -335,6 +339,12 @@ namespace AdminApi.Data.AppDbContext
                     .IsUnicode(false);
 
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.PhoneNo).HasMaxLength(255);
+
+                entity.Property(e => e.Speciality).HasMaxLength(255);
+
+                entity.Property(e => e.Title).HasMaxLength(255);
 
                 entity.Property(e => e.UserLoginDetailsId)
                     .HasMaxLength(450)
