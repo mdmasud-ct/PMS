@@ -7,6 +7,9 @@ namespace AuthServer.Models
 {
 	public class UsersModel
 	{
+
+		public string loginId { get; set; }
+		
 		public string Id { get; set; }
 		
 		public string Title { get; set; }
@@ -21,7 +24,7 @@ namespace AuthServer.Models
 		
 		public string Role { get; set; }	
 		
-		public string PhoneNumber { get; set; }	
+		//public string PhoneNumber { get; set; }	
 		
 		public string Address { get; set; }	
 		
@@ -38,5 +41,10 @@ namespace AuthServer.Models
 		public string Password { get; set; }
 
 		public string Gender{ get; set; }
+
+		public string City{ get; set; }
+
+		public string ContactNo { get; set; }
+		
 	}
 }

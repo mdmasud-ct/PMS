@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 
 namespace AuthServer.Infrastructure.Models
@@ -31,7 +32,9 @@ namespace AuthServer.Infrastructure.Models
         public DateTime? Dob { get; set; }
         public int? Age { get; set; }
         public string Gender { get; set; }
-
+        public string City { get; set; }
+        public string Title { get; set; }
+        public string PhoneNo { get; set; }
         public virtual AspNetUsers UserLoginDetails { get; set; }
         public virtual ICollection<Notification> Notification { get; set; }
         public virtual ICollection<PatientAllergy> PatientAllergy { get; set; }

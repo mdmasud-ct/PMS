@@ -225,7 +225,6 @@ namespace AuthServer.Controllers
         [Route("api/modify")]
         //public ActionResult ChangePassword(UserModel model) {
         public async Task<IActionResult> ChangePassword([FromBody] UserModel model) {
-
             var currentuser = await _userManager.FindByNameAsync(model.Email);
             if (currentuser == null) {
                 return BadRequest(new Exception("Unable to fetch User Details. Please contact admin"));
@@ -306,7 +305,7 @@ namespace AuthServer.Controllers
                     }
                     else
                     {
-                        model.Id = res.Response;
+                        model.loginId = res.Response;
                         if (!string.IsNullOrEmpty(model.Role) && model.Role.ToLower().Equals("doctor"))
                             this._repo.AddDoctor(model);
                         else

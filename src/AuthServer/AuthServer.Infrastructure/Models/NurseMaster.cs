@@ -19,6 +19,10 @@ namespace AuthServer.Infrastructure.Models
         public DateTime? Dob { get; set; }
         public int? Age { get; set; }
         public string Gender { get; set; }
+        public string City { get; set; }
+        public string Title { get; set; }
+        public string Address { get; set; }
+        public string PhoneNo { get; set; }
 
         public virtual AspNetUsers UserLoginDetails { get; set; }
     }

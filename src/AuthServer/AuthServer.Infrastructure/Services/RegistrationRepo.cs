@@ -17,25 +17,45 @@ namespace AuthServer.Infrastructure.Services
 		
 		public void AddDoctor(UsersModel model)
 		{
-			if (!string.IsNullOrEmpty(model.Id))
+			if (!string.IsNullOrEmpty(model.loginId))
 			{
-				DoctorMaster doctor = new DoctorMaster
+				if (string.IsNullOrEmpty(model.Id))
 				{
-					EmailId = model.Email,
-					FirstName = model.FirstName,
-					LastName = model.LastName,
-					Dob = model.DOB,
-					IsActive = true,//by Default
-					UserLoginDetailsId = model.Id,
-					CreatedBy = model.CreatedBy,
-					ModifiedBy = model.UpdatedBy,
-					CreatedOn = DateTime.Now,
-					ModifiedOn = DateTime.Now,
-					Gender = model.Gender,
-					Age = AgeCalculator(model.DOB),
-					DoctorDisplayId = GetDoctorId()
-				};
-				ctx.DoctorMaster.Add(doctor);
+					DoctorMaster doctor = new DoctorMaster
+					{
+						EmailId = model.Email,
+						FirstName = model.FirstName,
+						LastName = model.LastName,
+						Dob = model.DOB,
+						IsActive = true,//by Default
+						UserLoginDetailsId = model.loginId,
+						CreatedBy = model.CreatedBy,
+						ModifiedBy = model.UpdatedBy,
+						CreatedOn = DateTime.Now,
+						ModifiedOn = DateTime.Now,
+						Gender = model.Gender,
+						Age = AgeCalculator(model.DOB),
+						DoctorDisplayId = GetDoctorId(),
+						Title = model.Title,
+						Address = model.Address,
+						City = model.City,
+						PhoneNo = model.ContactNo,
+						Speciality = model.Speciality,
+						
+					};
+					ctx.DoctorMaster.Add(doctor);
+				}
+				else {
+					var doctor = ctx.DoctorMaster.Where(x => x.Id.ToString() == model.Id).FirstOrDefault();
+					if (doctor != null) {
+						doctor.FirstName = model.FirstName;
+						doctor.LastName = model.LastName;
+						doctor.Address = model.Address;
+						doctor.City = model.City;
+						doctor.PhoneNo = model.ContactNo;
+
+					}
+ 				}
 				ctx.SaveChanges();
 			}
 			else {
@@ -61,7 +81,11 @@ namespace AuthServer.Infrastructure.Services
 					ModifiedOn = DateTime.Now,
 					Gender = model.Gender,
 					Age = AgeCalculator(model.DOB),
-					NurseDisplayId = GetNurseId()
+					NurseDisplayId = GetNurseId(),
+					Title = model.Title,
+					Address = model.Address,
+					City = model.City,
+					PhoneNo = model.ContactNo,
 				};
 				ctx.NurseMaster.Add(nurse);
 				ctx.SaveChanges();
@@ -90,10 +114,12 @@ namespace AuthServer.Infrastructure.Services
 					ModifiedOn = DateTime.Now,
 					Gender = model.Gender,
 					Address = model.Address,
-					ContactNumber = model.PhoneNumber,
+					//ContactNumber = model.PhoneNumber,
 					Age = AgeCalculator(model.DOB),
 					PatientDisplayId = GetPatientId(),
-					
+					Title = model.Title,
+					City = model.City,
+					PhoneNo = model.ContactNo,
 				};
 				ctx.PatientMaster.Add(patient);
 				ctx.SaveChanges();
