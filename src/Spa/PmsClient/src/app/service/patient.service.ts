@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, observable, pipe} from 'rxjs';
 import {map, catchError} from 'rxjs/operators';
 import {PatientDemographicData} from '../Models/PatientDemographicData';
@@ -21,45 +21,62 @@ export class PatientService extends BaseService{
    }
 
  
-  public GetPatientAllergyDataByID(PatientID: number):Observable<any>
+  public GetPatientAllergyDataByID(userName: string):Observable<any>
   {
-      return this.httpsvc.get<PatientAllergy>("http://localhost:3000/Allergy?patientid="+PatientID);
+      return this.httpsvc.get<PatientAllergy>(this.config.patientManagementAPI+"/Patient/getallergy?userName="+userName);
   }
 
-  public GetPatientDemographicDataByID(PatientID: number):Observable<any>
+  // public GetPatientDemographicDataByID(PatientID: number):Observable<any>
+  // {
+  //     return this.httpsvc.get<PatientDemographicData>("http://localhost:3000/DemographicData?patientid="+PatientID);
+  // }
+  public GetPatientDemographicDataByID(userName: string):Observable<any>
   {
-      return this.httpsvc.get<PatientDemographicData>("http://localhost:3000/DemographicData?patientid="+PatientID);
+    debugger;
+    const headers={'Access-Control-Allow-Origin':'http://localhost:54877',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'};
+       return this.httpsvc.get<PatientDemographicData>(this.config.patientManagementAPI+"/Patient/getdemographic?userName="+userName);
+      // return this.httpsvc.get<PatientDemographicData>("https://localhost:44326/api/department");
   }
 
-  public GetPatientDataByID(PatientID: number):Observable<any>
+
+  public GetPatientDataByID(userName: string):Observable<any>
   {
-      return this.httpsvc.get<Patients>("http://localhost:3000/Patient?id="+PatientID);
+      return this.httpsvc.get<any>(this.config.patientManagementAPI+"/Patient/getpatient?userName="+userName);
   }
 
-  public SaveAllergyData(pal:PatientAllergy):Observable<any>
+  public GetAllergyMaster():Observable<any>
+  {
+      return this.httpsvc.get<any>(this.config.patientManagementAPI+"/Patient/getallergydata");
+  }
+
+  public SaveAllergyData(userName:string,pal:PatientAllergy):Observable<any>
   {
     console.log("service.SaveAllergyData() hits");
-    const headers={'content-type':'application/json'};
-    if(pal.Patientid >= 0)
+    //  const headers={'content-type':'application/json'};
+    let header = new HttpHeaders({
+      'Content-Type': 'application/json'
+     });
+    if(userName != "")
     {
-      return this.httpsvc.post<PatientAllergy>("http://localhost:3000/Allergy",JSON.stringify(pal),{'headers':headers});
+      return this.httpsvc.post<PatientAllergy>(this.config.patientManagementAPI+"/Patient/addallergy?userName="+userName,JSON.stringify(pal),{headers:header}).pipe(catchError(this.handleError));
     }
-    return null;
   }
 
-  public SaveDemographicData(pdgd:PatientDemographicData,operation:string):Observable<any>
+  public SaveDemographicData(userName:string,pdgd:PatientDemographicData,operation:string):Observable<any>
   {
     debugger;
     console.log("service.SaveAllergyData() hits");
-    const headers={'content-type':'application/json'};
-    if(pdgd.Patientid >= 0)
+    let header = new HttpHeaders({
+      'Content-Type': 'application/json'
+     });
+    if(pdgd.patientid >= 0)
     {      
       if(operation==="POST")
-      return this.httpsvc.post<PatientDemographicData>("http://localhost:3000/DemographicData",JSON.stringify(pdgd),{'headers':headers});
+      return this.httpsvc.post<PatientDemographicData>(this.config.patientManagementAPI+"/Patient/adddemographic?userName="+userName,JSON.stringify(pdgd),{'headers':header});
       else
-      return this.httpsvc.patch<PatientDemographicData>("http://localhost:3000/DemographicData/"+pdgd.id,JSON.stringify(pdgd),{'headers':headers});
+      return this.httpsvc.patch<PatientDemographicData>(this.config.patientManagementAPI+"/Patient/updatedemographic?userName="+userName,JSON.stringify(pdgd),{'headers':header});
     }
-    return null;
   }
   public SavePatientVisitData(p:PatientVisit,operation:string):Observable<any>
     {

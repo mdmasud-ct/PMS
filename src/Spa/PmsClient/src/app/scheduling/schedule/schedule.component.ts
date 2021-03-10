@@ -12,7 +12,8 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ScheduleComponent implements OnInit {
 public ob:Observable<Doctors[]>;
-public doctorsdata: Doctors[]=[];
+// public doctorsdata: Doctors[]=[];
+public doctorsdata: any;
 public doctorinfo:Doctors;
 public filterStr:string="";
 public drIdForAppointment:number;
@@ -24,10 +25,11 @@ public drIdForAppointment:number;
  public rbGender:string=""; 
 
   City: string[] = [
-    'Mumbai', 'Thane', 'Kalyan', 'Andheri', 'Borivali' ];
+    'Mumbai', 'Thane', 'Kalyan', 'Andheri', 'Borivali','Dadar','Sion','Kurla','Ghatkopar','Mulund','Dombivli'
+    ,'Airoli','Turbhe','Belapur','Panvel','Bandra','Malad','Virar','Pawai' ];
 
     speciality: string[] = [
-      'Cardiologist', 'Dentist', 'Gynacologist', 'Paediatrician', 'Radiologist' ];  
+      'Allergist', 'Cardiologist', 'Dentist', 'Dermatologist', 'Gynecologist','Neurologist','Pediatrician','Psychiatrist' ];  
 
   constructor(private doctorservice:DoctorServiceService,config: NgbModalConfig, 
     private modalService: NgbModal ) {
@@ -42,7 +44,10 @@ public GetAllDoctor():void
   console.log('ts.GetAllDoctors called');
 this.ob=this.doctorservice.GetAllDoctors();
 this.ob.subscribe(
-  (dr:Doctors[])=>{this.doctorsdata=dr;console.log(this.doctorsdata)},
+  (dr:any)=>{
+    this.doctorsdata=dr;
+    console.log(this.doctorsdata)
+  },
   (error:any)=>console.log('fails to load doctors data')
   );
 }
@@ -76,7 +81,7 @@ console.log(this.filterStr);
 
 this.ob=this.doctorservice.GetFilteredDoctors(this.filterStr);
 this.ob.subscribe(
-  (dr:Doctors[])=>{this.doctorsdata=dr;console.log(this.doctorsdata)},
+  (dr:any)=>{this.doctorsdata=dr;console.log(this.doctorsdata)},
   (error:any)=>console.log('fails to load doctors data')
   );
 

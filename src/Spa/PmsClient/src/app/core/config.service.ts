@@ -7,7 +7,7 @@ export class ConfigService {
 
   constructor() { }
   get authApiURI() {
-    return 'http://localhost:52778/api';
+    return 'http://localhost:63423/api';
   }    
  
   get resourceApiURI() {
@@ -15,6 +15,12 @@ export class ConfigService {
   }
   get tempResourseAPI(){
     return 'http://localhost:3000';
+  }
+  get patientManagementAPI(){
+    return 'http://localhost:54877/api';
+  }
+  get scheduleManagementAPI(){
+    return 'http://localhost:56207/api';
   }
 }
 

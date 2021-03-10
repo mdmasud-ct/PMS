@@ -31,19 +31,27 @@
                 </div>
             </div>
         </div>
-        <div class="form-group col-xl-6">
+        <div class="form-group">
+            <div class="row">
+        <div class="col-xl-6">
             <label for="from">From: <span class="asterisk"> *</span></label>
             <input type="time" class="form-control" name="from" formControlName="fromtime">
             <span class="asterisk" *ngIf="userForm.get('fromtime').touched && userForm.get('fromtime').errors?.required">
                 From time is required!
             </span>
         </div>
-        <div class="form-group col-xl-6">
+        <div class="col-xl-6">
             <label for="to">To: <span class="asterisk"> *</span></label>
             <input type="time" class="form-control" name="to" formControlName="totime">
             <span class="asterisk" *ngIf="userForm.get('totime').touched && userForm.get('totime').errors?.required">
                 To Time is required!
             </span>
+        </div>
+            </div>
+        </div>
+        <div class="form-group row col-xl-12">
+            <label for="desc">Description: </label>
+            <textarea class="form-control" name="desc" formControlName="description"></textarea>
         </div>
         <div class="form-group">            
             <button id="btnSubmit" class="btn" [disabled]="!userForm.valid">Book Appointment</button>

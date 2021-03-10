@@ -62,7 +62,8 @@ export class ToolbarComponent implements OnInit,OnDestroy {
     //#region Notification
   loadNotifications()
   {
-    this.ob = this.notificationsvc.GetNotificationsByID(1);
+    debugger;
+    this.ob = this.notificationsvc.GetNotificationsByID(this.authService.email);
     this.ob.subscribe(
       data => { 
         console.log("Output");
@@ -78,11 +79,11 @@ export class ToolbarComponent implements OnInit,OnDestroy {
   {
     console.log(notificationId);
    console.log("ts.setIsSeenNotification() hits"); 
-  let obj:any={};
-  obj.id=notificationId,
-  obj.isSeen=true;
+  // let obj:any={};
+  // obj.id=notificationId,
+  // obj.isSeen=true;
   
-   this.ob =this.notificationsvc.SetIsSeenNotification(obj);
+   this.ob =this.notificationsvc.SetIsSeenNotification(notificationId);
  
    this.ob.subscribe(
      dataa => { 

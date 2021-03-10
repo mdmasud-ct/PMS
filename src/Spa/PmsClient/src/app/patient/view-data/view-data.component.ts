@@ -8,6 +8,7 @@ import { Patients } from 'src/app/models/Patient';
 import {ToasterService} from '../../core/ToasterService';
 import { ToasterPosition } from 'src/app/core/ToasterPosition';
 import { SelectAutocompleteComponent } from 'mat-select-autocomplete';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-view-data',
@@ -27,6 +28,8 @@ export class ViewDataComponent implements OnInit {
   public isFatal:boolean=false;
   public isUseSameAddress:boolean=false;
   public isPortalAccess:boolean=false;
+  public allergyMaster:any;
+  public res: any;
   // public rbNomineePortalAccess:string="false"; 
   success: boolean;
 
@@ -87,17 +90,17 @@ export class ViewDataComponent implements OnInit {
   errorMessage = '';
   //#endregion
 
-  constructor(private patientsvc:PatientService,private toaster:ToasterService) { }
+  constructor(private patientsvc:PatientService,private toaster:ToasterService,private authService: AuthService) { }
 
   
 
-  public SavePatientAllergy(allergy:string,event:Event):void{
+  public SavePatientAllergy(allergy:string):void{
     debugger;
     console.log('Add allergy done');
-    if(allergy != "")
+    if(typeof allergy!='undefined')
     {
       this.patientAllergyData=new PatientAllergy(0,allergy,this.isFatal,1);     
-      this.ob=this.patientsvc.SaveAllergyData(this.patientAllergyData);
+      this.ob=this.patientsvc.SaveAllergyData(this.authService.email,this.patientAllergyData);
       this.ob.subscribe(
         dataa => { 
           console.log(dataa);   
@@ -109,12 +112,11 @@ export class ViewDataComponent implements OnInit {
         else{
           alert('Allergy type cannot be empty');
         }        
-    event.preventDefault();
   }
 
   public GetPatientAllergyData():void
   {
-    this.ob = this.patientsvc.GetPatientAllergyDataByID(1);
+    this.ob = this.patientsvc.GetPatientAllergyDataByID(this.authService.email);
     this.ob.subscribe(
       data => { 
         console.log("Output");
@@ -130,12 +132,12 @@ export class ViewDataComponent implements OnInit {
     debugger;
     let operation:string="";
     console.log('save demographic done');
-     this.patientDemographicData=new PatientDemographicData((this.demographicData.length > 0) ? this.demographicData[0].id : 0,this.userForm.value.race,this.userForm.value.ethnicity,
+     this.patientDemographicData=new PatientDemographicData((this.demographicData["id"] > 0) ? this.demographicData["id"] : 0,this.userForm.value.race,this.userForm.value.ethnicity,
      this.langSelect.displayString,this.userForm.value.address,this.userForm.value.nomineeFirstName
       ,this.userForm.value.nomineeLastName,this.userForm.value.nomineeEmail,this.userForm.value.nomineeRelationship,
       this.userForm.value.nomineeContact,(this.userForm.value.sameasabove == true)? this.userForm.value.address : this.userForm.value.nomineeAddress,this.userForm.value.portalaccess,1)
      
-      if(this.demographicData.length > 0)
+      if(this.demographicData["id"] > 0)
       {
           operation="PATCH";
       }
@@ -143,13 +145,17 @@ export class ViewDataComponent implements OnInit {
       {
         operation="POST";
       }
-      this.ob=this.patientsvc.SaveDemographicData(this.patientDemographicData,operation)
+      this.ob=this.patientsvc.SaveDemographicData(this.authService.email,this.patientDemographicData,operation)
       this.ob.subscribe(
         dataa => { 
-          console.log(dataa); 
-          //alert('Data Saved')          
-          this.success = true;
-          this.toaster.success("Success","Data Saved",ToasterPosition.topFull,this.functioncallbackFunction)
+          this.res = dataa;
+          console.log(this.res);
+          if(this.res.code=="1"){ 
+            this.success=true;
+            this.toaster.success("Success",this.res.response,ToasterPosition.topFull);
+          }else{
+            this.toaster.error("Error",this.res.response,ToasterPosition.topFull);
+          }
           this.ngOnInit();
            },
         (error: any) => {this.toaster.error('Error',error,ToasterPosition.topFull);
@@ -159,17 +165,18 @@ export class ViewDataComponent implements OnInit {
 
   loadPatientData()
   {
-    this.ob2=this.patientsvc.GetPatientDataByID(1);
+    this.ob2=this.patientsvc.GetPatientDataByID(this.authService.email);
     this.ob2.subscribe(
-      (data:Patients[])=>{
-        if(data.length > 0)
+      (data:any)=>{
+        debugger;
+        if(data["firstname"] != "")
         {
           this.userForm.patchValue({
-            "patientfirstname": data[0].firstname,
-            "patientlastname": data[0].lastname,
-            "patientdob": data[0].dob,
-            "patientcontact": data[0].contact,
-            "patientemail": data[0].email
+            "patientfirstname": data["firstname"],
+            "patientlastname": data["lastname"],
+            "patientdob": data["dob"],
+            "patientcontact": data["contact"],
+            "patientemail": data["email"]
           })
         }
       }
@@ -178,31 +185,43 @@ export class ViewDataComponent implements OnInit {
 
   loadDemographicData()
   {
-   this.ob1=this.patientsvc.GetPatientDemographicDataByID(1);
+   this.ob1=this.patientsvc.GetPatientDemographicDataByID(this.authService.email);
    this.ob1.subscribe(
    (dr:PatientDemographicData[])=>{this.demographicData=dr;console.log(this.demographicData);
-    if(this.demographicData.length > 0)
+    debugger;
+    if(this.demographicData["id"] > 0)
     {
       //Convert Language string into array
-      this.selectedOptions=this.demographicData[0].languagesKnown.split(',');
+      this.selectedOptions=this.demographicData["languagesKnown"].split(',');
       
    this.userForm.patchValue({
-    "race": this.demographicData[0].race,
-    "ethnicity": this.demographicData[0].ethnicity,
+    "race": this.demographicData["race"],
+    "ethnicity": this.demographicData["ethnicity"],
     // "languagesKnown": this.demographicData[0].languagesKnown,
-    "address": this.demographicData[0].address,
-    "nomineeFirstName": this.demographicData[0].nomineeFirstName,
-    "nomineeLastName" : this.demographicData[0].nomineeLastName,   
-    "nomineeEmail" : this.demographicData[0].nomineeEmail,   
-    "nomineeRelationship" : this.demographicData[0].nomineeRelationship,   
-    "nomineeContact" : this.demographicData[0].nomineeContact,   
-    "nomineeAddress" : this.demographicData[0].nomineeAddress,
-    "portalaccess" : this.demographicData[0].isNeedportalAccess
+    "address": this.demographicData["address"],
+    "nomineeFirstName": this.demographicData["nomineeFirstName"],
+    "nomineeLastName" : this.demographicData["nomineeLastName"],   
+    "nomineeEmail" : this.demographicData["nomineeEmail"],   
+    "nomineeRelationship" : this.demographicData["nomineeRelationship"],   
+    "nomineeContact" : this.demographicData["nomineeContact"],   
+    "nomineeAddress" : this.demographicData["nomineeAddress"],
+    "portalaccess" : this.demographicData["isNeedportalAccess"]
    })
   }
  },
  (error:any)=>console.log('fails to load doctors data')
  );
+  }
+
+  loadAllergyMaster()
+  {
+    this.ob2=this.patientsvc.GetAllergyMaster();
+    this.ob2.subscribe(
+      (data:any)=>{
+        debugger;
+      this.allergyMaster=data;
+      }
+    )
   }
 
   IsFatalCheckEvent(event){
@@ -244,6 +263,7 @@ export class ViewDataComponent implements OnInit {
     ngOnInit(): void {
       this.loadPatientData();
       this.loadDemographicData();
+      this.loadAllergyMaster();
       this.GetPatientAllergyData();
     }
 

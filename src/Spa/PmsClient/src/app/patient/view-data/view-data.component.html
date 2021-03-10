@@ -134,9 +134,18 @@
                 <div class="form-group">
                     <div class="row">
                         <!-- <div class="col-xl-4"><label for="allergytype">Type of allergy: </label><input type="text" class="form-control" name="allergytype" placeholder="" [(ngModel)]="allergyName"></div> -->
-                        <div class="col-sm-4"><label for="allergytype">Type of allergy: </label><input type="text" class="form-control" name="allergytype" placeholder="" #allergyInput></div>
+                        <div class="col-sm-4"><label for="allergytype">Type of allergy: </label>
+                            <!-- <input type="text" class="form-control" name="allergytype" placeholder="" #allergyInput> -->
+                            <mat-form-field appearance="fill">
+                                <mat-label>Allergy</mat-label>
+                                <mat-select #allergyInput>
+                                  <mat-option>None</mat-option>
+                                  <mat-option *ngFor="let allergy of allergyMaster" [value]="allergy.allergyName">{{allergy.allergyName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                         <div class="col-sm-4"><input type="checkbox" name="sameasabove" (change)="IsFatalCheckEvent($event)"> Is allergy fatal </div>
-                        <div class="col-sm-4"><button type="button" class="btn" id="btnSubmit" (click)="SavePatientAllergy(allergyInput.value, $event)">Add</button></div>
+                        <div class="col-sm-4"><button type="button" class="btn" id="btnSubmit" (click)="SavePatientAllergy(allergyInput.value)">Add</button></div>
                     </div>
                 </div>
                 <div class="form-group">

@@ -24,8 +24,8 @@
         <div class="col-xl-3">
             <label for="role">Gender: </label><br />
             <mat-radio-group aria-label="Select an option" (change)="onChange($event)">
-              <mat-radio-button value="Male">Male</mat-radio-button>
-              <mat-radio-button value="Female">Female</mat-radio-button>
+              <mat-radio-button value="M">Male</mat-radio-button>
+              <mat-radio-button value="F">Female</mat-radio-button>
             </mat-radio-group>
         </div>
         <div class="col-xl-3">
@@ -41,17 +41,17 @@
       <!-- <h1>Doctor Data {{dr.id}} "{{dr.firstname}} {{dr.lastname}}"</h1> -->
 <table class="col-sm-12" style="width: 100%;">
   <tr>
-    <td class="cardcol1"><h3>Name: Dr. {{dr.firstname}} {{dr.lastname}}</h3></td>
+    <td class="cardcol1"><h3>Name: Dr. {{dr.firstName}} {{dr.lastName}}</h3></td>
     <td class="cardcol2"><h3>City: {{dr.city}}</h3></td>
     <td class="cardcol3"></td>
   </tr>
   <tr>
-    <td class="cardcol1"><h3>Contact: {{dr.contact}}</h3></td>
+    <td class="cardcol1"><h3>Contact: {{dr.phoneNo}}</h3></td>
     <td class="cardcol2"><h3>Speciality: {{dr.speciality}}</h3></td>
     <td class="cardcol3"></td>
   </tr>
   <tr>
-    <td class="cardcol1"><h3>Email: {{dr.email}}</h3></td>
+    <td class="cardcol1"><h3>Email: {{dr.emailId}}</h3></td>
     <td class="cardcol2"><h3>Gender: {{dr.gender}}</h3></td>
     <td class="cardcol3"><button class="btn btn-success" style="float: right;" (click)="open(content,dr.id)">Book Appointment</button></td>
   </tr>
