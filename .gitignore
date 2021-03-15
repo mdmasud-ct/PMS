@@ -33,3 +33,5 @@ packages/
 */obj
 *.vs
 *obj/
+*obj/
+*bin/
