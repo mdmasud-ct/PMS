@@ -72,9 +72,7 @@ export class DashboardComponent implements OnInit {
       /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
       //console.log(this.auth.isAuthenticated());
       if(!this.auth.isAuthenticated()){
-        //alert("HI")
         this.router.navigate(["/login"]);
-        //this.router.navigate(['/dashboard']);  
       }
       const dataDailySalesChart: any = {
           labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],

@@ -1,5 +1,6 @@
 using AdminApi.Data.AppDbContext;
 using AdminApi.Data.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AdminApi
@@ -32,7 +34,24 @@ namespace AdminApi
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(o =>
+			{
+				o.Authority = "http://localhost:60970";
+				//o.Authority = Configuration.GetValue<string>("authority");
+				o.Audience = "resourceapi";
+				o.RequireHttpsMetadata = false;
+				
+			});
 
+			services.AddAuthorization(options =>
+			{
+				options.AddPolicy("ApiReader", policy => policy.RequireClaim("scope", "api.read"));
+				options.AddPolicy("Role", policy => policy.RequireClaim(ClaimTypes.Role, "consumer"));
+			});
 			services.AddControllers();
 			services.AddDbContext<PMSYSTEMContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
@@ -58,7 +77,7 @@ namespace AdminApi
 			}
 
 			//app.UseHttpsRedirection();
-
+			
 			app.UseExceptionHandler(builder =>
 			{
 				builder.Run(async context =>
@@ -76,9 +95,10 @@ namespace AdminApi
 			});
 			app.UseRouting();
 
-			app.UseAuthorization();
 
 			app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 
 			app.UseEndpoints(endpoints =>

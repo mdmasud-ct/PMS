@@ -49,43 +49,66 @@ export class RegisterService extends BaseService {
     
   }
   //http://localhost:3000/Doctor?DrID=102
-  public GetDoctorJsonDatas():Observable<any>
+  public GetDoctorJsonDatas(token:string,):Observable<any>
   {
-      return this.httpSVC.get<doctorGrid>(this.config.adminApiUri + "/Doctors");
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token
+      })
+    };
+    console.log(httpOptions);
+    return this.httpSVC.get<doctorGrid>(this.config.adminApiUri + "/Doctors",httpOptions).pipe(catchError(this.handleError));
   }
-  public GetNurseJsonDatas():Observable<any>
+  public GetNurseJsonDatas(token:string):Observable<any>
   {   
-      //return this.httpSVC.get<Nurse>(this.config.tempResourseAPI + "/Nurses");
-      return this.httpSVC.get<Nurse>(this.config.adminApiUri + "/Nurses");
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token
+      })
+    };
+      return this.httpSVC.get<Nurse>(this.config.adminApiUri + "/Nurses",httpOptions).pipe(catchError(this.handleError));
   }
-  public GetPatientJsonDatas():Observable<any>
+  public GetPatientJsonDatas(token:string):Observable<any>
   {
-      //return this.httpSVC.get<Patients>(this.config.tempResourseAPI+ "/Patient");
-      return this.httpSVC.get<Patients>(this.config.adminApiUri+ "/Patients");
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token
+      })
+    };
+      return this.httpSVC.get<Patients>(this.config.adminApiUri+ "/Patients",httpOptions).pipe(catchError(this.handleError));
   }
 
   // Get data by Id
-  public GetDoctorJsonDatasByID(DrID: number):Observable<any>
+  public GetDoctorJsonDatasByID(DrID: number,token:string):Observable<any>
   {   
-      // return this.httpSVC.get<Doctor>("http://localhost:3000/Doctors?id="+DrID);
-      return this.httpSVC.get<doctorGrid>(this.config.adminApiUri+ "/Doctor/"+DrID);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token
+      })
+    };
+      return this.httpSVC.get<doctorGrid>(this.config.adminApiUri+ "/Doctor/"+DrID,httpOptions).pipe(catchError(this.handleError));
   }
-  public GetNurseJsonDatasByID(NurseID: number):Observable<any>
+  public GetNurseJsonDatasByID(NurseID: number,token:string):Observable<any>
   {   
-      // return this.httpSVC.get<Nurse>("http://localhost:3000/Nurses?id="+NurseID);
-      return this.httpSVC.get<Nurse>(this.config.tempResourseAPI+ "/Nurses?id="+NurseID);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token
+      })
+    };
+      
+      return this.httpSVC.get<Nurse>(this.config.tempResourseAPI+ "/Nurses?id="+NurseID,httpOptions).pipe(catchError(this.handleError));
   }
   public GetPatientJsonDatasByID(PatientID: number):Observable<any>
   {
       // return this.httpSVC.get<Patient>("http://localhost:3000/Patients?id="+PatientID);
       return this.httpSVC.get<Patients>(this.config.tempResourseAPI+ "/Patient?id="+PatientID);
   }
-  // private handleError(error: any)
-  // {
-  //   console.error(error);                                       //Created a function to handle and log errors, in case
-  //   return throwError(error);
-  // }
-
+  
 // Delete data by Id
   public DeleteDoctorJsonDatasByID(DrID: number):Observable<any>
   {

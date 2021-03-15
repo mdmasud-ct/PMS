@@ -1,5 +1,5 @@
 import { Component,Input, OnInit,Output,EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { FormGroup} from '@angular/forms';
 import { FormControl} from '@angular/forms';
 import { Validators} from '@angular/forms';
@@ -18,10 +18,13 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { isNullOrUndefined } from 'util';
+import { AuthService } from '../../core/auth.service';
+import { DatePipe } from '@angular/common'
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  providers:[DatePipe]
 })
 
 export class RegisterComponent implements OnInit {
@@ -61,7 +64,7 @@ export class RegisterComponent implements OnInit {
     gender: new FormControl('',[Validators.required]),
     id:new FormControl('')
   });
-  constructor(private registersvc: RegisterService,private toaster:ToasterService,private router:Router, private spinner: NgxSpinnerService) { }
+  constructor(private registersvc: RegisterService,private toaster:ToasterService,private router:Router, private spinner: NgxSpinnerService,private auth:AuthService,private datepipe:DatePipe) { }
   public SavePractitionerData(): void
   {
       let operation:string = "";
@@ -129,7 +132,7 @@ getToday(): string {
 loadNrData(nrId:number)
  {
    console.log('LoadData'+this.nrId);
-  this.obnr=this.registersvc.GetNurseJsonDatasByID(this.nrId);
+  this.obnr=this.registersvc.GetNurseJsonDatasByID(this.nrId,this.auth.authorizationHeaderValue);
   this.obnr.subscribe(
     (dr:Nurse[])=>{this.nursedata=dr;console.log(this.nursedata)
       console.log(this.nursedata[0])
@@ -138,7 +141,7 @@ loadNrData(nrId:number)
       "firstname": this.nursedata[0].firstname,
       "lastname": this.nursedata[0].lastname,
       "email":this.nursedata[0].EmailID,
-      "contactno":this.nursedata[0].ContactNo,
+      "phoneno":this.nursedata[0].phoneNo,
       "address":this.nursedata[0].Address,
       "speciality":this.nursedata[0].Specialties,
       "dob":this.nursedata[0].Dob
@@ -149,22 +152,23 @@ loadNrData(nrId:number)
  }
  loadDrData(drId:number)
  {
-   this.ob = this.registersvc.GetDoctorJsonDatasByID(drId)
+   this.ob = this.registersvc.GetDoctorJsonDatasByID(drId,this.auth.authorizationHeaderValue)
    this.ob.pipe(finalize(()=>{
        this.spinner.hide();
    })).subscribe(
    data => {
      this.UserData= data;
      console.log(this.UserData)
+     //this.userData.dob = this.datepipe.transform(this.userData.dob,'yyyy-MM-dd'); 
      this.fg.patchValue({
       "title":      this.UserData.title,
       "firstname":  this.UserData.firstName,
       "lastname":   this.UserData.lastName,
       "email":      this.UserData.emailId,
-      "contactno":  this.UserData.ContactNo,
+      "contactno":  this.UserData.phoneNo,
       "address":    this.UserData.address,
       "speciality": this.UserData.speciality,
-      "dob":        this.UserData.Dob,
+      "dob":        this.datepipe.transform(this.UserData.dob,'yyyy-MM-dd') ,
       "gender":     this.UserData.gender,
        "id":        this.UserData.id 
    });

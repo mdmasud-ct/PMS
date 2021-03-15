@@ -6,7 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 import { BaseService } from "./base.service";
 import { ConfigService } from './config.service';
 import { RouterOutlet } from '@angular/router';
-
+import decode from 'jwt-decode';
+import { analytics } from 'googleapis/build/src/apis/analytics';
 @Injectable({
   providedIn: 'root'
 })
@@ -54,7 +55,15 @@ export class AuthService  extends BaseService{
   isAuthenticated(): boolean {
     return this.user != null && !this.user.expired;
   }
-
+  get userId():string{
+    if(this.isAuthenticated()){
+      let payload:any;
+      payload  = decode(this.authorizationHeaderValue);
+      return payload.sub;
+    }
+    return "";
+  }
+  
   get authorizationHeaderValue(): string {
     return `${this.user.token_type} ${this.user.access_token}`;
   }

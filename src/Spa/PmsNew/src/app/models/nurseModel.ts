@@ -7,7 +7,7 @@ export class Nurse{
         public FullName:string ="",
         public Dob:string="",
         public EmailID:string="",
-        public ContactNo:number=0,
+        public phoneNo:number=0,
         public Address:string="",
         public Status:string = "" ,
         public Blocked_Unblocked:string = "",

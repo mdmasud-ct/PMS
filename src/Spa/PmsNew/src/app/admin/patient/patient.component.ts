@@ -12,7 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { Patient } from 'app/models/patientModel';
 import { isThisTypeNode } from 'typescript';
-
+import { AuthService } from '../../core/auth.service';
 @Component({
   selector: 'app-patient',
   templateUrl: './patient.component.html',
@@ -30,7 +30,7 @@ export class PatientComponent implements OnInit {
   public PatientData: Patients[]= [];
   public dataSourcePatientData: Patients[]= [];
   constructor(config: NgbModalConfig, private modalService: NgbModal
-    , private registerService: RegisterService,private toaster:ToasterService) {
+    , private registerService: RegisterService,private toaster:ToasterService,private auth:AuthService) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
@@ -63,7 +63,7 @@ export class PatientComponent implements OnInit {
 
   public Getjson():void
   {
-    this.ob = this.registerService.GetPatientJsonDatas()
+    this.ob = this.registerService.GetPatientJsonDatas(this.auth.authorizationHeaderValue)
     this.ob.subscribe(
       data => { 
         console.log("Output");

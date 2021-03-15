@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes,CanActivate } from '@angular/router';
 
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
@@ -15,23 +15,28 @@ import { PatientComponent } from '../../admin/patient/patient.component';
 import { LoginComponent } from '../../account/login/login.component';
 import { PatientRegisterComponent } from '../../account/patient-register/patient-register.component';
 import { ChangepasswordComponent } from 'app/changepassword/changepassword.component';
+import { AuthGuard } from 'app/core/auth.guard';
+
 export const AdminLayoutRoutes: Routes = [
     // {
     //   path: '',
     //   children: [ {
     //     path: 'dashboard',
     //     component: DashboardComponent
-    // }]}, {
-    // path: '',
-    // children: [ {
-    //   path: 'userprofile',
-    //   component: UserProfileComponent
-    // }]
-    // }, {
+    // }]},
+    {
+    path: '',
+    children: [ {
+      path: 'user-profile',
+      component: UserProfileComponent,
+      canActivate:[AuthGuard]
+    }]
+    },
+     //{
     //   path: '',
     //   children: [ {
     //     path: 'icons',
-    //     component: IconsComponent
+    //     component: IconsComnpm install --save jwt-decodeponent
     //     }]
     // }, {
     //     path: '',
@@ -59,7 +64,7 @@ export const AdminLayoutRoutes: Routes = [
     //     }]
     // }
     { path: 'dashboard',      component: DashboardComponent },
-    { path: 'user-profile',   component: UserProfileComponent },
+    //{ path: 'user-profile',   component: UserProfileComponent },
     { path: 'table-list',     component: TableListComponent },
     { path: 'typography',     component: TypographyComponent },
     { path: 'icons',          component: IconsComponent },

@@ -19,10 +19,13 @@ namespace AuthServer
         {
             return new List<ApiResource>
             {
-                new ApiResource("resourceapi", "Resource API")
-                {
-                    Scopes = {new Scope("api.read")}
-                }
+				new ApiResource("resourceapi", "Resource API")
+				{
+					Scopes = {new Scope("api.read") }
+				},
+				new ApiResource("adminapi","Admin Api"){
+				    Scopes={ new Scope("api.read openid") }
+                },
             };
         }
 
@@ -35,7 +38,7 @@ namespace AuthServer
                     ClientId = "angular_spa",
                     ClientName = "Angular SPA",
                     AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowedScopes = { "openid", "profile", "email", "api.read" },
+                    AllowedScopes = { "openid", "profile", "email", "api.read"},
                     RedirectUris = {"http://localhost:4200/auth-callback"},
                     PostLogoutRedirectUris = {"http://localhost:4200/"},
                     AllowedCorsOrigins = {"http://localhost:4200"},

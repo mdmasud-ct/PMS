@@ -19,6 +19,8 @@ import { data } from 'jquery';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { doctorGrid } from 'app/models/doctorGrid';
+import { AuthService } from 'app/core/auth.service';
+
 class DataTablesResponse {
   data: any[];
   draw: number;
@@ -45,7 +47,7 @@ interface doctorGridM{
 export class DoctorComponent implements OnInit {
 
   value = '';
-  private UserData: doctorGrid;
+  public UserData: doctorGrid;
   private DeleteUserData: any;
   public ob :Observable<doctorGrid[]>;
   
@@ -91,7 +93,7 @@ export class DoctorComponent implements OnInit {
                       //'Blocked_Unblocked',
                       //'Specialties',
                      ]; 
-  constructor(config: NgbModalConfig, private modalService: NgbModal, private registerService: RegisterService,private toaster:ToasterService,private router: Router,private spinner:NgxSpinnerService,private renderer: Renderer2,private conf:ConfigService,private http:HttpClient)
+  constructor(config: NgbModalConfig,private auth:AuthService, private modalService: NgbModal, private registerService: RegisterService,private toaster:ToasterService,private router: Router,private spinner:NgxSpinnerService,private renderer: Renderer2,private conf:ConfigService,private http:HttpClient)
   {
     config.backdrop = 'static';
     config.keyboard = false;
@@ -100,7 +102,7 @@ export class DoctorComponent implements OnInit {
   public Getjson(id?:number):void
  { 
     this.spinner.show();    
-     this.ob = this.registerService.GetDoctorJsonDatas()
+     this.ob = this.registerService.GetDoctorJsonDatas(this.auth.authorizationHeaderValue)
      this.ob.pipe(finalize(()=>this.spinner.hide())).subscribe(
      dataa => { 
        
@@ -118,17 +120,19 @@ export class DoctorComponent implements OnInit {
      //this.dataSourceDoctor = new MatTableDataSource(this.DoctorData);
      //console.log("Data Source: "+this.DoctorData);      
  }
-  public GetdataById(id: number)
+  public async GetdataById(id: number)
   {
+    if(!isNaN(id)){
     this.spinner.show();
-    this.registerService.GetDoctorJsonDatasByID(id).pipe(finalize(()=>{
+    this.registerService.GetDoctorJsonDatasByID(id,this.auth.authorizationHeaderValue).pipe(finalize(()=>{
         this.spinner.hide();
     })).subscribe(
     data => {
       this.UserData= data;
     });
   }
-  public DeletedataById(id: number)
+  }
+  public  DeletedataById(id: number)
   {
     this.ob = this.registerService.DeleteDoctorJsonDatasByID(id)
     this.ob.subscribe(
@@ -153,19 +157,20 @@ export class DoctorComponent implements OnInit {
     //this.value = this.value.toLowerCase(); // Datasource defaults to lowercase matches
     this.datasource.filter = this.value.trim().toLocaleLowerCase();
   }
-  Open(content,id?:number)
+  async Open(content,id?:number)
   { 
     this.spinner.show();
+    await this.GetdataById(id);
+
     this.modalService.open(content,{ size:'xl',centered:true,scrollable:true});
-    this.GetdataById(id);
     //$("ViewM").modal('show');
     this.spinner.hide();
   }
 
-  Viewopen(Viewcontent, id?:number)
+  async Viewopen(Viewcontent, id?:number)
   { 
     this.spinner.show();    
-    this.GetdataById(id);
+    await this.GetdataById(id);
     this.modalService.open(Viewcontent,{ size:'md',centered:true,scrollable:false});  
   }
   Deleteopen(Deletecontent, id?:number)
@@ -179,7 +184,7 @@ export class DoctorComponent implements OnInit {
     this.modalService.open(Editcontent,{ size:'xl',centered:true,scrollable:true});  
     this.DrIdToUpdate=selectedDrId;  
   }
-
+ 
   ngOnInit(): void
   {
     this.Getjson();
@@ -220,7 +225,7 @@ export class DoctorComponent implements OnInit {
         },
       }]
     };
-    
+    console.log("Id: "+this.auth.userId);
   }
   SoftDeleteDoctorData(doctorId:Number): void
   {

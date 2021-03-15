@@ -15,13 +15,14 @@ export class NavbarComponent implements OnInit {
       mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
-
+    name:string;
     constructor(location: Location,  private element: ElementRef, private router: Router, private auth:AuthService) {
       this.location = location;
           this.sidebarVisible = false;
     }
 
     ngOnInit(){
+        this.name = this.auth.name;
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -115,7 +116,7 @@ export class NavbarComponent implements OnInit {
       if(titlee.charAt(0) === '#'){
           titlee = titlee.slice( 1 );
       }
-    console.log(titlee);
+        //console.log(titlee);
       for(var item = 0; item < this.listTitles.length; item++){
           if(this.listTitles[item].path === titlee){
               return this.listTitles[item].title;
@@ -128,5 +129,11 @@ export class NavbarComponent implements OnInit {
     }
     logout(){
         this.auth.signout();
+    }
+    isAuth():boolean{
+        if(this.auth.isAuthenticated){
+            return true;
+        }
+        return false;
     }
 }

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { ToasterPosition } from '../../core/ToasterPosition';
 import { ToasterService } from '../../core/ToasterService';
 import { RegisterComponent } from '../register/register.component';
+import { AuthService } from '../../core/auth.service';
 @Component({
   selector: 'app-nurse',
   templateUrl: './nurse.component.html',
@@ -39,7 +40,7 @@ export class NurseComponent implements OnInit {
                      ];
   
     // Ng Pop Up Model
-    constructor(config: NgbModalConfig, private modalService: NgbModal, private registerService: RegisterService,private toaster:ToasterService) {
+    constructor(config: NgbModalConfig, private modalService: NgbModal, private registerService: RegisterService,private toaster:ToasterService,private auth:AuthService) {
       //modals used by this component
       config.backdrop = 'static';
       config.keyboard = false;
@@ -47,7 +48,7 @@ export class NurseComponent implements OnInit {
 
     public Getjson():void
     {
-      this.ob = this.registerService.GetNurseJsonDatas()
+      this.ob = this.registerService.GetNurseJsonDatas(this.auth.authorizationHeaderValue)
       this.ob.subscribe(
         data => { 
           console.log(data);
@@ -62,7 +63,7 @@ export class NurseComponent implements OnInit {
   // View by Id function
   public GetdataById(id: number)
   {
-    this.ob = this.registerService.GetNurseJsonDatasByID(id)
+    this.ob = this.registerService.GetNurseJsonDatasByID(id,this.auth.authorizationHeaderValue)
     this.ob.subscribe(
     data => {this.UserData= data;});
     // console.log("USerdata : "+this.UserData.id);

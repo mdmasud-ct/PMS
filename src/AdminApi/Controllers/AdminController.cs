@@ -7,11 +7,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdminApi.Data.Services;
 using AdminApi.Models;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AdminApi.Controllers
 {
 	[Route("api/[controller]")]
+	[Authorize(Policy ="ApiReader")]
 	[ApiController]
 	public class AdminController : ControllerBase
 	{
@@ -21,8 +23,10 @@ namespace AdminApi.Controllers
 		}
 		#region Doctor
 		[HttpGet("/Doctors")]
+		[Authorize(Policy ="Role")]
 		public IEnumerable<DoctorMaster> GetDoctor()
 		{
+			var header = HttpContext.Request;
 			try {
 				return _admindao.GetAllDoctor();
 			} catch (Exception e) {
@@ -30,7 +34,7 @@ namespace AdminApi.Controllers
 			}
 		}
 
-		// GET api/<AdminController>/5
+		[Authorize(Policy ="Role")]
 		[HttpGet("/Doctor/{id}")]
 		public DoctorMaster Get(int id)
 		{
@@ -60,6 +64,7 @@ namespace AdminApi.Controllers
 		}
 		#endregion
 		#region Nurse
+		[Authorize(Policy = "Role")]
 		[HttpGet("/Nurses")]
 		public IEnumerable<NurseMaster> GetNurse()
 		{
@@ -113,8 +118,16 @@ namespace AdminApi.Controllers
 				return null;
 			}
 		}
-		
+
 		#endregion
-		
+
+		[HttpGet]
+		public ActionResult<IEnumerable<string>> Get()
+		{
+			var header = HttpContext.Request;
+			var user = HttpContext.User;
+			return new JsonResult(User.Claims.Select(c => new { c.Type, c.Value }));
+		}
+
 	}
 }

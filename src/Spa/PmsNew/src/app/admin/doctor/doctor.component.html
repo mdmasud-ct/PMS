@@ -11,7 +11,7 @@
                   </mat-form-field>
                     </div>
                     <div class="col-md-8 text-right">
-                  <button class="btn btn-primary btn-outline-primary"  (click)="open(content)" value="Add"><i class="material-icons">person_add</i><span>&nbsp;&nbsp;Add New</span></button>
+                  <button class="btn btn-primary btn-outline-primary"  (click)="Open(content)" value="Add"><i class="material-icons">person_add</i><span>&nbsp;&nbsp;Add New</span></button>
                 </div>
                   </div>
                 </th>
@@ -166,7 +166,7 @@
           </div>
             
           </div>
-          <div class="modal-body">
+          <div class="modal-body" *ngIf="UserData">
             <!-- <h2 style="text-align: center;">User id:  {{UserData.id}} </h2> -->
               <form >    
                 <div class="main main-raised" >
@@ -184,12 +184,12 @@
                                 </table>
                             </div>                   
                           </div>
-                          <div class="name">                      
+                          <div class="name" >                      
                             <!-- <hr/> -->
                             <table class="table table-hover" style="font-family: arial, sans-serif;border-collapse: collapse; width: 100%;" [ngClass]="{'ViewPoptable': true}">
                               <tr>
-                                <th class="wd27">Name</th>
-                                <th class="wd73"><h4 class="title">{{UserData.firstName}} {{UserData.lastName}}</h4></th>                          
+                                <th >Name</th>
+                                <th ><h4> {{UserData.firstName}} {{UserData.lastName}}</h4></th>                          
                               </tr>
                               <tr>
                                 <th>Specialties</th>
