@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class PatientAllergy

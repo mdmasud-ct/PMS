@@ -22,7 +22,6 @@ export class RegisterService extends BaseService {
   headers: any;
   genders:any;
   titles:any;
-  // constructor()  { }
   constructor(private httpSVC:HttpClient,private config: ConfigService)  { 
     super();
   }
@@ -32,24 +31,14 @@ export class RegisterService extends BaseService {
       const headers = { 'content-type': 'application/json'}
       if(operation==="POST")
       {
-        //if(reg.role=='Doctor')  
-        //return this.httpSVC.post<Register>( this.config.tempResourseAPI+ "/Doctors", JSON.stringify(reg),{'headers':headers});
-        return this.httpSVC.post<Register>( this.config.authApiURI+ "/doctor",reg).pipe(catchError(this.handleError));
-        //else if(reg.role=='Nurse')
-        //  return this.httpSVC.post<Register>(this.config.tempResourseAPI+"/Nurses", JSON.stringify(reg),{'headers':headers});
+        return this.httpSVC.post<Register>( this.config.authApiURI+ "/doctor",reg,{headers:headers}).pipe(catchError(this.handleError));
       }
       else
       {
-        if(reg.role=='Doctor')  
-          return this.httpSVC.patch<Register>( this.config.tempResourseAPI+ "/Doctors/"+reg.id, JSON.stringify(reg),{'headers':headers});
-        else if(reg.role=='Nurse')
-          return this.httpSVC.patch<Register>(this.config.tempResourseAPI+"/Nurses/"+reg.id, JSON.stringify(reg),{'headers':headers});        
+          return this.httpSVC.post<Register>( this.config.authApiURI+ "/doctorupdate",reg).pipe(catchError(this.handleError));
       }
-      
-    
   }
-  //http://localhost:3000/Doctor?DrID=102
-  public GetDoctorJsonDatas(token:string,):Observable<any>
+  public GetDoctorJsonDatas(token:string):Observable<any>
   {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -81,7 +70,6 @@ export class RegisterService extends BaseService {
       return this.httpSVC.get<Patients>(this.config.adminApiUri+ "/Patients",httpOptions).pipe(catchError(this.handleError));
   }
 
-  // Get data by Id
   public GetDoctorJsonDatasByID(DrID: number,token:string):Observable<any>
   {   
     const httpOptions = {
@@ -100,16 +88,18 @@ export class RegisterService extends BaseService {
         'Authorization': token
       })
     };
-      
-      return this.httpSVC.get<Nurse>(this.config.tempResourseAPI+ "/Nurses?id="+NurseID,httpOptions).pipe(catchError(this.handleError));
+      return this.httpSVC.get<Nurse>(this.config.adminApiUri+ "/Nurse/"+NurseID,httpOptions).pipe(catchError(this.handleError));
   }
-  public GetPatientJsonDatasByID(PatientID: number):Observable<any>
+  public GetPatientJsonDatasByID(PatientID: number,token:string):Observable<any>
   {
-      // return this.httpSVC.get<Patient>("http://localhost:3000/Patients?id="+PatientID);
-      return this.httpSVC.get<Patients>(this.config.tempResourseAPI+ "/Patient?id="+PatientID);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token
+      })
+    };
+    return this.httpSVC.get<Patients>(this.config.adminApiUri+ "/Patient/"+PatientID,httpOptions).pipe(catchError(this.handleError));
   }
-  
-// Delete data by Id
   public DeleteDoctorJsonDatasByID(DrID: number):Observable<any>
   {
     const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
@@ -120,40 +110,48 @@ export class RegisterService extends BaseService {
   }
   public DeleteNurseJsonDatasByID(NurseID: number):Observable<any>
   {
-    return this.httpSVC.delete<Nurse>(this.config.tempResourseAPI+ "/Nurses/"+NurseID);
+      return this.httpSVC.delete<Nurse>(this.config.tempResourseAPI+ "/Nurses/"+NurseID);
   }
   public DeletePatientJsonDatasByID(PatientID: number):Observable<any>
   {
-    return this.httpSVC.delete<Patients>(this.config.tempResourseAPI+ "/Patient/"+PatientID);
+      return this.httpSVC.delete<Patients>(this.config.tempResourseAPI+ "/Patient/"+PatientID);
   }
 
-  // Get Appointment JsonData
   public GetAppointmentJsonData():Observable<any>
   {
-      return this.httpSVC.get<Appointment>(this.config.tempResourseAPI+ "/Appointment");
+      return this.httpSVC.get<Appointment>(this.config.scheduleManagementAPI+ "/Schedule/getallappointments");
   }
   public SoftDeleteNurseData(p:any):Observable<any>
   {
-    console.log("service.SoftDeleteNurseData() hits");
-    console.log(JSON.stringify(p));
-    const headers = { 'content-type': 'application/json'}  
-      return this.httpSVC.patch<any>("http://localhost:3000/Nurses/"+p.id, JSON.stringify(p),{'headers':headers});      
+    return this.httpSVC.post<any>(this.config.authApiURI + "/updatenursestatus?Id="+p.Id+"&IsActive="+p.IsActive,p ).pipe(catchError(this.handleError));      
   }
   public SoftDeleteDoctorData(p:any):Observable<any>
   {
-    console.log("service.SoftDeleteNurseData() hits");
-    console.log(JSON.stringify(p));
-    const headers = { 'content-type': 'application/json'}  
-      return this.httpSVC.patch<any>("http://localhost:3000/Doctors/"+p.id, JSON.stringify(p),{'headers':headers});      
+      return this.httpSVC.post<any>(this.config.authApiURI + "/updatedocstatus?Id="+p.Id+"&IsActive="+p.IsActive,p ).pipe(catchError(this.handleError));      
   }
-    //Update IsActive in PatientJson for Delete opertion
-    public SoftDeletePatienData(p:any):Observable<any>
-    {
-      console.log("service.SoftDeletePatienData() hits");
-      console.log(JSON.stringify(p));
-      const headers = { 'content-type': 'application/json'}  
-        return this.httpSVC.patch<any>("http://localhost:3000/Patient/"+p.id, JSON.stringify(p),{'headers':headers});      
-    }
+  public SoftDeletePatienData(p:any):Observable<any>
+  {
+      return this.httpSVC.post<any>(this.config.authApiURI + "/updatepatientstatus?Id="+p.Id+"&IsActive="+p.IsActive,p ).pipe(catchError(this.handleError));      
+  }
+  public GetUserProfile(token:string):Observable<any>
+  {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': token
+      })
+    };
+    return this.httpSVC.get<any>(this.config.adminApiUri + "/userInfo",httpOptions).pipe(catchError(this.handleError));      
+  }
+
+  public DownloadGridData(entityName:string):Observable<any>
+  {
+   let header = new HttpHeaders({
+     'Content-Type': 'text/csv'
+    });
+      return this.httpSVC.get(this.config.adminApiUri+"/getexcelreport?entityName="+entityName,{responseType:'blob',headers:header});      
+  }
 }
 
 
+ 

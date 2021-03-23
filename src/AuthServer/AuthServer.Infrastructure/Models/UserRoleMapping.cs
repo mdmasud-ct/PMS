@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class UserRoleMapping
@@ -15,6 +17,6 @@ namespace AuthServer.Infrastructure.Models
         public bool? IsActive { get; set; }
 
         public virtual Role Role { get; set; }
-        public virtual UserLoginDetails UserLoginDetails { get; set; }
+        public virtual UserLoginDetail UserLoginDetails { get; set; }
     }
 }

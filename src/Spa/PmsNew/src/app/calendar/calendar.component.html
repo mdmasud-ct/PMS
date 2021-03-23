@@ -6,3 +6,98 @@
     <full-calendar *ngIf="calendarOptions" #fullcalendar [options]="calendarOptions" ></full-calendar>
     </div>
 </div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+      <div>
+      <button type="button" class="close btn-close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times; &nbsp;</span>
+      </button>
+     </div> 
+         <div class="main-content">
+        <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Appoinment Details</h4>
+                    <p class="card-category"></p>
+                </div>
+                <div class="card-body">
+                    <form class="form-group"  [formGroup]="userForm" (ngSubmit)="SaveAppointmentAction()">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <label for="drname">Patient Id: </label>
+                                    <input type="text" class="form-control bold-text" name="drname" formControlName="patientid" placeholder="" readonly>
+                                    
+                                </div>
+                                <div class="col-xl-6">
+                                    <label for="ptname">Patient Name:</label>
+                                    <input type="text" class="form-control bold-text" name="ptname" formControlName="patientname" readonly>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <label for="shdate">Date:</label>                    
+                                    <input type="text" class="form-control" name="shdate" formControlName="appointmentdate" readonly>                                  
+                                </div>
+                                <div class="col-xl-6">
+                                    <label for="status">Status:</label><br>
+                                    <label for="statusval" style="font-weight: bold;font-size: 15px;">{{status}}</label> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                        <div class="col-xl-6">
+                            <label for="from">From:</label>
+                            <input type="text" class="form-control" name="from" formControlName="fromtime" readonly>                           
+                        </div>
+                        <div class="col-xl-6">
+                            <label for="to">To:</label>
+                            <input type="text" class="form-control" name="to" formControlName="totime" readonly>     
+                        </div>
+                            </div>
+                        </div>
+                        <div class="form-group row col-xl-12">
+                            <label for="desc">Short Description: </label>
+                            <textarea class="form-control" name="desc" formControlName="description" readonly></textarea>
+                        </div>
+                        <div *ngIf="status=='Pending' && this.authService.role!='patient'">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xl-2">
+                                    <label for="appointmentaction">Action: </label><br />
+                                    <label class="radio-inline"><input type="radio" formControlName="appointmentaction" name="appointmentaction" value="Approved" checked>Approve</label>
+                                    <br>
+                                    <label class="radio-inline"><input type="radio" formControlName="appointmentaction" name="appointmentaction" value="Rejected">Reject</label>
+                                </div>     
+                                <div class="col-xl-10">
+                                    <label for="appointmentreason">Reason: </label>
+                                    <textarea class="form-control" name="note" formControlName="note"></textarea>
+                                    <!-- <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                                        LastName is required!
+                                    </span> -->
+                                </div>            
+                            </div>
+                        </div>
+                            <div class="form-group">            
+                                <button id="btnSubmit" class="btn btn-success">Save</button>
+                            </div>
+                        </div>
+                        <div *ngIf="status !='Pending'" class="form-group row col-xl-12">
+                            <label for="note">Note: </label>
+                            <textarea class="form-control" name="note" formControlName="note" readonly></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+</div>
+  </ng-template>

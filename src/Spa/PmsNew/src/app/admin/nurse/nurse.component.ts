@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, ViewChild } from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterService } from '../../services/register.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +8,11 @@ import { ToasterPosition } from '../../core/ToasterPosition';
 import { ToasterService } from '../../core/ToasterService';
 import { RegisterComponent } from '../register/register.component';
 import { AuthService } from '../../core/auth.service';
+import { doctorGrid } from 'app/models/doctorGrid';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-nurse',
   templateUrl: './nurse.component.html',
@@ -17,7 +22,7 @@ import { AuthService } from '../../core/auth.service';
 export class NurseComponent implements OnInit {
   value = '';
   private UserData: any;
-  public ob :Observable<Nurse[]>;
+  public ob :Observable<doctorGrid[]>;
   public regiterData;
   private DeleteUserData: any;
   msg:any;
@@ -26,49 +31,41 @@ export class NurseComponent implements OnInit {
   public dataSourceNurseData: Nurse[]= []; 
   public NrIdToUpdate:number; 
   success: boolean;
-  //Ng mat-table columns
+  datasource: MatTableDataSource<doctorGrid>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   displayedColumns = [
-                      'NurseID',
+                      'Id',
                       'FullName',
-                      'Date_of_Birth',
+                      'dob',
                       'EmailID',
                       'ContactNo',
-                      'Address',
+                      //'Address',
                       'Status',
-                      'Blocked_Unblocked',
+                      'Gender',
                       'View_Edit_Delete'
                      ];
-  
-    // Ng Pop Up Model
-    constructor(config: NgbModalConfig, private modalService: NgbModal, private registerService: RegisterService,private toaster:ToasterService,private auth:AuthService) {
-      //modals used by this component
+    constructor(config: NgbModalConfig, private modalService: NgbModal, private registerService: RegisterService,private toaster:ToasterService,private auth:AuthService,private spinner: NgxSpinnerService) {
       config.backdrop = 'static';
       config.keyboard = false;
     }
 
     public Getjson():void
     {
+      this.spinner.show();
       this.ob = this.registerService.GetNurseJsonDatas(this.auth.authorizationHeaderValue)
-      this.ob.subscribe(
+      this.ob.pipe(finalize(()=>this.spinner.hide())).subscribe(
         data => { 
+          this.datasource =new MatTableDataSource<doctorGrid>(data);
+          this.datasource.paginator = this.paginator;
+          this.datasource.sort = this.sort;
           console.log(data);
-          this.NurseData = data;
-          this.dataSourceNurseData = data;
         },
         (error: any) => this.toaster.error("Error","Unable to fetch records",ToasterPosition.topFull)
         );
-        this.dataSourceNurse = new MatTableDataSource(this.NurseData);
-        console.log("Data Source: "+this.NurseData);
     }
-  // View by Id function
-  public GetdataById(id: number)
-  {
-    this.ob = this.registerService.GetNurseJsonDatasByID(id,this.auth.authorizationHeaderValue)
-    this.ob.subscribe(
-    data => {this.UserData= data;});
-    // console.log("USerdata : "+this.UserData.id);
-  }
-  // Delete by Id function
+  
   public DeletedataById(id: number)
   {
     this.ob = this.registerService.DeleteNurseJsonDatasByID(id)
@@ -78,27 +75,18 @@ export class NurseComponent implements OnInit {
   }
   applyFilter()
   {
-    //debugger;
-    console.log(this.value);
-
-    if(this.value!='')
-    {
-    this.dataSourceNurseData=this.NurseData.filter(p => p.FullName.includes(this.value));
-    }
-    else
-    {
-    this.dataSourceNurseData=this.NurseData;
-    }
-    console.log(this.NurseData);    
+    this.datasource.filter = this.value.trim().toLocaleLowerCase();
   }
-  // Ng Pop Up Model
-  open(content)
-  { // Ng Pop Up Model 
-    this.modalService.open(content,{ size:'xl',centered:true,scrollable:true});     
+  async Open(content, id?:number)
+  {
+    this.spinner.show();
+    await this.GetdataById(id);
+    this.modalService.open(content,{ size:'xl',centered:true,scrollable:true});
+    this.spinner.hide();
   }
 
   Viewopen(Viewcontent, id?:number)
-  { // Ng Pop Up Model       
+  {
     this.modalService.open(Viewcontent,{ size:'md',centered:true,scrollable:false});  
     this.GetdataById(id);
   }
@@ -112,28 +100,20 @@ export class NurseComponent implements OnInit {
   {    
     this.modalService.open(Editcontent,{ size:'xl',centered:true,scrollable:true});
     this.NrIdToUpdate=selectedNrId;  
-    // this.GetdataById(id);
   }
-  // getToday(): string
-  // {
-  //    return new Date().toISOString().split('T')[0];
-  // }
   ngOnInit(): void
   {
     this.Getjson();
   }
   SoftDeleteNurseData(nurseId:Number): void
   {
-    //debugger;
     this.modalService.dismissAll();
     console.log("ts.SoftDeletePatientData() hits");
     console.log(nurseId);
     let obj:any={};
     obj.id=nurseId,
     obj.Status="InActive";
-   
     this.ob =this.registerService.SoftDeleteNurseData(obj)
-  
     this.ob.subscribe(
       dataa => { 
         console.log(dataa);   
@@ -145,12 +125,82 @@ export class NurseComponent implements OnInit {
        },
       (error: any) => console.log("Error in deleting nurse data")
     );
+  }
+  public async GetdataById(id: number)
+    {
+      if(!isNaN(id)){
+      this.spinner.show();
+      this.registerService.GetNurseJsonDatasByID(id,this.auth.authorizationHeaderValue).pipe(finalize(()=>{
+          this.spinner.hide();
+      })).subscribe(
+      data => {
+        this.UserData= data;
+      });
+    }
     }
     functioncallbackFunction(){
       this.success=true;
     }
+    
     receiveMessage($event) {
+      this.spinner.show();
+      this.modalService.dismissAll();
       this.Getjson();
     }
+    UpdateDoctorStatus(nurseId:Number,isactive:boolean,event): void
+  {
+    debugger;
+    this.spinner.show();
+    let obj:any={};
+    obj.Id=nurseId,
+    obj.IsActive=isactive;
+    this.ob =this.registerService.SoftDeleteNurseData(obj)
+    this.ob.subscribe(
+      dataa => { 
+        console.log(dataa);   
+        if(dataa !=null)
+        {
+          this.spinner.hide();
+          this.success = true;
+          let res:any;
+          res = dataa;
+          if(res.code==1){
+            this.toaster.success("Success",res.response,ToasterPosition.topFull);
+          }else{
+            this.toaster.error("Error",res.response,ToasterPosition.topFull);
+          }   
+          this.receiveMessage(event);
+        }
+       },
+      (error: any) => {this.spinner.hide(); this.toaster.error("Error","Unable to update. Please contact administrator",ToasterPosition.topFull)}
+    );
+    }
+    ActiveOpen(Activatecontent, id?:number)
+  {
+    this.spinner.show();
+    this.GetdataById(id);
+    this.modalService.open(Activatecontent,{ size:'md',centered:true,scrollable:true});
+    this.spinner.hide();
+  }
 
+      
+  DownloadGridData()
+  {
+    debugger;
+     this.ob = this.registerService.DownloadGridData("nurse");
+    this.ob.subscribe(
+      (response: any) =>{
+        debugger;
+          let dataType = response.type;
+          let binaryData = [];
+          binaryData.push(response);
+          let downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: dataType}));
+          let fileName="AllNurseData_"+new Date().toLocaleString()+".xlsx";
+              downloadLink.setAttribute('download', fileName);
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+      }
+  )
+  }
 }

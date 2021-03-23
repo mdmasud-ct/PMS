@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class AllergyMaster
     {
         public AllergyMaster()
         {
-            PatientAllergy = new HashSet<PatientAllergy>();
+            PatientAllergies = new HashSet<PatientAllergy>();
         }
 
         public int Id { get; set; }
@@ -20,6 +22,6 @@ namespace AuthServer.Infrastructure.Models
         public string AllergyName { get; set; }
         public string AllergyClinicalInformation { get; set; }
 
-        public virtual ICollection<PatientAllergy> PatientAllergy { get; set; }
+        public virtual ICollection<PatientAllergy> PatientAllergies { get; set; }
     }
 }

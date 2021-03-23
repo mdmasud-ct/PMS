@@ -31,17 +31,21 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="javascript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>
-                        <span class="notification">5</span>
+                        <span class="notification">{{badgeValue}}</span>
                         <p>
                             <span class="d-lg-none d-md-block">Some Actions</span>
                         </p>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="javascript:void(0)">Appointment Confirmed: Dr. D'souza</a>
                         <a class="dropdown-item" href="javascript:void(0)">Appointment Confirmed: Dr. Yigit</a>
                         <a class="dropdown-item" href="javascript:void(0)">Appointment Declined: Dr. Rona</a>
                         <a class="dropdown-item" href="javascript:void(0)">Appointment Declined: Dr. Bose</a>
                         <a class="dropdown-item" href="javascript:void(0)">See all...</a>
+                    </div> -->
+                    <div class="dropdown-menu dropdown-menu-right"  aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" *ngFor="let ntf of notificationData" href="javascript:void(0)" (click)="setIsSeenNotification(ntf.id)">{{getNotificationTimeDiff(ntf.createdDate)}}, {{ntf.notificationText}}</a>
+                        <a class="dropdown-item" routerLink="/notifications" href="javascript:void(0)">See all...</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

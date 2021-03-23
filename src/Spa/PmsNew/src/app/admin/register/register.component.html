@@ -11,11 +11,9 @@
         
         <div class="row" style="display: none;">
             <div class="form-group col-md-6">
-                <mat-form-field class="example-full-width form-group">
-                    <!-- <input matInput placeholder="First Name" required type="text" formControlName="firstname"> -->
+                <!-- <mat-form-field class="example-full-width form-group">
                     <input matInput type='text'  formControlName='id' >
-
-                </mat-form-field>
+                </mat-form-field> -->
                 <span class="asterisk" *ngIf="fg.get('firstname').touched && fg.get('firstname').errors?.required">FirstName is required!</span>
             </div>
         </div> 
@@ -130,7 +128,7 @@
         </div>
     </form>
     
-        <h1 style="color: red;">{{msg}}</h1>
+    <h1 style="color: red;">{{msg}}</h1>
     </div>
     <!--<div class="text-center">Already have an account? <a href="#">Sign in</a></div>-->
 </div> 

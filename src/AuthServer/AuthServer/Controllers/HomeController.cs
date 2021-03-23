@@ -35,5 +35,8 @@ namespace AuthServer.Controllers
         {
             return View();
         }
+        public IActionResult error(string errorId) {
+            return null;
+        }
     }
 }

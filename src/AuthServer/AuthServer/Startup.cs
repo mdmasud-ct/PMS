@@ -1,4 +1,5 @@
 ﻿using AuthServer.Extensions;
+using AuthServer.Infrastructure.Data.AppDbContext;
 using AuthServer.Infrastructure.Data.Identity;
 using AuthServer.Infrastructure.Models;
 using AuthServer.Infrastructure.Services;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Net;
  
@@ -72,7 +74,10 @@ namespace AuthServer
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                .AllowAnyMethod()
                .AllowAnyHeader()));
-
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdminApi", Version = "v1" });
+            });
             services.AddMvc(options =>
             {
                 options.EnableEndpointRouting = false;
@@ -85,7 +90,10 @@ namespace AuthServer
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AdminApi v1"));
             }
+            
             app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax }); //Masud Modified
             app.UseExceptionHandler(builder =>
             {

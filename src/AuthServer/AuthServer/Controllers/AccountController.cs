@@ -27,7 +27,7 @@ namespace AuthServer.Controllers
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
         private readonly IRegistrationRepo _repo;
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IIdentityServerInteractionService interaction, IAuthenticationSchemeProvider schemeProvider, IClientStore clientStore, IEventService events,IRegistrationRepo repo)
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IIdentityServerInteractionService interaction, IAuthenticationSchemeProvider schemeProvider, IClientStore clientStore, IEventService events, IRegistrationRepo repo)
         {
             _userManager = userManager;
             _interaction = interaction;
@@ -157,7 +157,7 @@ namespace AuthServer.Controllers
 
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<IActionResult> Register([FromBody]RegisterRequestViewModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestViewModel model)
         {
             //var aVal = 0; var blowUp = 1 / aVal;
 
@@ -171,7 +171,7 @@ namespace AuthServer.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded) return BadRequest(result.Errors);
-            
+
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("userName", user.UserName));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("name", user.Name));
             await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("email", user.Email));
@@ -188,7 +188,7 @@ namespace AuthServer.Controllers
             if (!ModelState.IsValid)
             {
                 //return BadRequest(ModelState);
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(a=>a.Exception).ToList();
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(a => a.Exception).ToList();
                 res.Code = 4;
                 res.Response = String.Join(',', errors);
                 return res;
@@ -231,7 +231,7 @@ namespace AuthServer.Controllers
             }
             //var user = _signInManager.Context.User;
             //var appUser =  _userManager.GetUserAsync(user);
-            var appuse = new AppUser { Name=currentuser.Name, UserName = currentuser.Email };
+            var appuse = new AppUser { Name = currentuser.Name, UserName = currentuser.Email };
             var result = await _userManager.ChangePasswordAsync(currentuser, model.OldPassword, model.NewPassword);
             if (!result.Succeeded) return BadRequest(result.Errors);
             return Ok(new RegisterResponseViewModel(appuse));
@@ -247,12 +247,12 @@ namespace AuthServer.Controllers
                 {
                     return BadRequest(new Exception("Unable to fetch record"));
                 }
-                else 
+                else
                 {
                     var req = new RegisterRequestViewModel
                     {
                         Email = model.Email,
-                        Name = model.FirstName+" "+model.LastName,
+                        Name = model.FirstName + " " + model.LastName,
                         Password = model.Password,
                         //Role = null
                     };
@@ -264,7 +264,7 @@ namespace AuthServer.Controllers
                     }
                     else
                     {
-                        model.Id = res.Response;
+                        model.loginId = res.Response;
                         this._repo.AddPatient(model);
                         return Json(res);
                         //return Ok();
@@ -277,7 +277,6 @@ namespace AuthServer.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
         [Route("api/doctor")]
         public async Task<IActionResult> DoctorRegister([FromBody] UsersModel model)
         {
@@ -320,16 +319,79 @@ namespace AuthServer.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpPost]
+        [Route("api/doctorupdate")]
+        public IActionResult DoctorUpdate([FromBody] UsersModel model)
+        {
+            ResultModel res = new ResultModel();
+            try
+            {
+                if (model == null) { return Json(res = new ResultModel { Code = 4, Response = "Ubale to fetcch record" }); }
+                if (!string.IsNullOrEmpty(model.Role) && model.Role.ToLower().Equals("doctor"))
+                    this._repo.AddDoctor(model);
+                else
+                    this._repo.AddNurse(model);
+                return Json(res = new ResultModel { Code = 1, Response = "Saved Succesfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
+        [HttpPost]
+        [Route("api/updatedocstatus")]
+        public IActionResult UpdateDocStatus(UsersModel model) {
+            ResultModel res = new ResultModel();
+            try
+            {
+                _repo.UpdateDocStatus(model);
+                return Json(res = new ResultModel { Code = 1, Response = "Status Updated Successfully." });
+            }
+            catch (Exception e) {
+                return Json(res = new ResultModel { Code = 4, Response ="Exception occurred: " + e.Message });
+            }
+        }        [HttpPost]
+        [Route("api/updatenursestatus")]
+        public IActionResult UpdateNurseStatus(UsersModel model) {
+            ResultModel res = new ResultModel();
+            try
+            {
+                _repo.UpdateNurseStatus(model);
+                return Json(res = new ResultModel { Code = 1, Response = "Status Updated Successfully." });
+            }
+            catch (Exception e) {
+                return Json(res = new ResultModel { Code = 4, Response ="Exception occurred: " + e.Message });
+            }
+        }
+        [HttpPost]
+        [Route("api/updatepatientstatus")]
+        public IActionResult UpdatePatientStatus(UsersModel model) {
+            ResultModel res = new ResultModel();
+            try
+            {
+                _repo.UpdatePatientStatus(model);
+                return Json(res = new ResultModel { Code = 1, Response = "Status Updated Successfully." });
+            }
+            catch (Exception e) {
+                return Json(res = new ResultModel { Code = 4, Response ="Exception occurred: " + e.Message });
+            }
+        }
         [HttpPost]
         //[Authorize]
         [Route("api/information")]
         public async Task<ActionResult> GetRole([FromBody]UserModel model) {
-            var currentuser = await _userManager.FindByNameAsync(model.UserName);
-            var appuser = new AppUser { Name = currentuser.Name, UserName = currentuser.Email };
-            var claims = await _userManager.GetClaimsAsync(currentuser);
-            var role = claims.Where(x=>x.Type.Equals("role")).Select(s=>s.Value).FirstOrDefault();
-            return Json(new { role = role });
+            if (model != null && !string.IsNullOrEmpty(model.UserName))
+            {
+                var currentuser = await _userManager.FindByNameAsync(model.UserName);
+                var appuser = new AppUser { Name = currentuser.Name, UserName = currentuser.Email };
+                var claims = await _userManager.GetClaimsAsync(currentuser);
+                var role = claims.Where(x => x.Type.Equals("role")).Select(s => s.Value).FirstOrDefault();
+                return Json(new { role = role });
+            }
+            else {
+                return null;
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Logout(string logoutId)

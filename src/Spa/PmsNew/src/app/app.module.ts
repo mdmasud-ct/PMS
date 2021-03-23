@@ -30,7 +30,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AccountModule } from './account/account.module';
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
-import { ChangepasswordComponent } from './changepassword/changepassword.component'; 
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
+import { ViewDataComponent } from './patient/view-data/view-data.component';
+import { BookAppointmentComponent } from './scheduling/book-appointment/book-appointment.component';
+import { ScheduleComponent } from './scheduling/schedule/schedule.component'; 
+import {SelectAutocompleteModule} from 'mat-select-autocomplete';
+import { PatientVisitDoctorComponent } from './patient-visit/patient-visit-doctor/patient-visit-doctor.component';
+import { PatientVisitNurseComponent } from './patient-visit/patient-visit-nurse/patient-visit-nurse.component';
+import { AppointmentActionComponent } from './scheduling/appointment-action/appointment-action.component';
+import { ViewAppointmentsComponent } from './scheduling/view-appointments/view-appointments.component';
+import { VisithistorydataComponent } from './patient/visithistorydata/visithistorydata.component';
+import { ShowVisitHistoryComponent } from './patient/show-visit-history/show-visit-history.component';
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -52,13 +62,23 @@ import { ChangepasswordComponent } from './changepassword/changepassword.compone
     NgbModule,
     ToastrModule.forRoot({
       positionClass :'toast-bottom-right'
-    })
+    }),
+    SelectAutocompleteModule
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     AuthCallbackComponent,
     ChangepasswordComponent,
+    ViewDataComponent,
+    BookAppointmentComponent,
+    ScheduleComponent,
+    PatientVisitDoctorComponent,
+    PatientVisitNurseComponent,
+    AppointmentActionComponent,
+    ViewAppointmentsComponent,
+    VisithistorydataComponent,
+    ShowVisitHistoryComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

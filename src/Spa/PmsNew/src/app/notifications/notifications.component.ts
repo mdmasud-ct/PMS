@@ -1,13 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../core/auth.service';
+import { Observable } from 'rxjs';
+import { NotificationsService } from 'app/services/notifications.service';
+import { DatePipe } from '@angular/common';
+import {Notification} from '../models/Notification';
+
+
 declare var $: any;
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.css']
+  styleUrls: ['./notifications.component.css'],  
+  providers:[DatePipe]
 })
 export class NotificationsComponent implements OnInit {
+//#region Notification
+public ob :Observable<Notification[]>;
+public notificationData:Notification[]=[];
+//#endregion
 
-  constructor() { }
+    constructor(private auth:AuthService,private notificationsvc:NotificationsService
+      ,private datepipe:DatePipe) { }
+
+
   showNotification(from, align){
       const type = ['','info','success','warning','danger'];
 
@@ -36,7 +51,73 @@ export class NotificationsComponent implements OnInit {
           '</div>'
       });
   }
-  ngOnInit() {
+ 
+
+  //#region Notification
+  loadNotifications()
+  {
+    debugger;
+    this.ob = this.notificationsvc.GetNotificationsByID(this.auth.email);
+    this.ob.subscribe(
+      data => { 
+        console.log("Output");
+        console.log(data);
+        this.notificationData = data;
+      },
+      (error: any) => console.log("Error in fetching notification data")
+      );
   }
 
+  setIsSeenNotification(notificationId:number)
+  {
+    console.log(notificationId);
+   console.log("ts.setIsSeenNotification() hits"); 
+  // let obj:any={};
+  // obj.id=notificationId,
+  // obj.isSeen=true;
+  
+   this.ob =this.notificationsvc.SetIsSeenNotification(notificationId);
+ 
+   this.ob.subscribe(
+     dataa => { 
+       console.log(dataa); 
+       this.loadNotifications();
+      },
+     (error: any) => console.log("Error Occured")
+   );
+  }
+
+  getNotificationTimeDiff(createdTime:string):string
+  {
+    console.log(createdTime);
+    var dateOneObj = new Date(createdTime).getTime();
+    var dateTwoObj = new Date().getTime();
+    // var milliseconds = Math.abs(dateOneObj-dateTwoObj)
+    // var hours = milliseconds / 36e5;
+    // return hours.toString()+" Hours ago";
+
+    var diff =(dateOneObj-dateTwoObj) / 1000;
+    var minutes=Math. abs(Math. round(diff/60)).toString();
+    console.log(minutes);
+    var hours=Math. abs(Math. round(diff/3600)).toString();
+    console.log(hours);
+    if(parseInt(minutes) < 60)
+    {
+      return minutes.toString()+" Minutes ago"
+    }
+    else if(parseInt(hours)<24)
+    {
+      return hours.toString()+" Hours ago"
+    }
+    else
+    {
+    return this.datepipe.transform(createdTime,"MMMM d, y");
+    }
+  }
+  //#endregion
+
+  ngOnInit() {    
+    debugger;
+    this.loadNotifications();
+  }
 }

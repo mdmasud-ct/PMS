@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class DiagnosisMaster
     {
         public DiagnosisMaster()
         {
-            Diagnosis = new HashSet<Diagnosis>();
+            Diagnoses = new HashSet<Diagnosis>();
         }
 
         public int Id { get; set; }
@@ -16,6 +18,6 @@ namespace AuthServer.Infrastructure.Models
         public string Diagnosystype { get; set; }
         public bool? DiagnosisIsDepricated { get; set; }
 
-        public virtual ICollection<Diagnosis> Diagnosis { get; set; }
+        public virtual ICollection<Diagnosis> Diagnoses { get; set; }
     }
 }

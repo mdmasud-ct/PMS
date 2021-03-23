@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class SpecialityMaster
     {
         public SpecialityMaster()
         {
-            DoctorspecialityMapping = new HashSet<DoctorspecialityMapping>();
+            DoctorspecialityMappings = new HashSet<DoctorspecialityMapping>();
         }
 
         public int Id { get; set; }
@@ -17,6 +19,6 @@ namespace AuthServer.Infrastructure.Models
         public string ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
 
-        public virtual ICollection<DoctorspecialityMapping> DoctorspecialityMapping { get; set; }
+        public virtual ICollection<DoctorspecialityMapping> DoctorspecialityMappings { get; set; }
     }
 }

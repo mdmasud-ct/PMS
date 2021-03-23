@@ -12,7 +12,7 @@ namespace AuthServer.Infrastructure.Data.Identity
         {
             var optionsBuilder = new DbContextOptionsBuilder<PersistedGrantDbContext>();
             //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=AuthServer;Trusted_Connection=True;MultipleActiveResultSets=true",
-            optionsBuilder.UseSqlServer("Server=DESKTOP-Q4OMBM2;Database=PMSYSTEM;Trusted_Connection=True;MultipleActiveResultSets=true",
+            optionsBuilder.UseSqlServer("Server=IMCDBCP9-MSL2\\SQLEXPRESS;Database=PMSYSTEM;Trusted_Connection=True;MultipleActiveResultSets=true",
                 sql => sql.MigrationsAssembly(typeof(PersistedGrantDbContextFactory).GetTypeInfo().Assembly.GetName().Name));
             return new PersistedGrantDbContext(optionsBuilder.Options, new OperationalStoreOptions());
         }

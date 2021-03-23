@@ -13,27 +13,21 @@ table {
   margin-bottom: -20px;
 }
 .bgColorAdd{  
-  /* color: #0047AB; */
   width: 50px;
   height: 50px;
 }
 .bgColorAdd:hover{  
-  /* color: black; */
-  /* font-size: x-large; */
-  /* font-weight: 400; */
   width: 55px;
   height: 55px;
   overflow: hidden;
 }
 .fontSizeBold{
   font-size: large;
-  /* font-weight: bold; */
 }
 .ModelPopUpClass{
   background-color: grey;width: 980px;
 }
 .Tableclass th {
- /* background-color: black; */
  border: 1px solid #ddd;
  font-size: medium;
  color: #000;
@@ -42,8 +36,6 @@ table {
 }
 .Tableclass td{
  border: 1px solid #ddd;
- /* text-align: center; */
- /* margin-left: 10px; */
  color: black;
  padding-left: 10px;
 }
@@ -134,7 +126,7 @@ table {
 .mat-column-EmailID{
   width: 20% !important;
   flex: 0 0 20% !important;
-}
+} 
 .divclass{
   overflow: auto;
 }

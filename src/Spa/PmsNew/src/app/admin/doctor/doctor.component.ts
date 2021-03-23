@@ -68,12 +68,6 @@ export class DoctorComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject<any>();
   $: any;
   ngAfterViewInit(): void {
-    
-    // this.renderer.listen('document', 'click', (event) => {
-    //   if (event.target.hasAttribute("view-person-id")) {
-    //     this.router.navigate(["/person/" + event.target.getAttribute("view-person-id")]);
-    //   }
-    // });
   }
   receiveMessage($event) {
     this.spinner.show();
@@ -101,24 +95,16 @@ export class DoctorComponent implements OnInit {
   
   public Getjson(id?:number):void
  { 
-    this.spinner.show();    
-     this.ob = this.registerService.GetDoctorJsonDatas(this.auth.authorizationHeaderValue)
-     this.ob.pipe(finalize(()=>this.spinner.hide())).subscribe(
-     dataa => { 
-       
-       //this.gridData=dataa;
+      this.spinner.show();    
+      this.ob = this.registerService.GetDoctorJsonDatas(this.auth.authorizationHeaderValue)
+      this.ob.pipe(finalize(()=>this.spinner.hide())).subscribe(
+      dataa => { 
       this.datasource =new MatTableDataSource<doctorGrid>(dataa);
       this.datasource.paginator = this.paginator;
       this.datasource.sort = this.sort;
-      //this.DoctorData = data;
-     //this.dataSourceDoctorData = data;
-     //console.log(this.DoctorData);
-     
      },
      (error: any) => console.log("Error in saving regiter data")
      );
-     //this.dataSourceDoctor = new MatTableDataSource(this.DoctorData);
-     //console.log("Data Source: "+this.DoctorData);      
  }
   public async GetdataById(id: number)
   {
@@ -141,29 +127,13 @@ export class DoctorComponent implements OnInit {
   }
   applyFilter()
   {
-    console.log(this.value);
-
-    if(this.value!='')
-    {
-    this.dataSourceDoctorData=this.DoctorData.filter(p => p.FullName.includes(this.value));
-    }
-    else
-    {
-    this.dataSourceDoctorData=this.DoctorData;
-    }
-    console.log(this.DoctorData);   
-    
-    //this.value = this.value.trim(); // Remove whitespace
-    //this.value = this.value.toLowerCase(); // Datasource defaults to lowercase matches
     this.datasource.filter = this.value.trim().toLocaleLowerCase();
   }
   async Open(content,id?:number)
   { 
     this.spinner.show();
     await this.GetdataById(id);
-
     this.modalService.open(content,{ size:'xl',centered:true,scrollable:true});
-    //$("ViewM").modal('show');
     this.spinner.hide();
   }
 
@@ -179,6 +149,12 @@ export class DoctorComponent implements OnInit {
     this.modalService.open(Deletecontent,{ size:'md',centered:true,scrollable:true});
     
   }
+  ActiveOpen(Activatecontent, id?:number)
+  { 
+    this.GetdataById(id);
+    this.modalService.open(Activatecontent,{ size:'md',centered:true,scrollable:true});
+  }
+  
   Editopen(Editcontent, selectedDrId?:number)
   {
     this.modalService.open(Editcontent,{ size:'xl',centered:true,scrollable:true});  
@@ -203,8 +179,6 @@ export class DoctorComponent implements OnInit {
             that.DoctorData = resp.data;
 
             callback({
-              //recordsTotal: resp.recordsTotal,
-              //recordsFiltered: resp.recordsFiltered,
               data: []
             });
           });
@@ -227,27 +201,32 @@ export class DoctorComponent implements OnInit {
     };
     console.log("Id: "+this.auth.userId);
   }
-  SoftDeleteDoctorData(doctorId:Number): void
+  UpdateDoctorStatus(doctorId:Number,isactive:boolean,event): void
   {
     debugger;
-    this.modalService.dismissAll();
-    console.log("ts.SoftDeleteDoctorData() hits");    
-   let obj:any={};
-   obj.id=doctorId,
-   obj.Status="InActive";
-   
+    this.spinner.show();
+    let obj:any={};
+    obj.Id=doctorId,
+    obj.IsActive=isactive;
     this.ob =this.registerService.SoftDeleteDoctorData(obj)
-  
     this.ob.subscribe(
       dataa => { 
         console.log(dataa);   
         if(dataa !=null)
         {
-         this.success = true;
-         this.toaster.success("Success","Doctor with Id: "+doctorId+" Deleted.",ToasterPosition.topFull,this.functioncallbackFunction)   
+          this.spinner.hide();
+          this.success = true;
+          let res:any;
+          res = dataa;
+          if(res.code==1){
+            this.toaster.success("Success",res.response,ToasterPosition.topFull);
+          }else{
+            this.toaster.error("Error",res.response,ToasterPosition.topFull);
+          }   
+          this.receiveMessage(event);
         }
        },
-      (error: any) => console.log("Error in deleting doctor data")
+      (error: any) => {this.spinner.hide(); this.toaster.error("Error","Unable to update. Please contact administrator",ToasterPosition.topFull)}
     );
     }
     functioncallbackFunction(){
@@ -258,4 +237,23 @@ export class DoctorComponent implements OnInit {
       this.dtTrigger.unsubscribe();
     }
     
+    DownloadGridData()
+      {
+        debugger;
+         this.ob = this.registerService.DownloadGridData("doctor");
+        this.ob.subscribe(
+          (response: any) =>{
+            debugger;
+              let dataType = response.type;
+              let binaryData = [];
+              binaryData.push(response);
+              let downloadLink = document.createElement('a');
+              downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: dataType}));
+              let fileName="AllDoctorData_"+new Date().toLocaleString()+".xlsx";
+                  downloadLink.setAttribute('download', fileName);
+              document.body.appendChild(downloadLink);
+              downloadLink.click();
+          }
+      )
+      }
 }

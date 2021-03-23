@@ -3,11 +3,16 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import { Observable } from 'rxjs';
 import { title } from 'process';
+import {Notification} from '../../models/Notification';
+import {NotificationsService} from '../../services/notifications.service';
+import {DatePipe} from '@angular/common';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
+  providers:[DatePipe]
 })
 export class NavbarComponent implements OnInit {
     private listTitles: any[];
@@ -15,15 +20,24 @@ export class NavbarComponent implements OnInit {
       mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
+
+
+      //#region Notification
+      public badgeValue:string="0";
+      public ob :Observable<Notification[]>;
+      public notificationData:Notification[]=[];
+      //#endregion
+
     name:string;
-    constructor(location: Location,  private element: ElementRef, private router: Router, private auth:AuthService) {
+    constructor(location: Location,  private element: ElementRef, private router: Router, private auth:AuthService
+        ,private notificationsvc:NotificationsService,private datepipe: DatePipe) {
       this.location = location;
           this.sidebarVisible = false;
     }
 
     ngOnInit(){
         this.name = this.auth.name;
-      this.listTitles = ROUTES.filter(listTitle => listTitle);
+      //this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
       this.router.events.subscribe((event) => {
@@ -34,6 +48,7 @@ export class NavbarComponent implements OnInit {
            this.mobile_menu_visible = 0;
          }
      });
+     this.loadNotifications();
     }
 
     sidebarOpen() {
@@ -112,6 +127,7 @@ export class NavbarComponent implements OnInit {
     };
 
     getTitle(){
+        this.listTitles = ROUTES.filter(listTitle => listTitle);
       var titlee = this.location.prepareExternalUrl(this.location.path());
       if(titlee.charAt(0) === '#'){
           titlee = titlee.slice( 1 );
@@ -136,4 +152,68 @@ export class NavbarComponent implements OnInit {
         }
         return false;
     }
+
+    //#region Notification
+  loadNotifications()
+  {
+    //debugger;
+    this.ob = this.notificationsvc.GetNotificationsByID(this.auth.email);
+    this.ob.subscribe(
+      data => { 
+        console.log("Output");
+        console.log(data);
+        this.notificationData = data.slice(0,2);
+        this.badgeValue=this.notificationData.length.toString();
+      },
+      (error: any) => console.log("Error in fetching notification data")
+      );
+  }
+
+  setIsSeenNotification(notificationId:number)
+  {
+    console.log(notificationId);
+   console.log("ts.setIsSeenNotification() hits"); 
+  // let obj:any={};
+  // obj.id=notificationId,
+  // obj.isSeen=true;
+  
+   this.ob =this.notificationsvc.SetIsSeenNotification(notificationId);
+ 
+   this.ob.subscribe(
+     dataa => { 
+       console.log(dataa); 
+       this.loadNotifications();
+      },
+     (error: any) => console.log("Error Occured")
+   );
+  }
+
+  getNotificationTimeDiff(createdTime:string):string
+  {
+    console.log(createdTime);
+    var dateOneObj = new Date(createdTime).getTime();
+    var dateTwoObj = new Date().getTime();
+    // var milliseconds = Math.abs(dateOneObj-dateTwoObj)
+    // var hours = milliseconds / 36e5;
+    // return hours.toString()+" Hours ago";
+
+    var diff =(dateOneObj-dateTwoObj) / 1000;
+    var minutes=Math. abs(Math. round(diff/60)).toString();
+    console.log(minutes);
+    var hours=Math. abs(Math. round(diff/3600)).toString();
+    console.log(hours);
+    if(parseInt(minutes) < 60)
+    {
+      return minutes.toString()+" Minutes ago"
+    }
+    else if(parseInt(hours)<24)
+    {
+      return hours.toString()+" Hours ago"
+    }
+    else
+    {
+    return this.datepipe.transform(createdTime,"MMMM d, y");
+    }
+  }
+  //#endregion
 }

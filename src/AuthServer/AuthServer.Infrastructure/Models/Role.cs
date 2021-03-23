@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class Role
     {
         public Role()
         {
-            UserRoleMapping = new HashSet<UserRoleMapping>();
+            UserRoleMappings = new HashSet<UserRoleMapping>();
         }
 
         public int Id { get; set; }
@@ -19,6 +21,6 @@ namespace AuthServer.Infrastructure.Models
         public DateTime? ModifiedOn { get; set; }
         public bool? IsActive { get; set; }
 
-        public virtual ICollection<UserRoleMapping> UserRoleMapping { get; set; }
+        public virtual ICollection<UserRoleMapping> UserRoleMappings { get; set; }
     }
 }

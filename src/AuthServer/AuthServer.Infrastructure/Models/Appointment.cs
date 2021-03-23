@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class Appointment
     {
         public Appointment()
         {
-            Diagnosis = new HashSet<Diagnosis>();
-            Medication = new HashSet<Medication>();
-            Notification = new HashSet<Notification>();
-            PatientVitalSigns = new HashSet<PatientVitalSigns>();
-            Procedures = new HashSet<Procedures>();
+            Diagnoses = new HashSet<Diagnosis>();
+            Medications = new HashSet<Medication>();
+            Notifications = new HashSet<Notification>();
+            PatientVitalSigns = new HashSet<PatientVitalSign>();
+            Procedures = new HashSet<Procedure>();
         }
 
         public int Id { get; set; }
@@ -31,10 +33,10 @@ namespace AuthServer.Infrastructure.Models
         public string Notes { get; set; }
 
         public virtual DoctorMaster Doctor { get; set; }
-        public virtual ICollection<Diagnosis> Diagnosis { get; set; }
-        public virtual ICollection<Medication> Medication { get; set; }
-        public virtual ICollection<Notification> Notification { get; set; }
-        public virtual ICollection<PatientVitalSigns> PatientVitalSigns { get; set; }
-        public virtual ICollection<Procedures> Procedures { get; set; }
+        public virtual ICollection<Diagnosis> Diagnoses { get; set; }
+        public virtual ICollection<Medication> Medications { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<PatientVitalSign> PatientVitalSigns { get; set; }
+        public virtual ICollection<Procedure> Procedures { get; set; }
     }
 }

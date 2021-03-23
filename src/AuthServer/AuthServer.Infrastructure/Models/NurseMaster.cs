@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class NurseMaster
@@ -24,6 +26,6 @@ namespace AuthServer.Infrastructure.Models
         public string Address { get; set; }
         public string PhoneNo { get; set; }
 
-        public virtual AspNetUsers UserLoginDetails { get; set; }
+        public virtual AspNetUser UserLoginDetails { get; set; }
     }
 }

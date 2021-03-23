@@ -9,10 +9,10 @@ export class Register{
       public FullName:string ="",
       public ContactNo:string = "",
       public Address:string ="",
-      public Specialties: string = "",
+      public Speciality: string = "",
       public Status:string ="",
       public Blocked_Unblocked:string ="",
-      public id:number =0,
+      public id:string ="",
       public gender:string="",     
    )
   {
@@ -46,8 +46,8 @@ set Contactno(address: string) { this.ContactNo = address };
 get Addresss() { return this.Address };
 set Addresss(address: string) { this.Address = address };
 
-get Specialtiess() { return this.Specialties };
-set Specialtiess(address: string) { this.Specialties = address };
+get Specialtiess() { return this.Speciality };
+set Specialtiess(address: string) { this.Speciality = address };
 
 get Statuss() { return this.Status };
 set Statuss(address: string) { this.Status = address };
@@ -56,7 +56,7 @@ get Blocked_unblocked() { return this.Blocked_Unblocked };
 set Blocked_unblocked(address: string) { this.Blocked_Unblocked = address };
 
 get ID() { return this.id };
-set ID(address: number) { this.id = address };
+set ID(address: string) { this.id = address };
 }
 
 // export class Register{

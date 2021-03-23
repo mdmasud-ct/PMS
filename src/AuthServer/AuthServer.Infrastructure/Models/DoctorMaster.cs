@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#nullable disable
+
 namespace AuthServer.Infrastructure.Models
 {
     public partial class DoctorMaster
     {
         public DoctorMaster()
         {
-            Appointment = new HashSet<Appointment>();
-            DoctorspecialityMapping = new HashSet<DoctorspecialityMapping>();
-            Notification = new HashSet<Notification>();
+            Appointments = new HashSet<Appointment>();
+            DoctorspecialityMappings = new HashSet<DoctorspecialityMapping>();
+            Notifications = new HashSet<Notification>();
         }
 
         public int Id { get; set; }
@@ -26,14 +28,15 @@ namespace AuthServer.Infrastructure.Models
         public DateTime? Dob { get; set; }
         public int? Age { get; set; }
         public string Gender { get; set; }
-        public string City { get; set; }
         public string Title { get; set; }
-        public string Speciality { get; set; }
         public string Address { get; set; }
+        public string City { get; set; }
         public string PhoneNo { get; set; }
-        public virtual AspNetUsers UserLoginDetails { get; set; }
-        public virtual ICollection<Appointment> Appointment { get; set; }
-        public virtual ICollection<DoctorspecialityMapping> DoctorspecialityMapping { get; set; }
-        public virtual ICollection<Notification> Notification { get; set; }
+        public string Speciality { get; set; }
+
+        public virtual AspNetUser UserLoginDetails { get; set; }
+        public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<DoctorspecialityMapping> DoctorspecialityMappings { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

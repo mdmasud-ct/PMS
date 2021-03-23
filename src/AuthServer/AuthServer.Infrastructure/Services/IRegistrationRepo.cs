@@ -14,5 +14,9 @@ namespace AuthServer.Infrastructure.Services
 		public void AddNurse(UsersModel model);
 		
 		public void UpdateUserDetails(UsersModel model);
+
+		public void UpdateDocStatus(UsersModel model);
+		public void UpdateNurseStatus(UsersModel model);
+		public void UpdatePatientStatus(UsersModel model);
 	}
 }

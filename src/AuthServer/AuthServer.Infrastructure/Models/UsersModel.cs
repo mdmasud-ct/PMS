@@ -10,7 +10,7 @@ namespace AuthServer.Models
 
 		public string loginId { get; set; }
 		
-		public string Id { get; set; }
+		public int Id { get; set; }
 		
 		public string Title { get; set; }
 		
@@ -45,6 +45,7 @@ namespace AuthServer.Models
 		public string City{ get; set; }
 
 		public string ContactNo { get; set; }
+		public bool? IsActive { get; set; }
 		
 	}
 }

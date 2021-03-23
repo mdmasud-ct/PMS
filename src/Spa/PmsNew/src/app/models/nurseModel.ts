@@ -11,7 +11,7 @@ export class Nurse{
         public Address:string="",
         public Status:string = "" ,
         public Blocked_Unblocked:string = "",
-        public Specialties:string = ""
+        public Speciality:string = ""
      )
     {
         

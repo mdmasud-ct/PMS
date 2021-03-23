@@ -1,8 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using AuthServer.Infrastructure.Models;
 
-namespace AuthServer.Infrastructure.Models
+#nullable disable
+
+namespace AuthServer.Infrastructure.Data.AppDbContext
 {
     public partial class PMSYSTEMContext : DbContext
     {
@@ -15,51 +18,53 @@ namespace AuthServer.Infrastructure.Models
         {
         }
 
-        public virtual DbSet<AllergyMaster> AllergyMaster { get; set; }
-        public virtual DbSet<Appointment> Appointment { get; set; }
-        public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
-        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
-        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
-        public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
-        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<DeviceCodes> DeviceCodes { get; set; }
-        public virtual DbSet<Diagnosis> Diagnosis { get; set; }
-        public virtual DbSet<DiagnosisMaster> DiagnosisMaster { get; set; }
-        public virtual DbSet<DoctorMaster> DoctorMaster { get; set; }
-        public virtual DbSet<DoctorspecialityMapping> DoctorspecialityMapping { get; set; }
-        public virtual DbSet<DrugMaster> DrugMaster { get; set; }
-        public virtual DbSet<Medication> Medication { get; set; }
-        public virtual DbSet<Notification> Notification { get; set; }
-        public virtual DbSet<NurseMaster> NurseMaster { get; set; }
-        public virtual DbSet<PatientAllergy> PatientAllergy { get; set; }
-        public virtual DbSet<PatientEmergencyContact> PatientEmergencyContact { get; set; }
-        public virtual DbSet<PatientMaster> PatientMaster { get; set; }
-        public virtual DbSet<PatientVitalSigns> PatientVitalSigns { get; set; }
-        public virtual DbSet<PersistedGrants> PersistedGrants { get; set; }
-        public virtual DbSet<ProcedureMaster> ProcedureMaster { get; set; }
-        public virtual DbSet<Procedures> Procedures { get; set; }
-        public virtual DbSet<Role> Role { get; set; }
-        public virtual DbSet<SpecialityMaster> SpecialityMaster { get; set; }
-        public virtual DbSet<UserLoginDetails> UserLoginDetails { get; set; }
-        public virtual DbSet<UserRoleMapping> UserRoleMapping { get; set; }
+        public virtual DbSet<AllergyMaster> AllergyMasters { get; set; }
+        public virtual DbSet<Appointment> Appointments { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
+        public virtual DbSet<DeviceCode> DeviceCodes { get; set; }
+        public virtual DbSet<Diagnosis> Diagnoses { get; set; }
+        public virtual DbSet<DiagnosisMaster> DiagnosisMasters { get; set; }
+        public virtual DbSet<DoctorMaster> DoctorMasters { get; set; }
+        public virtual DbSet<DoctorspecialityMapping> DoctorspecialityMappings { get; set; }
+        public virtual DbSet<DrugMaster> DrugMasters { get; set; }
+        public virtual DbSet<Medication> Medications { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<NurseMaster> NurseMasters { get; set; }
+        public virtual DbSet<PatientAllergy> PatientAllergies { get; set; }
+        public virtual DbSet<PatientEmergencyContact> PatientEmergencyContacts { get; set; }
+        public virtual DbSet<PatientMaster> PatientMasters { get; set; }
+        public virtual DbSet<PatientVitalSign> PatientVitalSigns { get; set; }
+        public virtual DbSet<PersistedGrant> PersistedGrants { get; set; }
+        public virtual DbSet<Procedure> Procedures { get; set; }
+        public virtual DbSet<ProcedureMaster> ProcedureMasters { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<SpecialityMaster> SpecialityMasters { get; set; }
+        public virtual DbSet<UserLoginDetail> UserLoginDetails { get; set; }
+        public virtual DbSet<UserRoleMapping> UserRoleMappings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-Q4OMBM2;Database=PMSYSTEM;Trusted_Connection=True;MultipleActiveResultSets=true");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=IMCDBCP9-MSL2\\SQLEXPRESS;Database=PMSYSTEM;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<AllergyMaster>(entity =>
             {
+                entity.ToTable("AllergyMaster");
+
                 entity.Property(e => e.AllergyClinicalInformation).IsUnicode(false);
 
                 entity.Property(e => e.AllergyDesc)
@@ -89,6 +94,8 @@ namespace AuthServer.Infrastructure.Models
 
             modelBuilder.Entity<Appointment>(entity =>
             {
+                entity.ToTable("Appointment");
+
                 entity.Property(e => e.AppointmentTitle)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -124,14 +131,25 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.RespondedOn).HasColumnType("date");
 
                 entity.HasOne(d => d.Doctor)
-                    .WithMany(p => p.Appointment)
+                    .WithMany(p => p.Appointments)
                     .HasForeignKey(d => d.DoctorId)
                     .HasConstraintName("FK__Appointme__Docto__47DBAE45");
             });
 
-            modelBuilder.Entity<AspNetRoleClaims>(entity =>
+            modelBuilder.Entity<AspNetRole>(entity =>
             {
-                entity.HasIndex(e => e.RoleId);
+                entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedName] IS NOT NULL)");
+
+                entity.Property(e => e.Name).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetRoleClaim>(entity =>
+            {
+                entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
 
                 entity.Property(e => e.RoleId).IsRequired();
 
@@ -140,79 +158,13 @@ namespace AuthServer.Infrastructure.Models
                     .HasForeignKey(d => d.RoleId);
             });
 
-            modelBuilder.Entity<AspNetRoles>(entity =>
+            modelBuilder.Entity<AspNetUser>(entity =>
             {
-                entity.HasIndex(e => e.NormalizedName)
-                    .HasName("RoleNameIndex")
-                    .IsUnique()
-                    .HasFilter("([NormalizedName] IS NOT NULL)");
+                entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
-                entity.Property(e => e.Name).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedName).HasMaxLength(256);
-            });
-
-            modelBuilder.Entity<AspNetUserClaims>(entity =>
-            {
-                entity.HasIndex(e => e.UserId);
-
-                entity.Property(e => e.UserId).IsRequired();
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserClaims)
-                    .HasForeignKey(d => d.UserId);
-            });
-
-            modelBuilder.Entity<AspNetUserLogins>(entity =>
-            {
-                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
-
-                entity.HasIndex(e => e.UserId);
-
-                entity.Property(e => e.UserId).IsRequired();
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserLogins)
-                    .HasForeignKey(d => d.UserId);
-            });
-
-            modelBuilder.Entity<AspNetUserRoles>(entity =>
-            {
-                entity.HasKey(e => new { e.UserId, e.RoleId });
-
-                entity.HasIndex(e => e.RoleId);
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.AspNetUserRoles)
-                    .HasForeignKey(d => d.RoleId);
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserRoles)
-                    .HasForeignKey(d => d.UserId);
-            });
-
-            modelBuilder.Entity<AspNetUserTokens>(entity =>
-            {
-                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserTokens)
-                    .HasForeignKey(d => d.UserId);
-            });
-
-            modelBuilder.Entity<AspNetUsers>(entity =>
-            {
-                entity.HasIndex(e => e.NormalizedEmail)
-                    .HasName("EmailIndex");
-
-                entity.HasIndex(e => e.NormalizedUserName)
-                    .HasName("UserNameIndex")
+                entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
                     .IsUnique()
                     .HasFilter("([NormalizedUserName] IS NOT NULL)");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Email).HasMaxLength(256);
 
@@ -223,16 +175,62 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
-            modelBuilder.Entity<DeviceCodes>(entity =>
+            modelBuilder.Entity<AspNetUserClaim>(entity =>
+            {
+                entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserClaims)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserLogin>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+                entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserLogins)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserRole>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+
+                entity.HasIndex(e => e.RoleId, "IX_AspNetUserRoles_RoleId");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.RoleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserToken>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserTokens)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<DeviceCode>(entity =>
             {
                 entity.HasKey(e => e.UserCode);
 
-                entity.HasIndex(e => e.DeviceCode)
+                entity.HasIndex(e => e.DeviceCode1, "IX_DeviceCodes_DeviceCode")
                     .IsUnique();
 
-                entity.Property(e => e.UserCode)
-                    .HasMaxLength(200)
-                    .ValueGeneratedNever();
+                entity.Property(e => e.UserCode).HasMaxLength(200);
 
                 entity.Property(e => e.ClientId)
                     .IsRequired()
@@ -240,15 +238,18 @@ namespace AuthServer.Infrastructure.Models
 
                 entity.Property(e => e.Data).IsRequired();
 
-                entity.Property(e => e.DeviceCode)
+                entity.Property(e => e.DeviceCode1)
                     .IsRequired()
-                    .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .HasColumnName("DeviceCode");
 
                 entity.Property(e => e.SubjectId).HasMaxLength(200);
             });
 
             modelBuilder.Entity<Diagnosis>(entity =>
             {
+                entity.ToTable("Diagnosis");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -262,27 +263,29 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Appointment)
-                    .WithMany(p => p.Diagnosis)
+                    .WithMany(p => p.Diagnoses)
                     .HasForeignKey(d => d.AppointmentId)
-                    .HasConstraintName("FK__Diagnosis__Appoi__17F790F9");
+                    .HasConstraintName("FK__Diagnosis__Appoi__4E88ABD4");
 
                 entity.HasOne(d => d.DiagnosisNavigation)
-                    .WithMany(p => p.Diagnosis)
+                    .WithMany(p => p.Diagnoses)
                     .HasForeignKey(d => d.DiagnosisId)
                     .HasConstraintName("FK__Diagnosis__Diagn__74AE54BC");
             });
 
             modelBuilder.Entity<DiagnosisMaster>(entity =>
             {
+                entity.ToTable("DiagnosisMaster");
+
                 entity.Property(e => e.DiagnosisCode)
-                    .HasColumnName("Diagnosis_Code")
                     .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("Diagnosis_Code");
 
                 entity.Property(e => e.DiagnosisDescription)
-                    .HasColumnName("Diagnosis_Description")
                     .HasMaxLength(150)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("Diagnosis_Description");
 
                 entity.Property(e => e.DiagnosisIsDepricated).HasColumnName("Diagnosis_Is_Depricated");
 
@@ -293,6 +296,8 @@ namespace AuthServer.Infrastructure.Models
 
             modelBuilder.Entity<DoctorMaster>(entity =>
             {
+                entity.ToTable("DoctorMaster");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -300,18 +305,18 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.Dob)
-                    .HasColumnName("DOB")
-                    .HasColumnType("date");
+                    .HasColumnType("date")
+                    .HasColumnName("DOB");
 
                 entity.Property(e => e.DoctorDisplayId)
-                    .HasColumnName("DoctorDisplayID")
                     .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("DoctorDisplayID");
 
                 entity.Property(e => e.EmailId)
-                    .HasColumnName("EmailID")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("EmailID");
 
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(50)
@@ -332,17 +337,19 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.UserLoginDetailsId)
-                    .HasColumnName("UserLoginDetailsID")
-                    .HasMaxLength(450);
+                    .HasMaxLength(450)
+                    .HasColumnName("UserLoginDetailsID");
 
                 entity.HasOne(d => d.UserLoginDetails)
-                    .WithMany(p => p.DoctorMaster)
+                    .WithMany(p => p.DoctorMasters)
                     .HasForeignKey(d => d.UserLoginDetailsId)
-                    .HasConstraintName("FK__DoctorMas__UserL__531856C7");
+                    .HasConstraintName("FK__DoctorMas__UserL__6477ECF3");
             });
 
             modelBuilder.Entity<DoctorspecialityMapping>(entity =>
             {
+                entity.ToTable("DoctorspecialityMapping");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -358,18 +365,20 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Doctor)
-                    .WithMany(p => p.DoctorspecialityMapping)
+                    .WithMany(p => p.DoctorspecialityMappings)
                     .HasForeignKey(d => d.DoctorId)
                     .HasConstraintName("FK__Doctorspe__Docto__534D60F1");
 
                 entity.HasOne(d => d.Sp)
-                    .WithMany(p => p.DoctorspecialityMapping)
+                    .WithMany(p => p.DoctorspecialityMappings)
                     .HasForeignKey(d => d.SpId)
-                    .HasConstraintName("FK__Doctorspec__SpId__52593CB8");
+                    .HasConstraintName("FK__Doctorspec__SpId__5441852A");
             });
 
             modelBuilder.Entity<DrugMaster>(entity =>
             {
+                entity.ToTable("DrugMaster");
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CreatedBy)
@@ -407,6 +416,8 @@ namespace AuthServer.Infrastructure.Models
 
             modelBuilder.Entity<Medication>(entity =>
             {
+                entity.ToTable("Medication");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -422,9 +433,9 @@ namespace AuthServer.Infrastructure.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Medication1)
-                    .HasColumnName("Medication")
                     .HasMaxLength(150)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("Medication");
 
                 entity.Property(e => e.ModifiedBy)
                     .HasMaxLength(255)
@@ -433,13 +444,15 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Appointment)
-                    .WithMany(p => p.Medication)
+                    .WithMany(p => p.Medications)
                     .HasForeignKey(d => d.AppointmentId)
-                    .HasConstraintName("FK__Medicatio__Appoi__4CA06362");
+                    .HasConstraintName("FK__Medicatio__Appoi__5535A963");
             });
 
             modelBuilder.Entity<Notification>(entity =>
             {
+                entity.ToTable("Notification");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -461,23 +474,25 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.PatientId).HasColumnName("PatientID");
 
                 entity.HasOne(d => d.Appointment)
-                    .WithMany(p => p.Notification)
+                    .WithMany(p => p.Notifications)
                     .HasForeignKey(d => d.AppointmentId)
-                    .HasConstraintName("FK__Notificat__Appoi__5DCAEF64");
+                    .HasConstraintName("FK__Notificat__Appoi__5629CD9C");
 
                 entity.HasOne(d => d.Doctor)
-                    .WithMany(p => p.Notification)
+                    .WithMany(p => p.Notifications)
                     .HasForeignKey(d => d.DoctorId)
-                    .HasConstraintName("FK__Notificat__Docto__5CD6CB2B");
+                    .HasConstraintName("FK__Notificat__Docto__571DF1D5");
 
                 entity.HasOne(d => d.Patient)
-                    .WithMany(p => p.Notification)
+                    .WithMany(p => p.Notifications)
                     .HasForeignKey(d => d.PatientId)
                     .HasConstraintName("FK_Ntf_Pts");
             });
 
             modelBuilder.Entity<NurseMaster>(entity =>
             {
+                entity.ToTable("NurseMaster");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -485,13 +500,13 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.Dob)
-                    .HasColumnName("DOB")
-                    .HasColumnType("date");
+                    .HasColumnType("date")
+                    .HasColumnName("DOB");
 
                 entity.Property(e => e.EmailId)
-                    .HasColumnName("EmailID")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("EmailID");
 
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(50)
@@ -512,22 +527,24 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.NurseDisplayId)
-                    .HasColumnName("NurseDisplayID")
                     .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("NurseDisplayID");
 
                 entity.Property(e => e.UserLoginDetailsId)
-                    .HasColumnName("UserLoginDetailsID")
-                    .HasMaxLength(450);
+                    .HasMaxLength(450)
+                    .HasColumnName("UserLoginDetailsID");
 
                 entity.HasOne(d => d.UserLoginDetails)
-                    .WithMany(p => p.NurseMaster)
+                    .WithMany(p => p.NurseMasters)
                     .HasForeignKey(d => d.UserLoginDetailsId)
-                    .HasConstraintName("FK__NurseMast__UserL__55F4C372");
+                    .HasConstraintName("FK__NurseMast__UserL__66603565");
             });
 
             modelBuilder.Entity<PatientAllergy>(entity =>
             {
+                entity.ToTable("PatientAllergy");
+
                 entity.Property(e => e.AllergyId).HasColumnName("AllergyID");
 
                 entity.Property(e => e.CreatedBy)
@@ -545,18 +562,20 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.PatientId).HasColumnName("PatientID");
 
                 entity.HasOne(d => d.Allergy)
-                    .WithMany(p => p.PatientAllergy)
+                    .WithMany(p => p.PatientAllergies)
                     .HasForeignKey(d => d.AllergyId)
-                    .HasConstraintName("FK__PatientAl__Aller__6E01572D");
+                    .HasConstraintName("FK__PatientAl__Aller__59FA5E80");
 
                 entity.HasOne(d => d.Patient)
-                    .WithMany(p => p.PatientAllergy)
+                    .WithMany(p => p.PatientAllergies)
                     .HasForeignKey(d => d.PatientId)
-                    .HasConstraintName("FK__PatientAl__Patie__4F7CD00D");
+                    .HasConstraintName("FK__PatientAl__Patie__5AEE82B9");
             });
 
             modelBuilder.Entity<PatientEmergencyContact>(entity =>
             {
+                entity.ToTable("PatientEmergencyContact");
+
                 entity.Property(e => e.Address)
                     .HasMaxLength(300)
                     .IsUnicode(false);
@@ -596,13 +615,15 @@ namespace AuthServer.Infrastructure.Models
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Patient)
-                    .WithMany(p => p.PatientEmergencyContact)
+                    .WithMany(p => p.PatientEmergencyContacts)
                     .HasForeignKey(d => d.PatientId)
-                    .HasConstraintName("FK__PatientEm__Patie__4D94879B");
+                    .HasConstraintName("FK__PatientEm__Patie__5BE2A6F2");
             });
 
             modelBuilder.Entity<PatientMaster>(entity =>
             {
+                entity.ToTable("PatientMaster");
+
                 entity.Property(e => e.Address)
                     .HasMaxLength(300)
                     .IsUnicode(false);
@@ -614,13 +635,13 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.Dob)
-                    .HasColumnName("DOB")
-                    .HasColumnType("date");
+                    .HasColumnType("date")
+                    .HasColumnName("DOB");
 
                 entity.Property(e => e.EmailId)
-                    .HasColumnName("EmailID")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("EmailID");
 
                 entity.Property(e => e.Ethnicity)
                     .HasMaxLength(50)
@@ -649,25 +670,25 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.PatientDisplayId)
-                    .HasColumnName("PatientDisplayID")
                     .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("PatientDisplayID");
 
                 entity.Property(e => e.Race)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserLoginDetailsId)
-                    .HasColumnName("UserLoginDetailsID")
-                    .HasMaxLength(450);
+                    .HasMaxLength(450)
+                    .HasColumnName("UserLoginDetailsID");
 
                 entity.HasOne(d => d.UserLoginDetails)
-                    .WithMany(p => p.PatientMaster)
+                    .WithMany(p => p.PatientMasters)
                     .HasForeignKey(d => d.UserLoginDetailsId)
-                    .HasConstraintName("FK__PatientMa__UserL__5224328E");
+                    .HasConstraintName("FK__PatientMa__UserL__6383C8BA");
             });
 
-            modelBuilder.Entity<PatientVitalSigns>(entity =>
+            modelBuilder.Entity<PatientVitalSign>(entity =>
             {
                 entity.Property(e => e.BodyTemperature).HasColumnType("decimal(5, 2)");
 
@@ -692,23 +713,21 @@ namespace AuthServer.Infrastructure.Models
                 entity.HasOne(d => d.Appointment)
                     .WithMany(p => p.PatientVitalSigns)
                     .HasForeignKey(d => d.AppointmentId)
-                    .HasConstraintName("FK__PatientVi__Appoi__5070F446");
+                    .HasConstraintName("FK__PatientVi__Appoi__5DCAEF64");
 
                 entity.HasOne(d => d.Patient)
                     .WithMany(p => p.PatientVitalSigns)
                     .HasForeignKey(d => d.PatientId)
-                    .HasConstraintName("FK__PatientVi__Patie__4E88ABD4");
+                    .HasConstraintName("FK__PatientVi__Patie__5EBF139D");
             });
 
-            modelBuilder.Entity<PersistedGrants>(entity =>
+            modelBuilder.Entity<PersistedGrant>(entity =>
             {
                 entity.HasKey(e => e.Key);
 
-                entity.HasIndex(e => new { e.SubjectId, e.ClientId, e.Type });
+                entity.HasIndex(e => new { e.SubjectId, e.ClientId, e.Type }, "IX_PersistedGrants_SubjectId_ClientId_Type");
 
-                entity.Property(e => e.Key)
-                    .HasMaxLength(200)
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Key).HasMaxLength(200);
 
                 entity.Property(e => e.ClientId)
                     .IsRequired()
@@ -723,22 +742,7 @@ namespace AuthServer.Infrastructure.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<ProcedureMaster>(entity =>
-            {
-                entity.Property(e => e.ProcedureCode)
-                    .HasColumnName("Procedure_Code")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ProcedureDescription)
-                    .HasColumnName("Procedure_Description")
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ProcedureIsDepricated).HasColumnName("Procedure_Is_Depricated");
-            });
-
-            modelBuilder.Entity<Procedures>(entity =>
+            modelBuilder.Entity<Procedure>(entity =>
             {
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
@@ -755,16 +759,35 @@ namespace AuthServer.Infrastructure.Models
                 entity.HasOne(d => d.Appointment)
                     .WithMany(p => p.Procedures)
                     .HasForeignKey(d => d.AppointmentId)
-                    .HasConstraintName("FK__Procedure__Appoi__4BAC3F29");
+                    .HasConstraintName("FK__Procedure__Appoi__5FB337D6");
 
-                entity.HasOne(d => d.Procedure)
+                entity.HasOne(d => d.ProcedureNavigation)
                     .WithMany(p => p.Procedures)
                     .HasForeignKey(d => d.ProcedureId)
                     .HasConstraintName("FK__Procedure__Proce__05D8E0BE");
             });
 
+            modelBuilder.Entity<ProcedureMaster>(entity =>
+            {
+                entity.ToTable("ProcedureMaster");
+
+                entity.Property(e => e.ProcedureCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("Procedure_Code");
+
+                entity.Property(e => e.ProcedureDescription)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("Procedure_Description");
+
+                entity.Property(e => e.ProcedureIsDepricated).HasColumnName("Procedure_Is_Depricated");
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
+                entity.ToTable("Role");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -782,13 +805,15 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.Role1)
-                    .HasColumnName("Role")
                     .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .HasColumnName("Role");
             });
 
             modelBuilder.Entity<SpecialityMaster>(entity =>
             {
+                entity.ToTable("SpecialityMaster");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
                     .IsUnicode(false);
@@ -806,7 +831,7 @@ namespace AuthServer.Infrastructure.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<UserLoginDetails>(entity =>
+            modelBuilder.Entity<UserLoginDetail>(entity =>
             {
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(255)
@@ -848,15 +873,19 @@ namespace AuthServer.Infrastructure.Models
                 entity.Property(e => e.RoleId).HasColumnName("Role_id");
 
                 entity.HasOne(d => d.Role)
-                    .WithMany(p => p.UserRoleMapping)
+                    .WithMany(p => p.UserRoleMappings)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__User_Role__Role___46E78A0C");
+                    .HasConstraintName("FK__User_Role__Role___619B8048");
 
                 entity.HasOne(d => d.UserLoginDetails)
-                    .WithMany(p => p.UserRoleMapping)
+                    .WithMany(p => p.UserRoleMappings)
                     .HasForeignKey(d => d.UserLoginDetailsId)
-                    .HasConstraintName("FK__User_Role__UserL__45F365D3");
+                    .HasConstraintName("FK__User_Role__UserL__628FA481");
             });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

@@ -12,6 +12,7 @@
                     </div>
                     <div class="col-md-8 text-right">
                   <button class="btn btn-primary btn-outline-primary"  (click)="Open(content)" value="Add"><i class="material-icons">person_add</i><span>&nbsp;&nbsp;Add New</span></button>
+                  <button class="btn btn-outline-primary"  (click)="DownloadGridData()"><i class="material-icons">download</i></button>                
                 </div>
                   </div>
                 </th>
@@ -22,46 +23,32 @@
                 <ng-container matColumnDef="Id" style="width:8%">
                   <mat-header-cell *matHeaderCellDef mat-sort-header class=""> ID </mat-header-cell>
                   <mat-cell *matCellDef="let row"> {{row.doctorDisplayId}} </mat-cell>
-                  <!-- <th mat-cell mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Doctor ID. </th>
-                  <td *matCellDef="let element"> {{element.doctorDisplayId}} </td> -->
                 </ng-container>  
                 <ng-container matColumnDef="FullName">
-                  <!-- <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Full Name </th>
-                  <td mat-cell *matCellDef="let element"> {{element.firstName}}  {{element.lastName}}</td> -->
                   <mat-header-cell *matHeaderCellDef mat-sort-header class=""> Full Name </mat-header-cell>
                   <mat-cell *matCellDef="let row"> {{row.firstName}}  {{row.lastName}} </mat-cell>
                 </ng-container>  
                 <ng-container matColumnDef="dob">
-                  <!-- <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Date of Birth </th>
-                  <td mat-cell *matCellDef="let element"> {{element.dob | date: 'dd-MM-yyyy'}} </td> -->
                   <mat-header-cell *matHeaderCellDef mat-sort-header class=""> Date of Birth </mat-header-cell>
                   <mat-cell *matCellDef="let row"> {{row.dob | date: 'dd-MM-yyyy'}} </mat-cell>
                 </ng-container>  
                 <ng-container matColumnDef="EmailID">
-                  <!-- <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> EmailID </th>
-                  <td mat-cell *matCellDef="let element"> {{element.emailId}} </td> -->
                   <mat-header-cell *matHeaderCellDef mat-sort-header class=""> Email Id </mat-header-cell>
                   <mat-cell *matCellDef="let row"> {{ row.emailId }} </mat-cell>
                 </ng-container> 
                 <ng-container matColumnDef="Age">
-                  <!-- <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Age </th>
-                  <td mat-cell *matCellDef="let element"> {{element.age}} </td> -->
                   <mat-header-cell *matHeaderCellDef mat-sort-header class=""> Age </mat-header-cell>
                   <mat-cell *matCellDef="let row"> {{ row.age }} </mat-cell>
                 </ng-container>  
                 <ng-container matColumnDef="Gender">
-                  <!-- <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Gender </th>
-                  <td mat-cell *matCellDef="let element"> {{element.gender=='M' ? 'Male': element.gender=='F'?'Female':'Other'}} </td> -->
                   <mat-header-cell *matHeaderCellDef mat-sort-header class=""> Gender </mat-header-cell>
                   <mat-cell *matCellDef="let row"> {{ row.gender=='M' ? 'Male' : row.gender=='F'? 'Female': 'Other' }} </mat-cell>
                 </ng-container>  
-                <!-- <ng-container matColumnDef="Specialties">
+                <ng-container matColumnDef="Specialties">
                   <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Specialties </th>
-                  <td mat-cell *matCellDef="let element"> {{element.Specialties}} </td>
-                </ng-container>-->
+                  <td mat-cell *matCellDef="let element"> {{element.speciality}} </td>
+                </ng-container>
                 <ng-container matColumnDef="Status">
-                  <!-- <th mat-header-cell *matHeaderCellDef [ngClass]="{'fontSizeBold': true}"> Status </th>
-                  <td mat-cell *matCellDef="let element"> {{element.isActive == true? 'Active': 'Inactive' }} </td> -->
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
                   <mat-cell *matCellDef="let row"> {{ row.isActive == true? 'Active': 'Inactive' }} </mat-cell>
                 </ng-container> 
@@ -72,9 +59,10 @@
                 <ng-container matColumnDef="View_Edit_Delete" style="min-width: fit-content;">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                      <button class="btn btn-outline-primary" (click)="Open(Viewcontent,element.id)"  title="View"><mat-icon>visibility</mat-icon></button>
-                      <button class="btn btn-outline-primary" (click)="Editopen(Editcontent,element.id )"   title="Edit"><mat-icon>edit</mat-icon></button>
-                      <button class="btn btn-outline-primary" (click)="Deleteopen(Deletecontent,element.id )" title="Delete"><mat-icon>delete</mat-icon></button>
+                      <button class="btn btn-outline-primary" (click)="Open(Viewcontent,element.id)"          title="View"><mat-icon>visibility</mat-icon></button>
+                      <button class="btn btn-outline-primary" (click)="Editopen(Editcontent,element.id )"     title="Edit"><mat-icon>edit</mat-icon></button>
+                      <button class="btn btn-outline-primary btn-success" (click)="Deleteopen(Deletecontent,element.id )" title="Archive" *ngIf="element.isActive"><mat-icon>archive</mat-icon></button>
+                      <button class="btn btn-outline-primary btn-danger" (click)="ActiveOpen(Activatecontent,element.id )" title="Activate"  *ngIf="!element.isActive"><mat-icon>unarchive</mat-icon></button>
                   </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -109,7 +97,7 @@
                                         </tr>
                                         <tr>
                                           <th>Specialties</th>
-                                          <td><h4>{{UserData.Specialties==null?'Surgeon':UserData.Specialties}}</h4></td>
+                                          <td><h4>{{UserData.speciality==null?'Surgeon':UserData.speciality}}</h4></td>
                                         </tr>
                                         </table>
                                     </div>                   
@@ -153,7 +141,6 @@
           </ng-template>
           <!-- Register PopUp -->
         
-         <!-- View By ID PopUp -->
          <ng-template #Viewcontent let-modal>
           <div class="modal-header" *ngIf="UserData" style="text-align: center !important">
             <div class="row" style="width: 100%;">
@@ -164,10 +151,8 @@
               <span aria-hidden="true">&times;</span></button>
             </div>
           </div>
-            
           </div>
           <div class="modal-body" *ngIf="UserData">
-            <!-- <h2 style="text-align: center;">User id:  {{UserData.id}} </h2> -->
               <form >    
                 <div class="main main-raised" >
                   <div class="profile-content">
@@ -180,12 +165,10 @@
                             </div>
                             <div class="avatar avatar2" style="width:100%">
                               <table style="margin:auto;border-collapse: collapse; width: 100%;" [ngClass]="{'ViewPoptable': true}">
-                                
                                 </table>
                             </div>                   
                           </div>
                           <div class="name" >                      
-                            <!-- <hr/> -->
                             <table class="table table-hover" style="font-family: arial, sans-serif;border-collapse: collapse; width: 100%;" [ngClass]="{'ViewPoptable': true}">
                               <tr>
                                 <th >Name</th>
@@ -193,7 +176,7 @@
                               </tr>
                               <tr>
                                 <th>Specialties</th>
-                                <td><h4>{{UserData.Specialties==null?'Surgeon':UserData.Specialties}}</h4></td>
+                                <td><h4>{{UserData.speciality==null?'Surgeon':UserData.speciality}}</h4></td>
                               </tr>
                               <tr>
                                 <td>Date of Birth</td>
@@ -205,7 +188,7 @@
                               </tr>
                               <tr>
                                 <td>Status</td>
-                                <td>{{UserData.Status==null?'Active':'Inactive'}}</td>
+                                <td>{{UserData.isActive==null?'Active':UserData.isActive?'Active':'Inactive'}}</td>
                               </tr>                        
                             </table>                    
                           </div>
@@ -217,13 +200,10 @@
             </form>
           </div>
           <div class="modal-footer">
-            <!-- <button type="button" class="btn btn-outline" (click)="modal.close('Save click')">Save</button> -->
           </div>
         </ng-template>
-          <!-- View By ID PopUp -->
         
-          <!-- Edit By ID PopUp -->  
-          <ng-template #Editcontent let-c="close" let-d="dismiss" >    
+        <ng-template #Editcontent let-c="close" let-d="dismiss" >    
             <div class="modal-body" >
               <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
                 <span aria-hidden="true">&times; &nbsp;</span>
@@ -231,20 +211,33 @@
               <app-register (parentFun)="receiveMessage()" [drId]="DrIdToUpdate" [userData]="UserData"></app-register>
              </div> 
           </ng-template>
-          <!-- Edit By ID PopUp -->
         
-           <!-- Delete By ID PopUp -->  
           <ng-template #Deletecontent let-modal>
             <div class="modal-header" *ngIf="UserData">
               <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body" >
-              <h3>Are you sure you want to delete the user:</h3> <h4><b>{{UserData.firstName}} {{UserData.lastName}}</b></h4>
+            <div class="modal-body"  *ngIf="UserData">
+              <h3>Are you sure you want to archive the user:</h3> <h4><b>{{UserData.firstName}} {{UserData.lastName}}</b></h4>
             <div class="modal-footer">
-              <button type="button" class="btn btn-outline-primary" (click)="SoftDeleteDoctorData(item.id)" title="Delete">Delete</button>
-              <button type="button" class="btn btn-outline-primary" (click)="modal.close('Save click')" title="Cancel">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="UpdateDoctorStatus(UserData.id,false)" title="Delete">Archive</button>
+              <a id="btnCancel" href="javascript:void(0)"  class="btn btn-secondary" (click)="receiveMessage()" title="Cancel">Cancel</a>
+            </div>
+            </div>
+          </ng-template>
+
+          <ng-template #Activatecontent let-modal >
+            <div class="modal-header" *ngIf="UserData">
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" *ngIf="UserData">
+              <h3>Are you sure you want to active the user:</h3> <h4><b>{{UserData.firstName}} {{UserData.lastName}}</b></h4>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="UpdateDoctorStatus(UserData.id,true)" title="Delete">Activate</button>
+              <a id="btnCancel" href="javascript:void(0)"  class="btn btn-secondary" (click)="receiveMessage()" title="Cancel">Cancel</a>
             </div>
             </div>
           </ng-template>

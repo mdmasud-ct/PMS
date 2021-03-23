@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-//import * as data from '../../../assets/jsonData/AllUserdata.json';
 import { RegisterService } from '../../services/register.service';
 import { MatTableDataSource } from '@angular/material/table';
-//import { Patient } from '../../models/patientModel';
 import { Patients } from '../../models/Patient';
 import { Observable } from 'rxjs';
 import {ToasterService} from '../../core/ToasterService';
@@ -13,6 +11,10 @@ import { PageEvent } from '@angular/material/paginator';
 import { Patient } from 'app/models/patientModel';
 import { isThisTypeNode } from 'typescript';
 import { AuthService } from '../../core/auth.service';
+import { doctorGrid } from 'app/models/doctorGrid';
+import { MatSort } from '@angular/material/sort';
+import { finalize } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-patient',
   templateUrl: './patient.component.html',
@@ -23,68 +25,62 @@ export class PatientComponent implements OnInit {
   value = '';
   private UserData: any;
   private DeleteUserData: any;
-  public ob :Observable<Patients[]>;
+  public ob :Observable<doctorGrid[]>;
   public regiterData;
   msg:any;
   public dataSourcePatient: any;  
   public PatientData: Patients[]= [];
   public dataSourcePatientData: Patients[]= [];
   constructor(config: NgbModalConfig, private modalService: NgbModal
-    , private registerService: RegisterService,private toaster:ToasterService,private auth:AuthService) {
+    , private registerService: RegisterService,private toaster:ToasterService,private auth:AuthService, private spinner: NgxSpinnerService) {
     config.backdrop = 'static';
     config.keyboard = false;
   }
-  // MatPaginator Inputs
   length = 100;
   pageSize = 5;
   pageSizeOptions: number[] = [5, 10, 25, 100];
-
-  // MatPaginator Output
   pageEvent: PageEvent;
-  dataSource = new MatTableDataSource<Patients>(this.dataSourcePatientData);
+  datasource: MatTableDataSource<doctorGrid>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   setPageSizeOptions(setPageSizeOptionsInput: string) {
     if (setPageSizeOptionsInput) {
       this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
     }
   }
   success: boolean;
-  //Ng mat-table columns
   displayedColumns = [
-    'PatientID',
+    'Id',
     'FullName',
-    'DOB',
+    'dob',
     'EmailID',
     'ContactNo',
     'Status',
-    'Blocked_Unblocked',
+    //'Blocked_Unblocked',
     'View_Edit_Delete'
   ];
 
   public Getjson():void
   {
+    this.spinner.show();
     this.ob = this.registerService.GetPatientJsonDatas(this.auth.authorizationHeaderValue)
-    this.ob.subscribe(
+    this.ob.pipe(finalize(()=>this.spinner.hide())).subscribe(
       data => { 
-        console.log("Output");
-        console.log(data);
-        this.PatientData = data;
-        this.dataSourcePatientData = data;
-        this.dataSource = new MatTableDataSource<Patients>(this.dataSourcePatientData);
-
+        this.datasource =new MatTableDataSource<doctorGrid>(data);
+        this.datasource.paginator = this.paginator;
+        this.datasource.sort = this.sort;
       },
-      (error: any) => console.log("Error in saving regiter data")
+      (error: any) => this.toaster.error("Error","Unable to fetch records",ToasterPosition.topFull)
       );
-      this.dataSourcePatient = new MatTableDataSource(this.PatientData);
-      console.log("Data Source: "+this.PatientData);
-  }
- // View by Id function
+ }
  public GetdataById(id: number)
  {
-   this.ob = this.registerService.GetPatientJsonDatasByID(id)
+   this.ob = this.registerService.GetPatientJsonDatasByID(id,this.auth.authorizationHeaderValue)
    this.ob.subscribe(
-   data => {this.UserData= data; console.log(data)});
-   // console.log("USerdata : "+this.UserData.id);
+   data => {
+     this.UserData= data;
+    });
  }
  // Delete by Id function
  public DeletedataById(id: number)
@@ -96,68 +92,55 @@ export class PatientComponent implements OnInit {
  }
  applyFilter()
  {
-   //debugger;
-   console.log(this.value);
-
-   if(this.value!='')
-   {
-    this.dataSourcePatientData=this.PatientData.filter(p => p.fullName.includes(this.value));
-    this.dataSource = new MatTableDataSource<Patients>(this.PatientData.filter(p => p.fullName.toUpperCase().includes(this.value.toUpperCase())));
-   }
-   else
-   {
-   this.dataSourcePatientData=this.PatientData;
-   this.dataSource = new MatTableDataSource<Patients>(this.PatientData);
-   }
-   console.log(this.PatientData);    
+    this.datasource.filter = this.value.trim().toLocaleLowerCase();
  }
- // Ng Pop Up Model
- open(content)
- { // Ng Pop Up Model 
+ Open(content)
+ {  
    this.modalService.open(content,{ size:'xl',centered:true,scrollable:true});     
  }
 
  Viewopen(Viewcontent, id?:number)
- { // Ng Pop Up Model       
+ {        
    this.modalService.open(Viewcontent,{ size:'md',centered:true,scrollable:false});  
    this.GetdataById(id);
   }
  Deleteopen(Deletecontent, id?:number)
- { // Ng Pop Up Model       
+ {        
    this.modalService.open(Deletecontent,{ size:'md',centered:true,scrollable:true});
    this.GetdataById(id);
-   // this.DeletedataById(id);
  }
  Editopen(Editcontent, id?:number)
  {
    this.modalService.open(Editcontent,{ size:'md',centered:true,scrollable:true});  
-   // this.GetdataById(id);
  }
  
- SoftDeletePatientData(patientId:Number): void
- {
-   //debugger;
-   this.modalService.dismissAll();
-   console.log("ts.SoftDeletePatientData() hits");
- 
-  let obj:any={};
-  obj.id=patientId,
-  obj.status="InActive";
-  
-   this.ob =this.registerService.SoftDeletePatienData(obj)
- 
-   this.ob.subscribe(
-     dataa => { 
-       console.log(dataa);   
-       if(dataa !=null)
-       {
-       this.success = true;
-       this.toaster.success("Success","Patient Deleted.",ToasterPosition.topFull,this.functioncallbackFunction)   
-       }
-      },
-     (error: any) => console.log("Error in deleteing patient data")
-   );
-   }
+ UpdateDoctorStatus(nurseId:Number,isactive:boolean,event): void
+  {
+    this.spinner.show();
+    let obj:any={};
+    obj.Id=nurseId,
+    obj.IsActive=isactive;
+    this.ob =this.registerService.SoftDeletePatienData(obj)
+    this.ob.subscribe(
+      dataa => { 
+        console.log(dataa);   
+        if(dataa !=null)
+        {
+          this.spinner.hide();
+          this.success = true;
+          let res:any;
+          res = dataa;
+          if(res.code==1){
+            this.toaster.success("Success",res.response,ToasterPosition.topFull);
+          }else{
+            this.toaster.error("Error",res.response,ToasterPosition.topFull);
+          }   
+          this.receiveMessage(event);
+        }
+       },
+      (error: any) => {this.spinner.hide(); this.toaster.error("Error","Unable to update. Please contact administrator",ToasterPosition.topFull)}
+    );
+    }
 
    functioncallbackFunction(){
     this.success=true;
@@ -166,8 +149,38 @@ export class PatientComponent implements OnInit {
  ngOnInit(): void
  {
    this.Getjson();
-   this.dataSource.paginator = this.paginator;
-
  }
+ receiveMessage($event) {
+  this.spinner.show();
+  this.modalService.dismissAll();
+  this.Getjson();
+}
+ActiveOpen(Activatecontent, id?:number)
+  {
+    this.spinner.show();
+    this.GetdataById(id);
+    this.modalService.open(Activatecontent,{ size:'md',centered:true,scrollable:true});
+    this.spinner.hide();
+  }
 
+      
+  DownloadGridData()
+  {
+    debugger;
+     this.ob = this.registerService.DownloadGridData("patient");
+    this.ob.subscribe(
+      (response: any) =>{
+        debugger;
+          let dataType = response.type;
+          let binaryData = [];
+          binaryData.push(response);
+          let downloadLink = document.createElement('a');
+          downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: dataType}));
+          let fileName="AllPatientData_"+new Date().toLocaleString()+".xlsx";
+              downloadLink.setAttribute('download', fileName);
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+      }
+  )
+  }
 }

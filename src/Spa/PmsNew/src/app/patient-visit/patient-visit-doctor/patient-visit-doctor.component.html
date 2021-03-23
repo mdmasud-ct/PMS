@@ -1,0 +1,246 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Patient Visit Data</h4>
+                        <p class="card-category"></p>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-group" [formGroup]="fg" (ngSubmit)="SavePatientVisitDoctor()">
+                            <mat-tab-group dynamicHeight>
+                                <!-- <mat-tab label="Patient Details">
+                                    <br>                                
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="ApptID">AppointmentID: <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" name="ApptID" formControlName="ApptID" disabled>                        
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="PtID">PatientID: <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" name="PtID" formControlName="PtID" disabled>                        
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </fieldset>
+                                </mat-tab> -->
+                                <mat-tab label="Vital Signs">
+                                    <br>                                
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="height">Height (in cms): <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" name="height" formControlName="height">                        
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="weight">Weight (in kgs): <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" name="weight" formControlName="weight">                        
+                                                </div>
+                                            </div>            
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="bloodpressuresystolic">Blood Pressure Systolic (in mmHg): <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" name="bloodpressuresystolic" formControlName="bloodpressuresystolic">                        
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="bloodpressurediastolic">Blood Pressure Diastolic (in mmHg): <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" name="bloodpressurediastolic" formControlName="bloodpressurediastolic">                        
+                                                </div>
+                                            </div>            
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="temperature">Body Temperature (in celsius): <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" name="bodytemperature" formControlName="bodytemperature">                        
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="respirationrate">Respiration Rate (in BPM): <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" name="respirationrate" formControlName="respirationrate">                        
+                                                </div>
+                                            </div>                        
+                                        </div>
+
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Allergies">
+                                    <br>
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="Allergytype">Allergy Type: <span class="asterisk"> *</span></label>
+                                                    <select class="custom-select" [(ngModel)]="allergytype" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
+                                                        <option selected>Select Allergy Type</option>
+                                                        <option *ngFor="let allergy of allergyMaster" [value]="allergy.id">{{allergy.allergyName}}</option>
+                                                      </select>                                                      
+                                                      <!-- <input type="text" [(ngModel)]="name" [ngModelOptions]="{standalone: true}" placeholder="name" /> -->
+                                                </div>                
+                                                <div class="col-sm-6">
+                                                    <label for="fatalallergy">Fatal Allergy? <span class="asterisk"> *</span></label><br>
+                                                    <input type="checkbox" id="chkFatal" name="chkFatal" [(ngModel)]="chkFatal" [ngModelOptions]="{standalone: true}" value="True">                    
+                                                    <!-- <label class="radio-inline"><input type="radio" [(ngModel)]="year" [ngModelOptions]="{standalone: true}" name="optradio" checked>True</label>
+                                                    <label class="radio-inline"><input type="radio" [(ngModel)]="year" [ngModelOptions]="{standalone: true}" name="optradio">False</label>                     -->
+                                                    <!-- <input type="text" [(ngModel)]="year" [ngModelOptions]="{standalone: true}" placeholder="year" /> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">            
+                                            <button id="btnSubmitAllergy" type="button" (click)="AddAllergy()" class="btn">Add Allergy</button>
+                                        </div>
+                                        <div class="form-group">            
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Allergy</th><th>Fatal Allergy?</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let row of AllergyRows">                  
+                                                        <td>{{row.allergytype}}</td>
+                                                        <td>{{row.chkFatal}}</td>
+                                                      </tr>
+                                                </tbody>                                				
+                                            </table>
+                                        </div>
+
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Diagnosis">
+                                    <br>
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="Title">Diagnosis: <span class="asterisk"> *</span></label>
+                                                    <select class="custom-select" [(ngModel)]="diagnosistype" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
+                                                        <option selected>Select Diagnosis</option>
+                                                        <option *ngFor="let diagnosis of diagnosisMaster" [value]="diagnosis.id">{{diagnosis.diagnosisCode}}</option>
+                                                      </select>
+                                                </div>                
+                                                <!-- <div class="col-xs-8">
+                                                    <label for="DiagnosisDescription">Diagnosis Description: <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" [(ngModel)]="diagnosisdescription" [ngModelOptions]="{standalone: true}"/>
+                                                    <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                                                        LastName is required!
+                                                    </span>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="form-group">            
+                                            <button id="btnSubmit" type="button" (click)="AddDiagnosis()" class="btn">Add Diagnosis</button>
+                                        </div>
+                                        <div class="form-group">            
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Diagnosis</th><th>Diagnosis Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let row of DiagnosisRows">                  
+                                                        <td>{{row.diagnosiscode}}</td>
+                                                        <td>{{row.diagnosisdescription}}</td>
+                                                      </tr>                    
+                                                </tbody>                                				
+                                            </table>          
+                                        </div>
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Procedure">
+                                    <br>
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="Title">Procedure: <span class="asterisk"> *</span></label>
+                                                    <select class="custom-select" [(ngModel)]="proceduretype" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
+                                                        <option selected>Select Procedure</option>
+                                                        <option *ngFor="let procedure of procedureMaster" [value]="procedure.id">{{procedure.procedureCode}}</option>
+                                                      </select>
+                                                </div>                
+                                                <!-- <div class="col-xs-8">
+                                                    <label for="lastname">Procedure Description: <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" [(ngModel)]="proceduredescription" [ngModelOptions]="{standalone: true}"/>
+                                                    <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                                                        LastName is required!
+                                                    </span>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="form-group">            
+                                            <button id="btnSubmit" type="button" (click)="AddProcedure()" class="btn">Add Procedure</button>
+                                        </div>
+                                        <div class="form-group">            
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Procedure</th><th>Procedure Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let row of ProcedureRows">                  
+                                                        <td>{{row.proceduretype}}</td>
+                                                        <td>{{row.proceduredescription}}</td>
+                                                      </tr>                    
+                                                </tbody>                                				
+                                            </table>               
+                                        </div>
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Medication">
+                                    <br>
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <label for="Title">Medication: <span class="asterisk"> *</span></label>
+                                                    <select class="custom-select" [(ngModel)]="medicationtype" [ngModelOptions]="{standalone: true}" aria-label="Default select example">
+                                                        <option selected>Select Medication</option>
+                                                        <option *ngFor="let medicine of medicineMaster" [value]="medicine.id">{{medicine.medicineStrength}}</option>
+                                                      </select>
+                                                </div>                                                 
+                                                <div class="col-sm-7">
+                                                    <label for="lastname">Medication Description: <span class="asterisk"> *</span></label>
+                                                    <input type="text" class="form-control" [(ngModel)]="description" [ngModelOptions]="{standalone: true}"/>
+                                                    <!-- <span class="asterisk" *ngIf="fg.get('lastname').touched && fg.get('lastname').errors?.required">
+                                                        LastName is required!
+                                                    </span> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">            
+                                            <button id="btnSubmit" type="button" (click)="AddMedication()" class="btn">Add Medication</button>
+                                        </div>
+                                        <div class="form-group">            
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Medication</th><th>Medication Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let row of MedicationRows">                  
+                                                        <td>{{row.medicationtype}}</td>                        
+                                                        <td>{{row.medicationdescription}}</td>
+                                                      </tr>                    
+                                                </tbody>                                				
+                                            </table>        
+                                        </div>
+                                    </fieldset>
+
+                                </mat-tab>
+                                
+                            </mat-tab-group>
+                            <div class="form-group">            
+                                <button id="btnFormSubmit" type="submit" value="Submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

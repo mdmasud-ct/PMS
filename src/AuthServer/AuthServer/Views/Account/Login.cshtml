@@ -1,128 +1,159 @@
 ﻿@model LoginViewModel
 	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="~/images/icons/favicon.ico" />
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="~/css/util.css">
-	<link rel="stylesheet" type="text/css" href="~/css/main.css">
-	<!--===============================================================================================-->
-	<div class="row">
+<link rel="icon" type="image/png" href="~/images/icons/favicon.ico" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/css/util.css">
+<link rel="stylesheet" type="text/css" href="~/css/main.css">
+<!--===============================================================================================-->
+<div class="row">
+    <div class="col-md-8">
+                <div id="demo" class="container-login100 carousel slide" data-ride="carousel" style="padding: 15px;border-radius: 20px;">
 
-		@if (Model.EnableLocalLogin)
-		{
-		
+                    <!-- Indicators -->
+                    <ul class="carousel-indicators">
+                        <li data-target="#demo" data-slide-to="0" class="active"></li>
+                        <li data-target="#demo" data-slide-to="1"></li>
+                        <li data-target="#demo" data-slide-to="2"></li>
+                    </ul>
 
-		<div class="limiter">
-						<div class="container-login100">
-							<div class="wrap-login100">
-								<form asp-route="Login" class="login100-form validate-form p-l-55 p-r-55 p-t-178">
-									<input type="hidden" asp-for="ReturnUrl" />
-									<span class="login100-form-title">
-										Sign In
-									</span>
-									<div class="form-group wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-										<label asp-for="Username"></label>
-										<input class="form-control input100" placeholder="Username" asp-for="Username" autofocus>
-									</div>
+                    <!-- The slideshow -->
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" style="height:667px;border-radius:10px">
+                            <img src="~/images/1494831801_4Hvodm_ai-healthcare-750x450.jpeg" alt="Los Angeles" width="1100">
+                        </div>
+                        <div class="carousel-item" style="height:667px">
+                            <img src="~/images/nov16.jpg" alt="Chicago" width="1100">
+                        </div>
+                        <div class="carousel-item" style="height:667px">
+                            <img src="~/images/CitiusTech-sets-up-Healthcare-innovation-Fund-with-SINE.png" alt="New York" width="1100">
+                        </div>
+                    </div>
 
-									<div class="form-group wrap-input100 validate-input" data-validate="Please enter password">
-										<label asp-for="Password"></label>
-										<input type="password" class="form-control input100" placeholder="Password" asp-for="Password" autocomplete="off">
-									</div>
+                    <!-- Left and right controls -->
+                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+    </div>
+            <div class="col-md-4">
 
-									@if (Model.AllowRememberLogin)
-									{
-								<div class="form-check">
-									<input type="checkbox" asp-for="RememberLogin" class="form-check-input">
-									<label asp-for="RememberLogin" class="form-check-label">Remember My Login</label>
-								</div>}
+                @if (Model.EnableLocalLogin)
+                {
+                    <div class="limiter">
+                        <div class="container-login100">
+                            <div class="wrap-login100">
+                                <form asp-route="Login" class="login100-form validate-form p-l-55 p-r-55 p-t-178">
+                                    <input type="hidden" asp-for="ReturnUrl" />
+                                    <span class="login100-form-title">
+                                        Sign In
+                                    </span>
+                                    <div class="form-group wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+                                        <label asp-for="Username"></label>
+                                        <input class="form-control input100" placeholder="Username" asp-for="Username" autofocus>
+                                    </div>
 
-									@*<div class="mt-4 mb-4">
-										<button class="btn btn-primary" name="button" value="login">Login</button>
-										<button class="btn btn-light" name="button" value="cancel">Cancel</button>
-									</div>*@
+                                    <div class="form-group wrap-input100 validate-input" data-validate="Please enter password">
+                                        <label asp-for="Password"></label>
+                                        <input type="password" class="form-control input100" placeholder="Password" asp-for="Password" autocomplete="off">
+                                    </div>
 
-									<div class="text-right p-t-13 p-b-23">
-										<a href="#" class="txt2">
-											Forgot Password?
-										</a>
-									</div>
-									<div class="container-login100-form-btn">
-										<button class="login100-form-btn" type="submit" name="button" value="login">Sign in</button>
-										@*<button class="btn btn-primary" name="button" value="login">Login</button>*@
-									</div>
+                                    @if (Model.AllowRememberLogin)
+                                    {
+                                        <div class="form-check">
+                                            <input type="checkbox" asp-for="RememberLogin" class="form-check-input">
+                                            <label asp-for="RememberLogin" class="form-check-label">Remember My Login</label>
+                                        </div>}
 
-									<div class="flex-col-c p-t-50 p-b-40">
-										<span class="txt1 p-b-9">
-											Don’t have an account?
-										</span>
+                                    @*<div class="mt-4 mb-4">
+                                        <button class="btn btn-primary" name="button" value="login">Login</button>
+                                        <button class="btn btn-light" name="button" value="cancel">Cancel</button>
+                                    </div>*@
 
-										<a href="http://localhost:4200/patientregister" class="txt3">
-											Sign up now
-										</a>
-									</div>
-									<partial name="_ValidationSummary" />
-								</form>
-							</div>
-						</div>
-					</div>
-		}
+                                    <div class="text-right p-t-13 p-b-23">
+                                        <a href="#" class="txt2">
+                                            Forgot Password?
+                                        </a>
+                                    </div>
+                                    <div class="container-login100-form-btn">
+                                        <button class="login100-form-btn" type="submit" name="button" value="login">Sign in</button>
+                                        @*<button class="btn btn-primary" name="button" value="login">Login</button>*@
+                                    </div>
 
-		@if (Model.VisibleExternalProviders.Any())
-		{
-	<div class="col-md-4 ml-5">
+                                    <div class="flex-col-c p-t-50 p-b-40">
+                                        <span class="txt1 p-b-9">
+                                            Don’t have an account?
+                                        </span>
 
-		<h1 class="mt-5 mb-3">External Login</h1>
+                                        <a href="http://localhost:4200/patientregister" class="txt3">
+                                            Sign up now
+                                        </a>
+                                    </div>
+                                    <partial name="_ValidationSummary" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
 
-		<div class="list-group">
-			@foreach (var provider in Model.VisibleExternalProviders)
-			{
-	<a class="list-group-item list-group-item-action"
-	   asp-controller="External"
-	   asp-action="Challenge"
-	   asp-route-provider="@provider.AuthenticationScheme"
-	   asp-route-returnUrl="@Model.ReturnUrl">
-		@provider.DisplayName
-	</a>}
-		</div>
-	</div>}
+                @if (Model.VisibleExternalProviders.Any())
+                {
+                    <div class="col-md-4 ml-5">
 
-		@if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
-		{
-	<div class="alert alert-warning">
-		<strong>Invalid login request</strong>
-		There are no login schemes configured for this client.
-	</div>}
-	</div>
+                        <h1 class="mt-5 mb-3">External Login</h1>
+
+                        <div class="list-group">
+                            @foreach (var provider in Model.VisibleExternalProviders)
+                            {
+                                <a class="list-group-item list-group-item-action"
+                                   asp-controller="External"
+                                   asp-action="Challenge"
+                                   asp-route-provider="@provider.AuthenticationScheme"
+                                   asp-route-returnUrl="@Model.ReturnUrl">
+                                    @provider.DisplayName
+                                </a>}
+                        </div>
+                    </div>}
+
+                @if (!Model.EnableLocalLogin && !Model.VisibleExternalProviders.Any())
+                {
+                    <div class="alert alert-warning">
+                        <strong>Invalid login request</strong>
+                        There are no login schemes configured for this client.
+                    </div>}
+            </div>
+        </div>
 
 
-
-	<!--===============================================================================================-->
-	<script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/vendor/animsition/js/animsition.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/vendor/bootstrap/js/popper.js"></script>
-	<script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/vendor/select2/select2.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/vendor/daterangepicker/moment.min.js"></script>
-	<script src="~/vendor/daterangepicker/daterangepicker.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/vendor/countdowntime/countdowntime.js"></script>
-	<!--===============================================================================================-->
-	<script src="~/js/main.js"></script>
+        <!--===============================================================================================-->
+        <script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
+        <!--===============================================================================================-->
+        <script src="~/vendor/animsition/js/animsition.min.js"></script>
+        <!--===============================================================================================-->
+        <script src="~/vendor/bootstrap/js/popper.js"></script>
+        <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+        <!--===============================================================================================-->
+        <script src="~/vendor/select2/select2.min.js"></script>
+        <!--===============================================================================================-->
+        <script src="~/vendor/daterangepicker/moment.min.js"></script>
+        <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
+        <!--===============================================================================================-->
+        <script src="~/vendor/countdowntime/countdowntime.js"></script>
+        <!--===============================================================================================-->
+        <script src="~/js/main.js"></script>

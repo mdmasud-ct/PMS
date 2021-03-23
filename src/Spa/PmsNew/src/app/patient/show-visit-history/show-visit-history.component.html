@@ -1,0 +1,160 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Patient Visit Data</h4>
+                        <p class="card-category"></p>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-group" [formGroup]="fg">
+                            <mat-tab-group dynamicHeight>
+                                <mat-tab label="Appointment Details">
+                                    <br>                                
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="ApptID">AppointmentID: </label>
+                                                    <input type="text" class="form-control" name="ApptID" formControlName="ApptID" disabled>                        
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="DrName">Doctor Name: </label>
+                                                    <input type="text" class="form-control" name="DrName" formControlName="DrName" disabled>                        
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Vital Signs">
+                                    <br>                                
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="height">Height (in cms): </label>
+                                                    <input type="text" class="form-control" name="height" formControlName="height" disabled>                        
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="weight">Weight (in kgs): </label>
+                                                    <input type="text" class="form-control" name="weight" formControlName="weight" disabled>                        
+                                                </div>
+                                            </div>            
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="bloodpressuresystolic">Blood Pressure Systolic (in mmHg): </label>
+                                                    <input type="text" class="form-control" name="bloodpressuresystolic" formControlName="bloodpressuresystolic" disabled>                        
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="bloodpressurediastolic">Blood Pressure Diastolic (in mmHg): </label>
+                                                    <input type="text" class="form-control" name="bloodpressurediastolic" formControlName="bloodpressurediastolic" disabled>                        
+                                                </div>
+                                            </div>            
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label for="temperature">Body Temperature (in celsius): </label>
+                                                    <input type="text" class="form-control" name="bodytemperature" formControlName="bodytemperature" disabled>                        
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="respirationrate">Respiration Rate (in BPM): </label>
+                                                    <input type="text" class="form-control" name="respirationrate" formControlName="respirationrate" disabled>                        
+                                                </div>
+                                            </div>                        
+                                        </div>
+
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Allergies">
+                                    <br>
+                                    <fieldset>
+                                        <div class="form-group">            
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="th-font">Allergy</th><th class="th-font">Fatal Allergy?</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let row of AllergyRows">                  
+                                                        <td>{{row.allergytype}}</td>
+                                                        <td>{{row.chkFatal}}</td>
+                                                      </tr>
+                                                </tbody>                                				
+                                            </table>
+                                        </div>
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Diagnosis">
+                                    <br>
+                                    <fieldset>
+                                        <div class="form-group">            
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="th-font">Diagnosis</th><th class="th-font">Diagnosis Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let row of DiagnosisRows">                  
+                                                        <td>{{row.diagnosiscode}}</td>
+                                                        <td>{{row.diagnosisdescription}}</td>
+                                                      </tr>                    
+                                                </tbody>                                				
+                                            </table>          
+                                        </div>
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Procedure">
+                                    <br>
+                                    <fieldset>
+                                        <div class="form-group">            
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="th-font">Procedure</th><th class="th-font">Procedure Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let row of ProcedureRows">                  
+                                                        <td>{{row.proceduretype}}</td>
+                                                        <td>{{row.proceduredescription}}</td>
+                                                      </tr>                    
+                                                </tbody>                                				
+                                            </table>               
+                                        </div>
+                                    </fieldset>
+                                </mat-tab>
+                                <mat-tab label="Medication">
+                                    <br>
+                                    <fieldset>
+                                        <div class="form-group">            
+                                            <table class="table table-hover table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="th-font">Medication</th><th class="th-font">Medication Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let row of MedicationRows">                  
+                                                        <td>{{row.medicationtype}}</td>                        
+                                                        <td>{{row.medicationdescription}}</td>
+                                                      </tr>                    
+                                                </tbody>                                				
+                                            </table>        
+                                        </div>
+                                    </fieldset>
+
+                                </mat-tab>
+                                
+                            </mat-tab-group>
+                            <div class="form-group">            
+                                <button type="button" class="btn btn-success" (click)="DownloadPatientData()">Export</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Book Appointment</h4>
+                        <p class="card-category"></p>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-group"  [formGroup]="userForm" (ngSubmit)="SaveAppointmentData()">
+                            <!-- <h2>Book Appointment</h2> -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <label for="drname">Doctor: </label>
+                                        <input type="text" class="form-control bold-text" name="drname" formControlName="doctorname" placeholder="" readonly>
+                                        
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <label for="ptname">Patient:</label>
+                                        <input type="text" class="form-control bold-text" name="ptname" formControlName="patientname" readonly>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <label for="speciality">Speciality: </label>
+                                        <input type="text" class="form-control bold-text" name="speciality" formControlName="spetiality" placeholder="" readonly>
+                                    
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <label for="shdate">Date: <span class="asterisk"> *</span></label>                    
+                                        <input type="date" [min]="getToday()" class="form-control" name="shdate" formControlName="appointmentdate">
+                                        <span class="asterisk" *ngIf="userForm.get('appointmentdate').touched && userForm.get('appointmentdate').errors?.required">
+                                            Date is required!
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                            <div class="col-xl-6">
+                                <label for="from">From: <span class="asterisk"> *</span></label>
+                                <input type="time" class="form-control" name="from" formControlName="fromtime">
+                                <span class="asterisk" *ngIf="userForm.get('fromtime').touched && userForm.get('fromtime').errors?.required">
+                                    From time is required!
+                                </span>
+                            </div>
+                            <div class="col-xl-6">
+                                <label for="to">To: <span class="asterisk"> *</span></label>
+                                <input type="time" class="form-control" name="to" formControlName="totime">
+                                <span class="asterisk" *ngIf="userForm.get('totime').touched && userForm.get('totime').errors?.required">
+                                    To Time is required!
+                                </span>
+                            </div>
+                                </div>
+                            </div>
+                            <div class="form-group row col-xl-12">
+                                <label for="desc">Short Description: </label>
+                                <textarea class="form-control" name="desc" formControlName="description"></textarea>
+                            </div>
+                            <div class="form-group">            
+                                <button id="btnSubmit" class="btn btn-success" [disabled]="!userForm.valid">Book Appointment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

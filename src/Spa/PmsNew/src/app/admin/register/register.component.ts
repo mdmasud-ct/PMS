@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { finalize } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { isNullOrUndefined } from 'util';
+//import { isNullOrUndefined } from 'util';
 import { AuthService } from '../../core/auth.service';
 import { DatePipe } from '@angular/common'
 @Component({
@@ -40,6 +40,7 @@ export class RegisterComponent implements OnInit {
   fullname:string ="";
   titles:any;
   genders:any;
+  entityId:string;
   @Input()  nrId:number;
   @Input()  drId:number;
   @Input()  pRole:string;
@@ -48,7 +49,7 @@ export class RegisterComponent implements OnInit {
   @Input() userData:any;
   res: any;
   message:any;
-  UserData:any;
+  UserDataE:any;
   @Output() messageEvent = new EventEmitter<string>();
   @Output("parentFun") parentFun: EventEmitter<any> = new EventEmitter();
   fg: FormGroup = new FormGroup({
@@ -68,7 +69,6 @@ export class RegisterComponent implements OnInit {
   public SavePractitionerData(): void
   {
       let operation:string = "";
-      //this.fg.value.role = this.userrole;
       console.log()
       this.fullname = this.fg.value.firstname +' '+ this.fg.value.lastname;
       this.RegisterUser = new Register(this.fg.value.title,
@@ -84,16 +84,14 @@ export class RegisterComponent implements OnInit {
                               this.fg.value.gender);
 
       debugger;
-      if(this.nursedata.length > 0 || this.doctordata.length > 0)
+      if(this.nursedata.length > 0 || this.UserDataE != undefined)
       {
           operation="PATCH";
-          if(this.nursedata.length>0)
-            this.RegisterUser.id=this.nursedata[0].id;
-          else
-            this.RegisterUser.id=this.doctordata[0].id;
+          this.RegisterUser.id=this.UserDataE.id;
       }
       else{
         operation="POST";
+        this.RegisterUser.id = 0;
       }     
 
       if(this.fg.invalid==false)
@@ -101,9 +99,9 @@ export class RegisterComponent implements OnInit {
         this.spinner.show();
         this.ob = this.registersvc.SaveUserRegiterDatas(this.RegisterUser,operation)
         if(operation == "POST")
-          operation="registered";
+          operation  = "registered";
         else
-          operation="updated"
+          operation  = "updated"
         this.ob.pipe(finalize(() => {
           this.spinner.hide();
         })).subscribe(
@@ -119,33 +117,34 @@ export class RegisterComponent implements OnInit {
             else{
               this.toaster.error("Error",this.res.response,ToasterPosition.topFull);
             }
-            //this.toaster.success("Success",data["role"]+" "+data["firstname"]+" "+data["lastname"]+" has "+operation+" successfully.",ToasterPosition.topFull,this.functioncallbackFunction) 
           },
           (error: any) => this.toaster.error("Error","Error in saving data: "+error, ToasterPosition.topFull)
           );
     }
 }
-
 getToday(): string {
   return new Date().toISOString().split('T')[0];
 }
 loadNrData(nrId:number)
- {
-   console.log('LoadData'+this.nrId);
-  this.obnr=this.registersvc.GetNurseJsonDatasByID(this.nrId,this.auth.authorizationHeaderValue);
-  this.obnr.subscribe(
-    (dr:Nurse[])=>{this.nursedata=dr;console.log(this.nursedata)
-      console.log(this.nursedata[0])
-    this.fg.patchValue({
-      "title": this.nursedata[0].title,
-      "firstname": this.nursedata[0].firstname,
-      "lastname": this.nursedata[0].lastname,
-      "email":this.nursedata[0].EmailID,
-      "phoneno":this.nursedata[0].phoneNo,
-      "address":this.nursedata[0].Address,
-      "speciality":this.nursedata[0].Specialties,
-      "dob":this.nursedata[0].Dob
-    })
+{
+  this.ob=this.registersvc.GetNurseJsonDatasByID(this.nrId,this.auth.authorizationHeaderValue);
+  this.ob.pipe(finalize(()=>{
+  this.spinner.hide();
+})).subscribe(
+data => {
+  this.UserDataE= data;
+  console.log(this.UserDataE)
+  this.fg.patchValue({
+   "title":      this.UserDataE.title,
+   "firstname":  this.UserDataE.firstName,
+   "lastname":   this.UserDataE.lastName,
+   "email":      this.UserDataE.emailId,
+   "contactno":  this.UserDataE.phoneNo,
+   "address":    this.UserDataE.address,
+   "speciality": this.UserDataE.speciality,
+   "dob":        this.datepipe.transform(this.UserDataE.dob,'yyyy-MM-dd') ,
+   "gender":     this.UserDataE.gender,
+});
   },
   (error:any)=>console.log('fails to load nurse data')
   );
@@ -157,43 +156,25 @@ loadNrData(nrId:number)
        this.spinner.hide();
    })).subscribe(
    data => {
-     this.UserData= data;
-     console.log(this.UserData)
-     //this.userData.dob = this.datepipe.transform(this.userData.dob,'yyyy-MM-dd'); 
+     this.UserDataE= data;
+     console.log(this.UserDataE)
      this.fg.patchValue({
-      "title":      this.UserData.title,
-      "firstname":  this.UserData.firstName,
-      "lastname":   this.UserData.lastName,
-      "email":      this.UserData.emailId,
-      "contactno":  this.UserData.phoneNo,
-      "address":    this.UserData.address,
-      "speciality": this.UserData.speciality,
-      "dob":        this.datepipe.transform(this.UserData.dob,'yyyy-MM-dd') ,
-      "gender":     this.UserData.gender,
-       "id":        this.UserData.id 
+      "title":      this.UserDataE.title,
+      "firstname":  this.UserDataE.firstName,
+      "lastname":   this.UserDataE.lastName,
+      "email":      this.UserDataE.emailId,
+      "contactno":  this.UserDataE.phoneNo,
+      "address":    this.UserDataE.address,
+      "speciality": this.UserDataE.speciality,
+      "dob":        this.datepipe.transform(this.UserDataE.dob,'yyyy-MM-dd') ,
+      "gender":     this.UserDataE.gender,
    });
-  //  this.obdr=this.registersvc.GetDoctorJsonDatasByID(this.drId);
-  //   this.obdr.subscribe(
-  //   (dr:Doctor[])=>{this.doctordata=dr;console.log(this.doctordata)
-  //     console.log(this.doctordata[0])
-  //   this.fg.patchValue({
-  //     "title": this.doctordata[0].title,
-  //     "firstname": this.doctordata[0].firstname,
-  //     "lastname": this.doctordata[0].lastname,
-  //     "email":this.doctordata[0].Email,
-  //     "contactno":this.doctordata[0].ContactNo,
-  //     "address":this.doctordata[0].Address,
-  //     "speciality":this.doctordata[0].Specialties,
-  //     "dob":this.doctordata[0].Dob
-  //   })
   },
   (error:any)=>console.log('fails to load nurse data')
   );
  }
-
   ngOnInit(): void {
-    console.log(this.userData);
-    //console.log(this.nrId+""+this.drId);
+    console.log("Boss"+this.userData);
     if(this.drId==undefined && this.nrId==undefined){}
     else if(this.nrId==undefined && this.drId!=undefined)
       this.loadDrData(this.drId);
@@ -217,13 +198,11 @@ loadNrData(nrId:number)
       }
       this.titles= Object.entries(Title) ;
       this.genders = Object.entries(Genders);
-      
     }
   functioncallbackFunction(){
     this.success=true;
   }
   sendMessage() {
-    //this.messageEvent.emit(this.message);
     this.parentFun.emit();
   }
 }

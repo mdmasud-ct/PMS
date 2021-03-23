@@ -14,6 +14,7 @@ import { Genders } from '../../core/dropdownmaster.service';
 import { finalize } from 'rxjs/operators';
 import { Positioning } from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import { EventEmitter } from '@angular/core';
+import { Patients } from 'app/models/Patient';
 @Component({
   selector: 'app-patient-register',
   templateUrl: './patient-register.component.html',
@@ -54,10 +55,9 @@ SavePatientData(): void
   this.spinner.show();
   console.log("ts.SavePatientData() hits");
   console.log(this.fg.value);
-  console.log(this.fg.value.firstname);
 
-//this.patient=new Patients(this.fg.value.firstname,this.fg.value.lastname,this.fg.value.dob,this.fg.value.contact
-  //                  ,this.fg.value.email,this.fg.value.password,(this.fg.value.firstname+" "+this.fg.value.lastname),"Active","No",this.fg.value.title,this.fg.value.gender);
+this.patient=new Patients(this.fg.value.firstname,this.fg.value.lastname,this.fg.value.dob,this.fg.value.contact
+                    ,this.fg.value.email,this.fg.value.password,(this.fg.value.firstname+" "+this.fg.value.lastname),"Active","No",this.fg.value.title,this.fg.value.gender);
 
 console.log(this.patient);
 
